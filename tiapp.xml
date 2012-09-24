@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <property name="acs-oauth-secret-production" type="string">fDpMdUzYt3VMFgpcIIr5fUytmto2xRpx</property>
+    <property name="acs-oauth-key-production" type="string">BOfVDKY9ZUmkUvw2iV3HrDex6iOaVACK</property>
+    <property name="acs-api-key-production" type="string">BUJIL7lotBPWeV4QJSDd7KjdW8vYVA8r</property>
+    <property name="acs-oauth-secret-development" type="string">GSMGKp4Nn25nScRiYLyMyXGVcXbh4YHs</property>
+    <property name="acs-oauth-key-development" type="string">NJzmFgftsJv826awLg8WfbYVJu0eJCVb</property>
+    <property name="acs-api-key-development" type="string">HE1Wy7aYf7R5DBSQdkQzZjjDpPYmyI9g</property>
+    <property name="ti.android.threadstacksize" type="int">32768</property>
+    <deployment-targets>
+        <target device="mobileweb">false</target>
+        <target device="iphone">true</target>
+        <target device="ipad">false</target>
+        <target device="android">true</target>
+        <target device="blackberry">false</target>
+    </deployment-targets>
+    <sdk-version>2.1.2.GA</sdk-version>
+    <id>urawareds.my.life</id>
+    <name>UrawaRedsMyLife_iOS</name>
+    <version>1.0</version>
+    <publisher>motoy3d</publisher>
+    <url>http://motoy3d.blogspot.com</url>
+    <description>Infomation hub for Urawa Reds Supporter</description>
+    <copyright>2012 by motoy3d</copyright>
+    <icon>appicon.png</icon>
+    <persistent-wifi>false</persistent-wifi>
+    <prerendered-icon>false</prerendered-icon>
+    <statusbar-style>default</statusbar-style>
+    <statusbar-hidden>false</statusbar-hidden>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>false</navbar-hidden>
+    <analytics>false</analytics>
+    <guid>e1d254b0-6409-4ca9-8a7f-31ffff8acd33</guid>
+    <property name="ti.ui.defaultunit">system</property>
+    <iphone>
+        <orientations device="iphone">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+        </orientations>
+        <orientations device="ipad">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>
+            <orientation>Ti.UI.LANDSCAPE_LEFT</orientation>
+            <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
+        </orientations>
+    </iphone>
+    <statusbar-style>translucent_black</statusbar-style>
+    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <mobileweb>
+        <precache/>
+        <splash>
+            <enabled>true</enabled>
+            <inline-css-images>true</inline-css-images>
+        </splash>
+        <theme>default</theme>
+    </mobileweb>
+    <modules>
+        <module platform="commonjs" version="2.0.1">ti.cloud</module>
+    </modules>
+</ti:app>

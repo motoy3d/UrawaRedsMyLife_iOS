@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="news">News</string>	
+	<string name="results">Results</string>
+	<string name="standings">Standings</string>
+	<string name="twitter">twitter</string>
+</resources>
