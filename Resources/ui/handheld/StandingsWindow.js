@@ -53,7 +53,9 @@ function StandingsWindow(tabGroup) {
     self.add(border);
     
     // インジケータ
-    var indicator = Ti.UI.createActivityIndicator();
+    var indicator = Ti.UI.createActivityIndicator({
+        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
+    });
     self.add(indicator);
     
     var platformHeight = Ti.Platform.displayCaps.platformHeight;

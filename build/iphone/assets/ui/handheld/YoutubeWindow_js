@@ -23,7 +23,9 @@ function YoutubeWindow(youtubeData) {
 	var webModalView;
 	// var currentLink;
 	var textColor = "white";			//TODO style
-	var indicator = Ti.UI.createActivityIndicator();
+    var indicator = Ti.UI.createActivityIndicator({
+        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
+    });
 	indicator.show();
 
 	var tableView = Ti.UI.createTableView({

@@ -32,7 +32,9 @@ function WebWindow(webData) {
 		self.add(webView);
 	} else {
 		// Ti.API.debug("----------- 2");
-		var ind = Ti.UI.createActivityIndicator();
+        var ind = Ti.UI.createActivityIndicator({
+            style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
+        });
 		ind.show();
 		webView.addEventListener("load", function(e) {
 			ind.hide();

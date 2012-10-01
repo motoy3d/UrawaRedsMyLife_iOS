@@ -18,7 +18,9 @@ function NewsWindow(tabGroup) {
 	// self.add(table);
 	
 	// インジケータ
-	var indicator = Ti.UI.createActivityIndicator();
+	var indicator = Ti.UI.createActivityIndicator({
+	    style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
+	});
 	self.add(indicator);
 	indicator.show();
 	

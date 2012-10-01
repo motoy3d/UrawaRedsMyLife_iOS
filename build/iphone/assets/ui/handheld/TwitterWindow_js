@@ -19,7 +19,9 @@ function TwitterWindow(tabGroup) {
 	});
 	
 	// インジケータ
-	var indicator = Ti.UI.createActivityIndicator();
+    var indicator = Ti.UI.createActivityIndicator({
+        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
+    });
 	self.add(indicator);
 	
 	//openイベント
