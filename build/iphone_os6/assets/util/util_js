@@ -1,0 +1,142 @@
+var style = require("util/style").style;
+//var customIndicator = require("CustomIndicator").customIndicator;
+exports.util = {
+	/**
+	 * 現時点の表示対象シーズン(年)を返す。
+	 */
+	getCurrentSeason : function() {
+		// 3/1～2月末までを1シーズンとする
+		var now = new Date();
+		var year = now.getFullYear();
+		var month = now.getMonth();
+		if(month == 0 || month == 1) {
+			year--;
+		}
+		return year;
+	},
+	/**
+	 * 
+	 */
+	replaceAll : function(expression, org, dest) { 
+		return expression.split(org).join(dest);  
+	},
+	/**
+	 * 文字列のendsWidth
+	 */
+	endsWith : function(text, suffix, isIgnoreCase) {
+		var sub = text.length - suffix.length;
+		if(isIgnoreCase) {
+			text = text.toLowerCase();
+			suffix = suffix.toLowerCase();
+		}
+		return (sub >= 0) && (text.lastIndexOf(suffix) === sub);
+	},
+	/**
+	 * オフラインメッセージダイアログを表示する
+	 */
+	openOfflineMsgDialog : function() {
+		var dialog = Ti.UI.createAlertDialog({
+			message : style.common.offlineMsg,
+			buttonNames : ["OK"]
+		});
+		dialog.show();		
+	},
+	/**
+	 * 画面の向きがポートレートの場合に真を返す
+	 */
+	isPortrait : function() {
+	    var width = Ti.Platform.displayCaps.platformWidth;
+	    var height = Ti.Platform.displayCaps.platformHeight;
+		return width < height;		
+	},
+	/**
+	 * 指定ミリ秒スリープする 
+	 */
+	sleep : function(milliseconds) {
+		var start = new Date().getTime();
+ 		while((new Date().getTime() - start) < milliseconds) {
+			// Do nothing
+		}	
+	},
+	/**
+	 * チーム名を正式名から簡略形式で返す。
+	 */
+	getTeamName : function(teamName) {
+		if(teamName == 'ベガルタ仙台') return '仙台';	
+		else if(teamName == 'サンフレッチェ広島') return '広島';	
+		else if(teamName == 'ジュビロ磐田') return '磐田';	
+		else if(teamName == '清水エスパルス') return '清水';	
+		else if(teamName == '浦和レッズ') return '浦和';	
+		else if(teamName == 'FC東京') return 'FC東京';	
+		else if(teamName == '川崎フロンターレ') return '川崎';	
+		else if(teamName == 'サガン鳥栖') return '鳥栖';	
+		else if(teamName == '横浜F・マリノス') return '横浜FM';	
+		else if(teamName == '鹿島アントラーズ') return '鹿島';	
+		else if(teamName == 'セレッソ大阪') return 'C大阪';	
+		else if(teamName == '柏レイソル') return '柏';	
+		else if(teamName == '名古屋グランパス') return '名古屋';	
+		else if(teamName == 'ヴィッセル神戸') return '神戸';	
+		else if(teamName == '大宮アルディージャ') return '大宮';	
+		else if(teamName == 'ガンバ大阪') return 'G大阪';	
+		else if(teamName == 'アルビレックス新潟') return '新潟';	
+		else if(teamName == 'コンサドーレ札幌') return '札幌';
+        else if(teamName == 'ヴァンフォーレ甲府') return '甲府';
+        else if(teamName == '湘南ベルマーレ') return '湘南';
+        else if(teamName == '大分トリニータ') return '大分';
+        else if(teamName == '京都サンガF.C') return '京都';
+        else if(teamName == 'ジェフユナイテッド千葉') return '千葉';
+        else if(teamName == '東京ヴェルディ') return '東京V';
+        else if(teamName == 'モンテディオ山形') return '山形';
+        else if(teamName == '横浜FC') return '横浜FC';
+        else if(teamName == '栃木FC') return '栃木';
+        else if(teamName == 'ギラヴァンツ北九州') return '北九州';
+        else if(teamName == 'ファジアーノ岡山') return '岡山';
+        else if(teamName == '水戸ホーリーホック') return '水戸';
+        else if(teamName == '松本山雅FC') return '松本山雅';
+        else if(teamName == '徳島ヴォルティス') return '徳島';
+        else if(teamName == 'ザスパ草津') return '草津';
+        else if(teamName == 'ロアッソ熊本') return '熊本';
+        else if(teamName == 'アビスパ福岡') return '福岡';
+        else if(teamName == '愛媛FC') return '愛媛';
+        else if(teamName == 'FC岐阜') return '岐阜';
+        else if(teamName == 'カターレ富山') return '富山';
+        else if(teamName == 'ガイナーレ鳥取') return '鳥取';
+        else if(teamName == 'FC町田ゼルビア') return '町田';
+	},
+    /**
+     *  日付のパースして現在からのどのくらい前かを返す。例：「３分前、５時間前、2日前」
+     */
+    parseDate2 : function(str) {
+        var c = Date.parse(str);
+        if (typeof c === 'number'){
+            var n = new Date().getTime();
+            var s = Math.floor((n-c) / 1000);
+            if (s<60)                                   return s + '秒前';
+            else if (s>=60 && s<60*60)                      return [Math.floor(s/60), '分前'].join('');
+            else if (s>=60*60 && s<60*60*24)                return [Math.floor(s/60/60), '時間前'].join('');
+            else if (s>=60*60*24 && s<60*60*24*30)          return [Math.floor(s/60/60/24), '日前'].join('');
+            else if (s>=60*60*24*30 && s<60*60*24*30*365)   return [Math.floor(s/60/60/24/30), 'ヶ月前'].join('');
+            else if (s>=60*60*24*30*365)                    return [Math.floor(s/60/60/24/30/365), '年前'].join('');
+        }        return "";
+    },
+    /**
+     * テキストにリンクタグ(aタグ)を埋め込んで返す
+     */
+    addLink : function(text) {
+        Ti.API.info("################ [" + text + "]");
+        var i = text.indexOf("http://");
+        if(i == -1) {
+            return text;
+        }
+        var x = text.indexOf("¥s", i);        var url = "";
+        Ti.API.info('i===' + i + ', x===' + x);
+        if(x == -1) {
+            url = text.substring(i);
+        } else {
+            url = text.substring(i, x);
+        }
+        Ti.API.info('URL = ' + url)
+        text = text.split(url).join("<a href='" + url + "'>" + url + "</a>");
+        return text;
+    }
+}
