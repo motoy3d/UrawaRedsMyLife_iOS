@@ -25,7 +25,7 @@ function WebWindow(webData) {
 		var content = 
 			"<a href=\"" + webData.link + "\">" + webData.title  + "</a>"
 			+ " " + webData.pubDate + "<br/>"
-			+ webData.siteName 
+			+ webData.siteName + "<br/><br/>"
 			+ webData.content + "<br/><br/>" 
 			+ "<a href=\"" + webData.link + "\">サイトを開く</a>";
 		webView.html = content;

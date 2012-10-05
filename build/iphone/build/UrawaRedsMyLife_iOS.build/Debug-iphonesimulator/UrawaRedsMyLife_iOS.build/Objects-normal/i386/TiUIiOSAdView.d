@@ -28,4 +28,8 @@ dependencies: \
   /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiBuffer.h \
   /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiBlob.h \
   /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/LayoutConstraint.h \
-  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiGradient.h
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiGradient.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiUIiOSAdViewProxy.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiUIViewProxy.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiViewProxy.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiRect.h

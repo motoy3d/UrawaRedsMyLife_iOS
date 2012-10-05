@@ -35,6 +35,10 @@
  @param args Unused.
  */
 - (void)blur:(id)args;
+/**
+ Tells if this proxy is currently focused
+ */
+- (BOOL)focused;
 
 #pragma mark Private internal APIs.
 

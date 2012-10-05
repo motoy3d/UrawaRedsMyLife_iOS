@@ -10,6 +10,7 @@ function NewsWindow(tabGroup) {
 
 	var self = Ti.UI.createWindow({
 		title:'ニュース'
+		,barColor: 'red'
 	});
 	// テーブル
 	var table = Ti.UI.createTableView({
@@ -60,6 +61,7 @@ function NewsWindow(tabGroup) {
 			var webWindow = new WebWindow(webData);
 			// navGroup.open(webWindow, {animated: true});
 			tabGroup.activeTab.open(webWindow, {animated: true});
+            Ti.App.Analytics.trackPageview('/newsDetail');
 		} else {
 			loadMoreLabel.text = style.common.loadingMsg;
 			//indWin.open();
@@ -89,7 +91,6 @@ function NewsWindow(tabGroup) {
 	 */
 	function endUpdate() {
 		updating = false;
-		lastRow += news.loadFeedSize;
 		Ti.API.info(" endUpdate. lastRow=" + lastRow + ", table.size=" + table.data[0].length);
 		// just scroll down a bit to the new rows to bring them into view
 		// 追加読み込み終了時の強制スクロール
@@ -140,6 +141,7 @@ function NewsWindow(tabGroup) {
 					Ti.API.info("rowsData■" + rowsData);
 					// 2回目以降の追加ロード時
 					if(isUpdate) {
+                        lastRow = table.data[0].rows.length - 1;
 						var scrollToIdx = table.data[0].rows.length;
 						for(i=0; i<rowsData.length; i++) {
 							if(i == 0) {

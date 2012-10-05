@@ -35,7 +35,6 @@ TI_INLINE void waitForMemoryPanicCleared()   //WARNING: This must never be run o
 	UIWindow *window;
 	UIImageView *loadView;
 	BOOL loaded;
-	BOOL handledModal;
 
 	TiContextGroupRef contextGroup;
 	KrollBridge *kjsBridge;

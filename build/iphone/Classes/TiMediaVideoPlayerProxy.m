@@ -429,7 +429,7 @@ NSArray* moviePlayerKeys = nil;
 	RELEASE_TO_NIL(url);
 	url = [newUrl retain];
     loaded = NO;
-	
+	sizeSet = NO;
 	if (movie!=nil)
 	{
 		[self restart];
@@ -721,10 +721,11 @@ NSArray* moviePlayerKeys = nil;
 
 -(void)setFullscreen:(id)value
 {
-	if (movie != nil && sizeDetermined) {
-		BOOL fs = [TiUtils boolValue:value];
+    if (movie != nil && loaded) {
+        BOOL fs = [TiUtils boolValue:value];
+        sizeSet = YES;
         TiThreadPerformOnMainThread(^{[movie setFullscreen:fs];}, NO);
-	}
+    }
 	
 	if ([value isEqual:[loadProperties valueForKey:@"fullscreen"]])
 	{
@@ -735,7 +736,7 @@ NSArray* moviePlayerKeys = nil;
 	// Movie players are picky.  You can't set the fullscreen value until
 	// the movie's size has been determined, so we always have to cache the value - just in case
 	// it's set before then.
-	if (!sizeDetermined || movie == nil) {
+	if (!loaded || movie == nil) {
 		[loadProperties setValue:value forKey:@"fullscreen"];
 	}
 }
@@ -961,8 +962,6 @@ NSArray* moviePlayerKeys = nil;
 
 -(void)handleNaturalSizeAvailableNotification:(NSNotification*)note
 {
-	sizeDetermined = YES;
-	[self setFullscreen:[loadProperties valueForKey:@"fullscreen"]];
 	if ([self _hasListeners:@"naturalSizeAvailable"])
 	{
 		NSDictionary *event = [NSDictionary dictionaryWithObject:[self naturalSize] forKey:@"naturalSize"];
@@ -982,7 +981,11 @@ NSArray* moviePlayerKeys = nil;
 	{
 		if ([self viewAttached]) {
 			TiMediaVideoPlayer *vp = (TiMediaVideoPlayer*)[self view];
+			loaded = YES;
 			[vp movieLoaded];
+			if (!sizeSet) {
+				[self setFullscreen:[loadProperties valueForKey:@"fullscreen"]];
+			}
 			if (player.loadState == MPMovieLoadStatePlayable) {
 				if ([self _hasListeners:@"load"]) {
 					[self fireEvent:@"load" withObject:nil];

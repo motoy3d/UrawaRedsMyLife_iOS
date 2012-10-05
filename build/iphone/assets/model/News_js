@@ -26,6 +26,7 @@ function News() {
  * フィードを読み込んで表示する
  */
 function loadNewsFeed(continuation, callback, reloadRow) {
+    Ti.App.Analytics.trackPageview('/newsList');
 	Ti.API.info('loadNewsFeed start-------------------------------');
 	// オンラインチェック
 	if(!Ti.Network.online) {

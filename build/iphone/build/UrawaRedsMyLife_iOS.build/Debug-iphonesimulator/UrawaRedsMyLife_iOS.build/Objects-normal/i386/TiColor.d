@@ -15,4 +15,10 @@ dependencies: \
   /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/headers/TiCore/TiContextRefPrivate.h \
   /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/KrollCallback.h \
   /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/KrollObject.h \
-  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/Webcolor.h
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/Webcolor.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiUtils.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiDimension.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/WebFont.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiFile.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiBuffer.h \
+  /Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/build/iphone/Classes/TiBlob.h

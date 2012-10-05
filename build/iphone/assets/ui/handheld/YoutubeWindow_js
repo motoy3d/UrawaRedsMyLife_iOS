@@ -51,6 +51,7 @@ function YoutubeWindow(youtubeData) {
 			util.openOfflineMsgDialog();
 			return;
 		}
+        Ti.App.Analytics.trackPageview('/movieList');
 		var replaceKey = '#キーワード#';
 		var searchUrlBase = 'http://gdata.youtube.com/feeds/api/videos?alt=rss&q='
 			+ replaceKey
@@ -227,6 +228,7 @@ Ti.API.debug('-------createWebView 7');
 	 * 動画を再生する（内部でiPhone/Androidの処理分岐あり）
 	 */
 	function playYouTube(vtitle, vguid) {
+        Ti.App.Analytics.trackPageview('/playMovie');
 		Ti.API.info('------- playYouTube.. ' + Ti.Platform.name);
 		if(Ti.Platform.name == 'iPhone OS') {
 			// var thumbPlayer = '<html><head><style type="text/css"> h1 { font-family:\'Helvetica\';'
@@ -237,15 +239,15 @@ Ti.API.debug('-------createWebView 7');
 			// + '</center></body></html>';
 			// Ti.API.info('playYouTube.....' + thumbPlayer);
 			// showHTMLContent(vtitle, 'http://www.youtube.com/watch?v=' + vguid, thumbPlayer);
-var movieUrl = "http://www.youtube.com/embed/" + vguid + "?fs=1&autoplay=1";
-var videoView = Ti.UI.createWebView({
-	url : movieUrl
-});
-var videoWin = Ti.UI.createWindow();
-videoWin.add(videoView);
-Ti.App.tabGroup.activeTab.open(videoWin, {
-	animated : true
-});
+            var movieUrl = "http://www.youtube.com/embed/" + vguid + "?fs=1&autoplay=1";
+            var videoView = Ti.UI.createWebView({
+            	url : movieUrl
+            });
+            var videoWin = Ti.UI.createWindow();
+            videoWin.add(videoView);
+            Ti.App.tabGroup.activeTab.open(videoWin, {
+            	animated : true
+            });
 			
 		} else {
 			Ti.API.info('openURL.....');

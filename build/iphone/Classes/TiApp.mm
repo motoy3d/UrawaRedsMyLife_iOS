@@ -220,7 +220,7 @@ TI_INLINE void waitForMemoryPanicCleared();   //WARNING: This must never be run 
 
 - (void)boot
 {
-	DebugLog(@"[INFO] %@/%@ (%s.a77d91c)",TI_APPLICATION_NAME,TI_APPLICATION_VERSION,TI_VERSION_STR);
+	DebugLog(@"[INFO] %@/%@ (%s.15997d0)",TI_APPLICATION_NAME,TI_APPLICATION_VERSION,TI_VERSION_STR);
 	
 	sessionId = [[TiUtils createUUID] retain];
 	TITANIUM_VERSION = [[NSString stringWithCString:TI_VERSION_STR encoding:NSUTF8StringEncoding] retain];
@@ -574,19 +574,6 @@ TI_INLINE void waitForMemoryPanicCleared();   //WARNING: This must never be run 
 
 -(void)showModalController:(UIViewController*)modalController animated:(BOOL)animated
 {
-//In the rare event that the iPad application started in landscape, has not been rotated,
-//And is presenting a modal for the first time, 
-		handledModal = YES;
-
-	if(!handledModal)
-	{
-		handledModal = YES;
-		UIView * rootView = [controller view];
-		UIView * windowView = [rootView superview];
-		[rootView removeFromSuperview];
-		[windowView addSubview:rootView];
-	}
-
 	/*
 	 *	In iPad (TIMOB 7839) there is a bug in iOS where a text field having
 	 *	focus during a modal presentation can lead to an edge case.
@@ -635,6 +622,15 @@ TI_INLINE void waitForMemoryPanicCleared();   //WARNING: This must never be run 
 	}
 }
 
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    if ([self windowIsKeyWindow]) {
+        return [controller supportedInterfaceOrientations];
+    }
+    
+    //UIInterfaceOrientationMaskAll = 30;
+    return 30;
+}
 
 - (void)dealloc 
 {

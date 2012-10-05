@@ -9,6 +9,7 @@ function StandingsWindow(tabGroup) {
 	var self = Ti.UI.createWindow({
 		title: L('standings'),
 		backgroundColor: 'black'
+		,barColor: 'red'
 	});
 		
 	//openイベント
