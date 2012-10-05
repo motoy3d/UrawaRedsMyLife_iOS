@@ -1,1 +1,0 @@
-/Users/motoy3d/Documents/TitaniumStudioWorkspace/UrawaRedsMyLife_iOS/Resources/model/twitter/oauth_adapter.js
