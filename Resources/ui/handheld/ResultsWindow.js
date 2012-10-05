@@ -11,6 +11,7 @@ function ResultsWindow(tabGroup) {
 	var self = Ti.UI.createWindow({
 		title: '日程・結果',
 		backgroundColor:'black'
+		,barColor: 'red'
 	});
 	self.loadDetailHtml = loadDetailHtml;	//function
 	self.searchMovie = searchMovie;	//function

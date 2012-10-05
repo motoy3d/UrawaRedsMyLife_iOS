@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <property name="acs-oauth-secret-production" type="string">fDpMdUzYt3VMFgpcIIr5fUytmto2xRpx</property>
-    <property name="acs-oauth-key-production" type="string">BOfVDKY9ZUmkUvw2iV3HrDex6iOaVACK</property>
-    <property name="acs-api-key-production" type="string">BUJIL7lotBPWeV4QJSDd7KjdW8vYVA8r</property>
-    <property name="acs-oauth-secret-development" type="string">GSMGKp4Nn25nScRiYLyMyXGVcXbh4YHs</property>
-    <property name="acs-oauth-key-development" type="string">NJzmFgftsJv826awLg8WfbYVJu0eJCVb</property>
-    <property name="acs-api-key-development" type="string">HE1Wy7aYf7R5DBSQdkQzZjjDpPYmyI9g</property>
     <property name="ti.android.threadstacksize" type="int">32768</property>
     <deployment-targets>
         <target device="mobileweb">false</target>
@@ -14,7 +8,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>2.1.3.v20120915120319</sdk-version>
+    <sdk-version>2.1.3.GA</sdk-version>
     <id>urawareds.my.life</id>
     <name>UrawaRedsMyLife_iOS</name>
     <version>1.0</version>
@@ -56,7 +50,5 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules>
-        <module platform="commonjs" version="2.0.1">ti.cloud</module>
-    </modules>
+    <modules/>
 </ti:app>

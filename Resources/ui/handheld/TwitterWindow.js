@@ -2,10 +2,10 @@
  * Twitter画面UI
  */
 function TwitterWindow(tabGroup) {
-	var Twitter = require("model/Twitter");
-	
-	var util = require("util/util").util;
-	var style = require("util/style").style;
+    var Twitter = require("model/Twitter");
+    
+    var util = require("util/util").util;
+    var style = require("util/style").style;
     var updating = false;
     var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
     var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
@@ -13,21 +13,22 @@ function TwitterWindow(tabGroup) {
     loadingRow.add(loadingInd);
 
     // ウィンドウ
-	var self = Ti.UI.createWindow({
-		navBarHidden: true
-		,backgroundColor: 'black'
-	});
-	
-	// インジケータ
+    var self = Ti.UI.createWindow({
+        navBarHidden: true
+        ,backgroundColor: 'black'
+        ,barColor: 'red'
+    });
+    
+    // インジケータ
     var indicator = Ti.UI.createActivityIndicator({
         style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
     });
-	self.add(indicator);
-	
-	//openイベント
-	self.addEventListener('open', function(e) {
-		loadTweets("firstTime");
-	});
+    self.add(indicator);
+    
+    //openイベント
+    self.addEventListener('open', function(e) {
+        loadTweets("firstTime");
+    });
     
     // テーブル
     var table = Ti.UI.createTableView({
@@ -36,57 +37,57 @@ function TwitterWindow(tabGroup) {
     });
     var twitter = new Twitter();
 
-	/**
-	 * tweetを読み込んで表示する
-	 * @param kind (firstTime or olderTweets)
-	 */
-	function loadTweets(kind) {
-		indicator.show();
-		updating = true;
+    /**
+     * tweetを読み込んで表示する
+     * @param kind (firstTime or olderTweets)
+     */
+    function loadTweets(kind) {
+        indicator.show();
+        updating = true;
         var loadingRowIdx = -1;
         if(table.data[0]){
             loadingRowIdx = table.data[0].rows.length - 1;
         }
-		twitter.loadTweets(kind, {
-		    setNextPageParam: function(nextPageParam) {
-		        
-		    }
-			,success: function(tweetList) {
-				try {
-				    var rows = new Array();
-				    for(i=0; i<tweetList.length; i++) {
-				        var tweet = tweetList[i];
-				        // rows.push(createRow(tweet));
-				        table.appendRow(createRow(tweet));
-				    }
-				    if("firstTime" == kind) {
+        twitter.loadTweets(kind, {
+            setNextPageParam: function(nextPageParam) {
+                
+            }
+            ,success: function(tweetList) {
+                try {
+                    var rows = new Array();
+                    for(i=0; i<tweetList.length; i++) {
+                        var tweet = tweetList[i];
+                        // rows.push(createRow(tweet));
+                        table.appendRow(createRow(tweet));
+                    }
+                    if("firstTime" == kind) {
                         // table.setData(rows);
                         self.add(table);
-				    } else {
+                    } else {
                         if(loadingRowIdx > 0) {
                             // “読み込み中”のローを削除する。
                             Ti.API.info("読み込み中ロー削除：" + loadingRowIdx);
                             table.deleteRow(loadingRowIdx);
                         }
-				    }
-				} catch(e) {
-					Ti.API.error(e);
-				} finally {
-					indicator.hide();
-					updating = false;
-				}
-			},
-			fail: function() {
-				indicator.hide();
+                    }
+                } catch(e) {
+                    Ti.API.error(e);
+                } finally {
+                    indicator.hide();
+                    updating = false;
+                }
+            },
+            fail: function() {
+                indicator.hide();
                 updating = false;
-				var dialog = Ti.UI.createAlertDialog({
-					title: style.loadingFailMsg,
-					buttonNames: ['OK']
-				});
-				dialog.show();
-			}
-		});
-	}
+                var dialog = Ti.UI.createAlertDialog({
+                    title: style.loadingFailMsg,
+                    buttonNames: ['OK']
+                });
+                dialog.show();
+            }
+        });
+    }
     
     /**
      * TableViewRowを生成して返す
@@ -105,7 +106,8 @@ function TwitterWindow(tabGroup) {
         textLabel.text = tweet.text;
         // 時間ラベル
         var timeLabel = Ti.UI.createLabel(style.twitter.timeLabel);
-        timeLabel.text = util.parseDate2(tweet.createDatetime),
+        var timeText = util.parseDate2(tweet.createDatetime);
+        timeLabel.text = timeText;
         row.add(userNameLabel);
         row.add(profileImg);
         row.add(textLabel);
@@ -142,9 +144,18 @@ function TwitterWindow(tabGroup) {
         var tweetWin = Ti.UI.createWindow({
             navBarHidden: false
         });
-        var htmlText = util.tweetTrimer(t.text);
+        // HTMLテンプレート
+        var templateFile = Ti.Filesystem.getFile(
+            Ti.Filesystem.resourcesDirectory, 'tweetTemplate.txt');
+        var template = templateFile.read().toString();
+        var html = util.replaceAll(template, "{profileImageUrl}", t.profileImageUrl);
+        html = util.replaceAll(html, "{userName}", "@" + t.userName);
+        var text = util.tweetTrimer(t.text);
+        html = util.replaceAll(html, "{text}", text);
+        html = util.replaceAll(html, "{timeText}", t.timeText);
+
         var web = Ti.UI.createWebView({
-            html: htmlText
+            html: html
         });
         tweetWin.add(web);
         tabGroup.activeTab.open(tweetWin, {animated: true});
@@ -161,6 +172,6 @@ function TwitterWindow(tabGroup) {
         loadingInd.show();      
         loadTweets("olderTweets");
     }
-	return self;
+    return self;
 }
 module.exports = TwitterWindow;

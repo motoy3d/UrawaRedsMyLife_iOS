@@ -7,7 +7,7 @@ function Twitter() {
     var self = {};
     self.loadTweets = loadTweets;
     // YQL
-    var tweetsPerPage = 15;
+    var tweetsPerPage = 25;
     var queryBase = 
         "select refresh_url, next_page,"
         + " results.id, results.from_user, results.from_user_id,"
@@ -57,7 +57,8 @@ function Twitter() {
                         function(item) {
                             // ページネーション用パラメータ
                             nextPageParam = item.next_page + "&rpp=" + tweetsPerPage;
-                            refreshUrlParam = item.refresh_url/* + "&rpp=" + tweetsPerPage*/;
+                            refreshUrlParam = item.refresh_url;
+                            var timeText = util.parseDate2(item.results.created_at);
                             var data = {
                                 id: item.results.id
                                 ,text: item.results.text
@@ -65,6 +66,7 @@ function Twitter() {
                                 ,userName: item.results.from_user
                                 ,userId: item.results.from_user_id
                                 ,createDatetime: item.results.created_at 
+                                ,timeText: timeText
                             };
                             return data;
                         }
