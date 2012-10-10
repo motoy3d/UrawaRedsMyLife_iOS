@@ -4,6 +4,7 @@
  */
 function Standings() {
 	var util = require("util/util").util;
+    var style = require("util/style").style;
 
 	var self = {};
 	self.load = load;
@@ -18,7 +19,8 @@ function Standings() {
 	function load(callback) {
 		// オンラインチェック
 		if(!Ti.Network.online) {
-			util.openOfflineMsgDialog();
+            callback.fail(style.common.offlineMsg);
+            return;
 		}
 		Ti.App.Analytics.trackPageview('/standings');
 		var before = new Date();
@@ -26,11 +28,7 @@ function Standings() {
 		Ti.Yahoo.yql(standingsQuery, function(e) {
 			try {
 				if(e.data == null) {
-					var dialog = Ti.UI.createAlertDialog({
-						title: '読み込みに失敗しました',
-						buttonNames: ['OK']
-					});
-					dialog.show();
+				    callback.fail(style.common.loadingFailMsg);
 					return;
 				}
 				var standingsDataList = new Array();
@@ -70,6 +68,7 @@ function Standings() {
 				Ti.API.info('+++++++++++++++++++ YQL終了')
 			} catch(ex) {
 				Ti.API.error('---------------------\n' + ex);	
+                callback.fail(style.common.loadingFailMsg);
 			} finally {
 			}
 			var after = new Date();

@@ -1,7 +1,7 @@
 exports.style = {
 	common : {
 		loadingMsg : '読み込み中...',
-		offlineMsg : 'ネットワークに接続されていません。\n接続後に再度お試しください。',
+		offlineMsg : 'ネットワークに接続できません。\n接続後に再度お試しください。',
 		loadingFailMsg : '読み込みに失敗しました',
 		noDataMsg : '該当データが見つかりませんでした',
 		noMovieMsg : '動画が見つかりませんでした',
@@ -17,6 +17,9 @@ exports.style = {
 		}
 	},
 	news : {
+	    table : {
+	        backgroundColor:'black'
+	    },
 		tableViewRow : {
 			layout : 'vertical',
 			width : Ti.UI.FILL,

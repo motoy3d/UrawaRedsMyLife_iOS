@@ -7,23 +7,32 @@ function NewsWindow(tabGroup) {
 	var util = require("util/util").util;
 	var style = require("util/style").style;
 	var news = new News();
-
+    
+    // 更新ボタン
+    var refreshButton = Ti.UI.createButton({
+        systemButton: Ti.UI.iPhone.SystemButton.REFRESH
+    });
+    // ウィンドウ
 	var self = Ti.UI.createWindow({
-		title:'ニュース'
+		title: L('news')
 		,barColor: 'red'
+		,rightNavButton: refreshButton
 	});
 	// テーブル
-	var table = Ti.UI.createTableView({
-		backgroundColor:'black'
-	});
-	// self.add(table);
+	var table = Ti.UI.createTableView(style.news.table);
 	
 	// インジケータ
-	var indicator = Ti.UI.createActivityIndicator({
-	    style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
-	});
+	var indicator = Ti.UI.createActivityIndicator();
 	self.add(indicator);
 	indicator.show();
+
+    refreshButton.addEventListener('click', function(e){
+        news = new News();
+        self.remove(table);
+        self.add(indicator);
+        indicator.show();
+        loadFeed(news);
+    });
 	
 	// 読み込み中Row+indicator
 	var updating = false;
@@ -37,41 +46,23 @@ function NewsWindow(tabGroup) {
 	loadingRow.add(loadingInd);
 	
 	var lastRow = news.loadFeedSize;
-	
-	//create iOS specific NavGroup UI
-	// var navGroup = Ti.UI.iPhone.createNavigationGroup({
-		// window: self
-	// });
-	// self.add(navGroup);
-	
 	var visitedUrls = new Array();
 	// ニュース選択時のアクション
 	table.addEventListener("click", function(e) {
 		Ti.API.debug("  サイト名＝＝＝＝＝＝＝＝＝" + e.rowData.siteName);
-		if(e.row.type == 'CONTENT') {
-			visitedUrls.push(e.rowData.link);
-			e.row.backgroundColor = style.news.visitedBgColor;
-			var webData = {
-				title : e.rowData.pageTitle,
-				siteName : e.rowData.fullSiteName,
-				link : e.rowData.link,
-				content : e.rowData.content,
-				pubDate : e.rowData.pubDate
-			};
-			var webWindow = new WebWindow(webData);
-			// navGroup.open(webWindow, {animated: true});
-			tabGroup.activeTab.open(webWindow, {animated: true});
-            Ti.App.Analytics.trackPageview('/newsDetail');
-		} else {
-			loadMoreLabel.text = style.common.loadingMsg;
-			//indWin.open();
-			if(updating) {
-				return;
-			}
-			updating = true;
-			loadFeed(news);
-			updating = false;
-		}
+		visitedUrls.push(e.rowData.link);
+		e.row.backgroundColor = style.news.visitedBgColor;
+		var webData = {
+			title : e.rowData.pageTitle,
+			siteName : e.rowData.fullSiteName,
+			link : e.rowData.link,
+			content : e.rowData.content,
+			pubDate : e.rowData.pubDate
+		};
+		var webWindow = new WebWindow(webData);
+		// navGroup.open(webWindow, {animated: true});
+		tabGroup.activeTab.open(webWindow, {animated: true});
+        Ti.App.Analytics.trackPageview('/newsDetail');
 	});
 
 	/**
@@ -166,9 +157,10 @@ function NewsWindow(tabGroup) {
 					//indWin.close();
 				}
 			},
-			fail: function() {
+			fail: function(message) {
+			    indicator.hide();
 				var dialog = Ti.UI.createAlertDialog({
-					title: '読み込みに失敗しました',
+					message: message,
 					buttonNames: ['OK']
 				});
 				dialog.show();

@@ -20,7 +20,12 @@ function Results(resultsWindow) {
 	 * 浦和公式サイトの試合日程htmlを読み込む
 	 */
 	function load(callback) {
-		Ti.App.Analytics.trackPageview('/results');
+        // オンラインチェック
+        if(!Ti.Network.online) {
+            callback.fail(style.common.offlineMsg);
+            return;
+        }
+        Ti.App.Analytics.trackPageview('/results');
 		var before = new Date();
 		var currentSeason = util.getCurrentSeason();
 		Ti.API.info("シーズン＝" + currentSeason);
@@ -30,7 +35,7 @@ function Results(resultsWindow) {
 			try {
 				if(e.data == null) {
 					Ti.API.error("e.data == null");
-					callback.fail();
+					callback.fail(style.common.loadingFailMsg);
 					return;
 				}
 	//			Ti.API.info("e.data.tr■" + e.data.tr);
@@ -46,7 +51,7 @@ function Results(resultsWindow) {
 				callback.success(rowsData);
 			} catch(ex) {
 				Ti.API.info('エラー：' + ex);
-				callback.fail();
+				callback.fail(style.common.loadingFailMsg);
 			} finally {
 				var after = new Date();
 				Ti.API.info("Results.js#load() 処理時間★" 
@@ -149,7 +154,12 @@ function Results(resultsWindow) {
         movieButton.setEnabled(hasDetailResult);
 		// 試合動画ウィンドウを開くイベント
 		movieButton.addEventListener('click', function() {
-			var monthDate = date.substring(0, date.indexOf(' ')).split('/');
+		    Ti.API.info('>>>>>>>>>>> date=' + date);
+		    var idx = date.indexOf(' ');
+		    if(idx == -1) {
+		        idx = date.indexOf('(');
+		    }
+			var monthDate = date.substring(0, idx).split('/');
 			var month = monthDate[0];
 			if(month.length == 1) {
 				month = '0' + month;
@@ -160,9 +170,9 @@ function Results(resultsWindow) {
 			}
 			// 動画検索キーワード作成
 			var dateYYMMDD = String(currentSeason).substring(2) + month + day;
-			var dateYYYYMMDD = encodeURIComponent(currentSeason + "年" + month + "月" + day);
+			var dateYYYYMMDD = encodeURIComponent(currentSeason + "年" + month + "月" + day + "日");
 			var teamEncoded = encodeURIComponent(team);
-			var keyword1 = dateYYMMDD + '+' + urawaEncoded + '+' + teamEncoded /*+ encodeURIComponent("戦")*/;
+			var keyword1 = currentSeason + "." + month + "." + day + '+' + urawaEncoded + '+' + teamEncoded /*+ encodeURIComponent("戦")*/;
 			var keyword2 = dateYYYYMMDD + '+' + urawaEncoded + '+' + teamEncoded + '+' + digestEncoded;
 			Ti.API.info("キーワード：" + keyword1 + "  :  " + keyword2);
 			// ResultsWindow側の処理を呼び出す

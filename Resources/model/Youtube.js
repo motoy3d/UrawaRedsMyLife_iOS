@@ -7,7 +7,7 @@ var keyword1 = win.key1;
 var keyword2 = win.key2;
 // create table view data object
 var data = [];
-var maxResults = 15;
+var maxResults = 5;
 var startIndex = 1;
 var webModal;
 var webModalView;
@@ -217,6 +217,7 @@ function createYoutubeRow(item/*, index, array*/) {
  */
 function createWebView() {
 	webModal = Ti.UI.createWindow({
+	    barColor: 'red'
 	});
 
 	webModal.orientationModes = [Ti.UI.PORTRAIT, Ti.UI.LANDSCAPE_LEFT, Ti.UI.LANDSCAPE_RIGHT];

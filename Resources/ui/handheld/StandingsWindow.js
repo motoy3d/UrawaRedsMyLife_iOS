@@ -54,9 +54,7 @@ function StandingsWindow(tabGroup) {
     self.add(border);
     
     // インジケータ
-    var indicator = Ti.UI.createActivityIndicator({
-        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
-    });
+    var indicator = Ti.UI.createActivityIndicator();
     self.add(indicator);
     
     var platformHeight = Ti.Platform.displayCaps.platformHeight;
@@ -102,10 +100,10 @@ function StandingsWindow(tabGroup) {
 					indicator.hide();
 				}
 			},
-			fail: function() {
+			fail: function(message) {
 				indicator.hide();
 				var dialog = Ti.UI.createAlertDialog({
-					title: '読み込みに失敗しました',
+					message: message,
 					buttonNames: ['OK']
 				});
 				dialog.show();

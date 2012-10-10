@@ -17,9 +17,7 @@ function ResultsWindow(tabGroup) {
 	self.searchMovie = searchMovie;	//function
 	
 	// インジケータ
-    var indicator = Ti.UI.createActivityIndicator({
-        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
-    });
+    var indicator = Ti.UI.createActivityIndicator();
 	self.add(indicator);
 
 	// テーブル
@@ -58,12 +56,12 @@ function ResultsWindow(tabGroup) {
 				}
 			},
 			/* 失敗時処理 */
-			fail: function() {
-				indicator.hide();
-				var dialog = Ti.UI.createAlertDialog({
-					title: '読み込みに失敗しました',
-					buttonNames: ['OK']
-				});
+            fail: function(message) {
+                indicator.hide();
+                var dialog = Ti.UI.createAlertDialog({
+                    message: message,
+                    buttonNames: ['OK']
+                });
 				dialog.show();
 			}
 		});

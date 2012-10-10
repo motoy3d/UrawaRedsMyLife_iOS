@@ -26,14 +26,13 @@ function News() {
  * フィードを読み込んで表示する
  */
 function loadNewsFeed(continuation, callback, reloadRow) {
-    Ti.App.Analytics.trackPageview('/newsList');
 	Ti.API.info('loadNewsFeed start-------------------------------');
 	// オンラインチェック
 	if(!Ti.Network.online) {
-		//indWin.close();
-		util.openOfflineMsgDialog();
+		callback.fail(style.common.offlineMsg);
 		return;
 	}
+    Ti.App.Analytics.trackPageview('/newsList');
 
 	// Google Readerで「次へ」をするためのキー文字列
 	var continuationPart = "";
@@ -52,10 +51,10 @@ function loadNewsFeed(continuation, callback, reloadRow) {
 		
 	Ti.API.info("★★★YQL " + selectFeedQuery);
 	Ti.Yahoo.yql(selectFeedQuery, function(e) {
+        if(e.data == null) {
+            return;
+        }
 		try {
-			if(e.data == null) {
-				return;
-			}
 			Ti.API.info("e.data.entry■" + e.data.entry);
 			var rowsData = e.data.entry.map(
 				function(item) {
@@ -68,7 +67,7 @@ function loadNewsFeed(continuation, callback, reloadRow) {
 			callback.success(rowsData, continuation);
 		} catch(ex) {
 			Ti.API.error("loadNewsFeedエラー：" + ex);
-			callback.fail();
+			callback.fail('読み込みに失敗しました');
 			//indWin.close();
 		} finally {
 		}
@@ -79,6 +78,9 @@ function loadNewsFeed(continuation, callback, reloadRow) {
  * Google Readerのcontinuationを取得する
  */
 function getContinuation(continuation, callback) {
+    if(!Ti.Network.online) {
+        return;
+    }
 	// Google Readerで「次へ」をするためのキー文字列
 	var continuationPart = "";
 	if(continuation != "") {

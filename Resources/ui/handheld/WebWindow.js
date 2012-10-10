@@ -8,6 +8,7 @@ function WebWindow(webData) {
 	var self = Ti.UI.createWindow({
 		title: webData.title,
 		backgroundColor: 'white'
+		,barColor: 'red'
 	});
 	
 	var webView = Ti.UI.createWebView({
@@ -32,9 +33,7 @@ function WebWindow(webData) {
 		self.add(webView);
 	} else {
 		// Ti.API.debug("----------- 2");
-        var ind = Ti.UI.createActivityIndicator({
-            style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
-        });
+        var ind = Ti.UI.createActivityIndicator();
 		ind.show();
 		webView.addEventListener("load", function(e) {
 			ind.hide();

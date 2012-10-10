@@ -1,3 +1,4 @@
+
 /**
  * Youtube動画一覧を表示するウィンドウ
  * @param {Object} youtubeData
@@ -9,6 +10,7 @@ function YoutubeWindow(youtubeData) {
 	var self = Ti.UI.createWindow({
 		title: youtubeData.title,
 		backgroundColor: 'white'
+		,barColor: 'red'
 	});
 	// function
 	self.searchYoutube = searchYoutube;
@@ -21,11 +23,7 @@ function YoutubeWindow(youtubeData) {
 	var startIndex = 1;
 	var webModal;
 	var webModalView;
-	// var currentLink;
-	var textColor = "white";			//TODO style
-    var indicator = Ti.UI.createActivityIndicator({
-        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
-    });
+	var indicator = Ti.UI.createActivityIndicator();
 	indicator.show();
 
 	var tableView = Ti.UI.createTableView({
@@ -202,6 +200,7 @@ function YoutubeWindow(youtubeData) {
 Ti.API.debug('-------createWebView 1');	
 
 		webModal = Ti.UI.createWindow({
+		    barColor: 'red'
 		});
 	
 		webModal.orientationModes = [Ti.UI.PORTRAIT, Ti.UI.LANDSCAPE_LEFT, Ti.UI.LANDSCAPE_RIGHT];
@@ -231,24 +230,42 @@ Ti.API.debug('-------createWebView 7');
         Ti.App.Analytics.trackPageview('/playMovie');
 		Ti.API.info('------- playYouTube.. ' + Ti.Platform.name);
 		if(Ti.Platform.name == 'iPhone OS') {
-			// var thumbPlayer = '<html><head><style type="text/css"> h1 { font-family:\'Helvetica\';'
-			// + ' font-size:30pt;} body { background-color: black;color: white;} </style></head>'
-			// + ' <body style="margin:0"><center>'
-			// + '<iframe class="youtube-player" type="text/html" width="640" height="385"'
-			// + ' src="http://www.youtube.com/embed/' + vguid + '?autoplay=1" frameborder="0"></iframe>'
-			// + '</center></body></html>';
-			// Ti.API.info('playYouTube.....' + thumbPlayer);
-			// showHTMLContent(vtitle, 'http://www.youtube.com/watch?v=' + vguid, thumbPlayer);
             var movieUrl = "http://www.youtube.com/embed/" + vguid + "?fs=1&autoplay=1";
+
+            // var videoWin = Ti.UI.createWindow({
+                // barColor: 'red'
+            // });
+    // var activeMovie = Titanium.Media.createVideoPlayer({
+        // url: movieUrl,
+        // backgroundColor:'#111',
+        // mediaControlStyle:Titanium.Media.VIDEO_CONTROL_DEFAULT, // See TIMOB-2802, which may change this property name
+        // scalingMode:Titanium.Media.VIDEO_SCALING_MODE_FILL
+    // });
+//     
+    // if (parseFloat(Titanium.Platform.version) >= 3.2)
+    // {
+        // videoWin.add(activeMovie);
+    // }
+//     
+    // activeMovie.play();
+//     
+    // videoWin.addEventListener('close', function() {
+        // activeMovie.stop();
+    // });
+            // Ti.App.tabGroup.activeTab.open(videoWin, {
+                // animated : true
+            // });
+
             var videoView = Ti.UI.createWebView({
             	url : movieUrl
             });
-            var videoWin = Ti.UI.createWindow();
+            var videoWin = Ti.UI.createWindow({
+                barColor: 'red'
+            });
             videoWin.add(videoView);
             Ti.App.tabGroup.activeTab.open(videoWin, {
             	animated : true
             });
-			
 		} else {
 			Ti.API.info('openURL.....');
 			Ti.Platform.openURL('http://www.youtube.com/watch?v=' + vguid);
@@ -261,7 +278,6 @@ Ti.API.debug('-------createWebView 7');
 	 */
 	function showHTMLContent(wTitle, wUrl, wHTMLContent) {
 		Ti.API.info("showHTMLContent: " + wHTMLContent);
-	
 		// currentLink = wUrl;
 	
 		createWebView();
@@ -272,8 +288,6 @@ Ti.API.info('-------webModal=' + webModal);
 		Ti.App.tabGroup.activeTab.open(webModal, {
 			animated : true
 		});
-	
-	
 	}
 	return self;
 }

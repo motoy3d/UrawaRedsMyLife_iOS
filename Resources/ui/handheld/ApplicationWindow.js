@@ -18,6 +18,7 @@ function ApplicationWindow(title) {
 		self.containingTab.open(Ti.UI.createWindow({
 			title: L('newWindow'),
 			backgroundColor: 'white'
+			,barColor: 'red'
 		}));
 	});
 	

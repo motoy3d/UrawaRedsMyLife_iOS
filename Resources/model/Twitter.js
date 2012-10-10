@@ -3,11 +3,12 @@
  */
 function Twitter() {
     var util = require("util/util").util;
+    var style = require("util/style").style;
 
     var self = {};
     self.loadTweets = loadTweets;
     // YQL
-    var tweetsPerPage = 25;
+    var tweetsPerPage = 50;
     var queryBase = 
         "select refresh_url, next_page,"
         + " results.id, results.from_user, results.from_user_id,"
@@ -26,7 +27,8 @@ function Twitter() {
     function loadTweets(kind, callback) {
         // オンラインチェック
         if(!Ti.Network.online) {
-            util.openOfflineMsgDialog();
+            callback.fail(style.common.offlineMsg);
+            return;
         }
         // Analytics
         if("firstTime" == kind) {
@@ -46,7 +48,7 @@ function Twitter() {
             Ti.Yahoo.yql(query, function(e) {
                 try {
                     if(e.data == null) {
-                        callback.fail();
+                        callback.fail(style.common.loadingFailMsg);
                         return;
                     }
                     // ページネーション用パラメータ
@@ -75,7 +77,8 @@ function Twitter() {
                     callback.success(tweetList);
                     Ti.API.info('+++++++++++++++++++ YQL終了')
                 } catch(ex) {
-                    Ti.API.error('---------------------\n' + ex);   
+                    Ti.API.error('---------------------\n' + ex);  
+                    callback.fail(style.common.loadingFailMsg);
                 } finally {
                 }
                 var after = new Date();

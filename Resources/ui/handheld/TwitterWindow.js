@@ -12,17 +12,20 @@ function TwitterWindow(tabGroup) {
     loadingInd.message = style.common.loadingMsg;
     loadingRow.add(loadingInd);
 
+    // 更新ボタン
+    var refreshButton = Ti.UI.createButton({
+        systemButton: Ti.UI.iPhone.SystemButton.REFRESH
+    });
     // ウィンドウ
     var self = Ti.UI.createWindow({
-        navBarHidden: true
+        navBarHidden: false
         ,backgroundColor: 'black'
         ,barColor: 'red'
+        ,rightNavButton: refreshButton
     });
     
     // インジケータ
-    var indicator = Ti.UI.createActivityIndicator({
-        style : Ti.UI.iPhone.ActivityIndicatorStyle.BIG
-    });
+    var indicator = Ti.UI.createActivityIndicator();
     self.add(indicator);
     
     //openイベント
@@ -77,11 +80,11 @@ function TwitterWindow(tabGroup) {
                     updating = false;
                 }
             },
-            fail: function() {
-                indicator.hide();
+            fail: function(message) {
                 updating = false;
+                indicator.hide();
                 var dialog = Ti.UI.createAlertDialog({
-                    title: style.loadingFailMsg,
+                    message: message,
                     buttonNames: ['OK']
                 });
                 dialog.show();
@@ -143,6 +146,7 @@ function TwitterWindow(tabGroup) {
         var t = e.row.tweet;
         var tweetWin = Ti.UI.createWindow({
             navBarHidden: false
+            ,barColor: 'red'
         });
         // HTMLテンプレート
         var templateFile = Ti.Filesystem.getFile(

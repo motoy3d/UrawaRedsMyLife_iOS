@@ -54,7 +54,9 @@ if (Ti.version < 1.8 ) {
 	while (true) {
 		if ( ( new Date() ).getTime() >= startTime + waitMilliSeconds ) break;
 	}
-	tabGroup.open();
+    tabGroup.open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
+//    tabGroup.open();
+
 })();
 
 /**
