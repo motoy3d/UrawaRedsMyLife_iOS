@@ -20,6 +20,13 @@ function Twitter() {
     var refreshUrlParam;
 
     /**
+     * 
+     */
+    function isArray(input){
+        return typeof(input)=='object' && (input instanceof Array);
+    }
+    
+    /**
      * twitter apiを使用して#urawaredsのツイート一覧を取得
      * @param kind ("firstTime" or "olderTweets")
      * @param callback (TwitterWindow.js)
@@ -33,6 +40,8 @@ function Twitter() {
         // Analytics
         if("firstTime" == kind) {
             Ti.App.Analytics.trackPageview('/twitter');
+        } else if("newerTweets" == kind) {
+            Ti.App.Analytics.trackPageview('/twitter/newerTweets');
         } else {
             Ti.App.Analytics.trackPageview('/twitter/olderTweets');
         }
@@ -41,24 +50,40 @@ function Twitter() {
         var query = queryBase;
         if("firstTime" == kind) {
             query += firstTimeParam + "'";
+        } else if("newerTweets" == kind) {
+            query += refreshUrlParam + "'";
         } else{
             query += nextPageParam + "'";
         }
         Ti.API.info('★★query=' + query);
             Ti.Yahoo.yql(query, function(e) {
                 try {
-                    if(e.data == null) {
+                    var b = isArray(e.data.json);
+                    Ti.API.info('>>>>>>>>>>> e.data.json=' + e.data.json + " is Array=" + b);
+                    if(!b) {
+                        for(var v in e.data.json) {
+                            Ti.API.info(v + ' = ' + e.data.json[v]);
+                        }
+                    }
+                    if(e.data == null /*|| isArray(e.data.json)*/) {
                         callback.fail(style.common.loadingFailMsg);
                         return;
                     }
+                    if(!e.data.json.map) {
+//                        callback.fail("データなし");
+                        return;
+                    }
+                    
                     // ページネーション用パラメータ
-                    nextPageParam = e.data.json.next_page;
-                    Ti.API.info("★nextPageParam ====== " + nextPageParam);
+//                    nextPageParam = e.data.json.next_page;
+//                    Ti.API.info("★nextPageParam ====== " + nextPageParam);
                     // 取得したJSONをリスト化する
                     var tweetList = e.data.json.map(
                         function(item) {
                             // ページネーション用パラメータ
-                            nextPageParam = item.next_page + "&rpp=" + tweetsPerPage;
+                            if("newerTweets" != kind) {
+                                nextPageParam = item.next_page + "&rpp=" + tweetsPerPage;
+                            }
                             refreshUrlParam = item.refresh_url;
                             var timeText = util.parseDate2(item.results.created_at);
                             var data = {

@@ -120,26 +120,6 @@ exports.util = {
         }        return "";
     },
     /**
-     * テキストにリンクタグ(aタグ)を埋め込んで返す
-     */
-    addLink : function(text) {
-        Ti.API.info("################ [" + text + "]");
-        var i = text.indexOf("http://");
-        if(i == -1) {
-            return text;
-        }
-        var x = text.indexOf("¥s", i);        var url = "";
-        Ti.API.info('i===' + i + ', x===' + x);
-        if(x == -1) {
-            url = text.substring(i);
-        } else {
-            url = text.substring(i, x);
-        }
-        Ti.API.info('URL = ' + url)
-        text = text.split(url).join("<a href='" + url + "'>" + url + "</a>");
-        return text;
-    },
-    /**
      * TweetのURLとハッシュタグにアンカータグを埋め込んで返す 
      */
     tweetTrimer : function(t) {

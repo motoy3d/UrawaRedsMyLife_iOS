@@ -32,6 +32,10 @@ function TwitterWindow(tabGroup) {
     self.addEventListener('open', function(e) {
         loadTweets("firstTime");
     });
+    //refreshイベント
+    refreshButton.addEventListener('click', function(e){
+        loadTweets("newerTweets");
+    });
     
     // テーブル
     var table = Ti.UI.createTableView({
@@ -53,20 +57,28 @@ function TwitterWindow(tabGroup) {
         }
         twitter.loadTweets(kind, {
             setNextPageParam: function(nextPageParam) {
-                
+                //TODO?
             }
             ,success: function(tweetList) {
                 try {
                     var rows = new Array();
+                    table.startLayout();
                     for(i=0; i<tweetList.length; i++) {
                         var tweet = tweetList[i];
                         // rows.push(createRow(tweet));
-                        table.appendRow(createRow(tweet));
+                        if("newerTweets" == kind) {
+                            //TableViewAnimationProperties ap = {animated: false};
+                            table.insertRowBefore(i, createRow(tweet), {animated: false});
+                        } else {
+                            table.appendRow(createRow(tweet));
+                        }
                     }
                     if("firstTime" == kind) {
                         // table.setData(rows);
                         self.add(table);
-                    } else {
+                    } else if("newerTweets" == kind) {
+                        table.scrollToIndex(tweetList.length);
+                    } else if("olderTweets" == kind) {
                         if(loadingRowIdx > 0) {
                             // “読み込み中”のローを削除する。
                             Ti.API.info("読み込み中ロー削除：" + loadingRowIdx);
@@ -76,6 +88,7 @@ function TwitterWindow(tabGroup) {
                 } catch(e) {
                     Ti.API.error(e);
                 } finally {
+                    table.finishLayout();
                     indicator.hide();
                     updating = false;
                 }

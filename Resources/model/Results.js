@@ -122,7 +122,7 @@ function Results(resultsWindow) {
 		// 対戦相手チームラベル
 		var teamLabel = Ti.UI.createLabel(style.results.teamLabel);
 		var teamName = 'vs ' + team;
-		if(teamName == 'vs [object Object]') {
+		if(team == "" || teamName == 'vs [object Object]') {
 			teamName = 'vs 未定';
 		}
 		teamLabel.text = teamName;
