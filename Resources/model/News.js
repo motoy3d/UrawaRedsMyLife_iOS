@@ -115,23 +115,54 @@ function createNewsRow(item) {
 //	Ti.API.info("id.original-id---------" + idobj[oid]);
 	
 	var row = Ti.UI.createTableViewRow(style.news.tableViewRow);
-//	var rowView = Ti.UI.createView(style.news.rowView);
-//	row.add(rowView);
-
+    // 本文
+    var content = "";
+    if(item.content) {
+        content = item.content;
+    }
+    else if(item.summary) {
+        content = item.summary;
+    }
+    // 画像
+    var hasImage = false;
+    var imgTagIdx = content.indexOf("<img");
+    if(imgTagIdx != -1) {
+        var srcIdx = content.indexOf("src=", imgTagIdx);
+        if(srcIdx != -1) {
+            var urlStartIdx = srcIdx + 5;
+            var urlEndIdx = content.indexOf('"', urlStartIdx);
+            var imgUrl = content.substring(urlStartIdx, urlEndIdx);
+            imgUrl = util.replaceAll(imgUrl, "&amp;", "&");
+            Ti.API.info('画像＝＝＝＝＝' + imgUrl + "  >  " + item.title);
+            // アイコン等はgifが多いのでスキップ
+            if(!util.isUnnecessaryImage(imgUrl)) {
+                var imgLabel = Ti.UI.createImageView(style.news.imgView);
+                imgLabel.image = imgUrl;
+                row.add(imgLabel);
+                hasImage = true;
+            }
+        }
+    }
 	// タイトルラベル
 	var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
 	var itemTitle = item.title;
-	// Ti.API.info('itemTitle=' + itemTitle);
+//	Ti.API.info('itemTitle=' + itemTitle);
+	itemTitle = itemTitle.replace(/\n\n/g, "\n");
 	itemTitle = util.replaceAll(itemTitle, "<b>", "");
 	itemTitle = util.replaceAll(itemTitle, "</b>", "");
+    itemTitle = util.replaceAll(itemTitle, "<br><br>", " ");
 	itemTitle = util.replaceAll(itemTitle, "<br>", " ");
-	itemTitle = util.replaceAll(itemTitle, "<br/>", " ");
+	itemTitle = util.replaceAll(itemTitle, "<br/><br/>", " ");
+    itemTitle = util.replaceAll(itemTitle, "<br/>", " ");
     itemTitle = util.replaceAll(itemTitle, "&amp;", "&");
     itemTitle = util.replaceAll(itemTitle, "&quot;", '"');
     itemTitle = unescape(itemTitle);
+    if(itemTitle.length > 50) {
+        itemTitle = itemTitle.substring(0, 50) + "...";
+    }
 	titleLabel.text = itemTitle;
 	row.add(titleLabel);
-	// Ti.API.info("itemTitle====" + itemTitle);
+//	Ti.API.info("最適化後：itemTitle====" + itemTitle);
 	// 更新日時
 	var pubDate = parseDate(item.published);
 	//Ti.API.info("pubDate=====" + pubDate);
@@ -187,16 +218,11 @@ function createNewsRow(item) {
 	row.siteName = siteName;
 	row.pageTitle = item.title;
 	row.link = link;
-	if(item.content) {
-		row.content = item.content;
-	}
-	else if(item.summary) {
-		row.content = item.summary;
-	}
+	row.content = content;
+	
 //	Ti.API.info("-------------return row" + row);
 	row.pubDate = pubDateText;
-	return row;
-
+    return row;
 }
 
 // 日付のパース

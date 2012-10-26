@@ -32,6 +32,7 @@ function NewsWindow(tabGroup) {
         self.add(indicator);
         indicator.show();
         loadFeed(news);
+        table.scrollToTop();
     });
 	
 	// 読み込み中Row+indicator

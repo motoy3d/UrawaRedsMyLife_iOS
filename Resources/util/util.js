@@ -120,6 +120,22 @@ exports.util = {
         }        return "";
     },
     /**
+     * アイコンやアフィリエイト等の不要な画像の場合にtrueを返す
+     */
+    isUnnecessaryImage : function(imgUrl) {
+        var endsWith = function(text, suffix) {
+            var sub = text.length - suffix.length;
+            return (sub >= 0) && (text.lastIndexOf(suffix) === sub);
+        };
+        if(endsWith(imgUrl, ".gif") ||
+            imgUrl.indexOf("http://hbb.afl.rakuten.co.jp") == 0 ||
+            imgUrl.indexOf("http://counter2.blog.livedoor.com") == 0
+        ) {
+            return true;
+        }
+        return false;
+    },
+    /**
      * TweetのURLとハッシュタグにアンカータグを埋め込んで返す 
      */
     tweetTrimer : function(t) {

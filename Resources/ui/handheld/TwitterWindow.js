@@ -18,7 +18,8 @@ function TwitterWindow(tabGroup) {
     });
     // ウィンドウ
     var self = Ti.UI.createWindow({
-        navBarHidden: false
+        title: L('twitter')
+        ,navBarHidden: false
         ,backgroundColor: 'black'
         ,barColor: 'red'
         ,rightNavButton: refreshButton

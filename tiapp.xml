@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <property name="ti.android.threadstacksize" type="int">32768</property>
     <deployment-targets>
         <target device="mobileweb">false</target>
         <target device="iphone">true</target>
@@ -10,8 +9,8 @@
     </deployment-targets>
     <sdk-version>2.1.3.GA</sdk-version>
     <id>urawareds.my.life</id>
-    <name>UrawaRedsMyLife_iOS</name>
-    <version>1.0</version>
+    <name>UrawaRedsMyLife</name>
+    <version>1.0.0</version>
     <publisher>motoy3d</publisher>
     <url>http://motoy3d.blogspot.com</url>
     <description>Infomation hub for Urawa Reds Supporter</description>

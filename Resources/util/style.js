@@ -21,7 +21,7 @@ exports.style = {
 	        backgroundColor:'black'
 	    },
 		tableViewRow : {
-			layout : 'vertical',
+			layout : 'horizontal',
 			width : Ti.UI.FILL,
 			height : Ti.UI.SIZE,
 			hasDetail : true,
@@ -49,6 +49,12 @@ exports.style = {
 			left : 4,
 			right : 4
 		},
+        imgView : {
+            width: 64,
+            height: 64,
+            top : 10,
+            left : 4
+        },
 		siteNameLabel : {
 			color : "#ccc",
 			font : {fontSize : 14},

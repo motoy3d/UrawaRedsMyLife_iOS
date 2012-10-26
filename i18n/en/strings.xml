@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-	<string name="news">News</string>	
-	<string name="results">Results</string>
-	<string name="standings">Standings</string>
+	<string name="news">ニュース</string>	
+	<string name="results">日程・結果</string>
+	<string name="standings">順位表</string>
 	<string name="twitter">twitter</string>
 </resources>

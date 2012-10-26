@@ -1,5 +1,5 @@
 var util = require("util/util").util;
-var siteNameMaxLength = 15;
+var siteNameMaxLength = 16;
 var sites = new Array();
 var idx = 0;
 sites[idx++] = new Array("浦和レッズオフィシャル","http://www.urawa-reds.co.jp");
@@ -53,9 +53,12 @@ exports.optimizeSiteName = function(siteName) {
     siteName = util.replaceAll(siteName, "Powered by Ameba", "");
     siteName = util.replaceAll(siteName, "<b>", "");
     siteName = util.replaceAll(siteName, "</b>", "");
+    siteName = util.replaceAll(siteName, "<br><br>", " ");
     siteName = util.replaceAll(siteName, "<br>", " ");
+    siteName = util.replaceAll(siteName, "<br/><br/>", " ");
     siteName = util.replaceAll(siteName, "<br/>", " ");
     siteName = util.replaceAll(siteName, "&amp;", "&");
+    siteName = util.replaceAll(siteName, "浦和レッドダイヤモンズ", "浦和レッズ");
     siteName = unescape(siteName);
 	siteName = util.replaceAll(siteName, "&#39;", "'")
 	if(siteName.length > siteNameMaxLength) {
