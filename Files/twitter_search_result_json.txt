@@ -1,0 +1,2279 @@
+{
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 21:38:21 +0000 2012",
+  "id": 267380702843117570,
+  "id_str": "267380702843117570",
+  "text": "尚成にレッズが興味！３年越し獲得へメジャー契約も - スポーツ報知 http://t.co/gz8WovOb #urawareds",
+  "source": "<a href=\"http://twitterfeed.com\" rel=\"nofollow\">twitterfeed</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 439024074,
+   "id_str": "439024074",
+   "name": "浦和レッズニュース",
+   "screen_name": "News_UrawaReds",
+   "location": "",
+   "description": "googleニュースから浦和レッズのニュースをつぶやきます。",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 1594,
+   "friends_count": 1827,
+   "listed_count": 43,
+   "created_at": "Sat Dec 17 08:30:19 +0000 2011",
+   "favourites_count": 0,
+   "utc_offset": -36000,
+   "time_zone": "Hawaii",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 812,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/1761584588/red_normal.png",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/1761584588/red_normal.png",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 0,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      55,
+      65
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/gz8WovOb",
+     "expanded_url": "http://bit.ly/Zl93dI",
+     "display_url": "bit.ly/Zl93dI",
+     "indices": [
+      34,
+      54
+     ]
+    }
+   ],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 21:25:45 +0000 2012",
+  "id": 267377530418380800,
+  "id_str": "267377530418380801",
+  "text": "RT @go_urawa_reds: 《天皇杯4回戦以降の日程,会場が決定》12月15日(土) vs横浜F・マリノス(16:00キックオフ・熊谷陸) ※浦和レッズはホーム側 (オフィシャル) http://t.co/tVM4FfC1 #go_urawa_reds #ura ..
+.",
+  "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 198292459,
+   "id_str": "198292459",
+   "name": "ゆってぃ",
+   "screen_name": "yuukiwatari0612",
+   "location": "地球の日本の中",
+   "description": "神奈川と東京を行ったり来たりしてます。今年21才になりました。読売ジャイアンツと浦和レッズが好きなただの大学生です。知り合いゎよろしくです。",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 75,
+   "friends_count": 161,
+   "listed_count": 0,
+   "created_at": "Sun Oct 03 22:13:24 +0000 2010",
+   "favourites_count": 3,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 3673,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2647599450/c76e040185924d5761cc3841209d91b4_normal.jpeg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2647599450/c76e040185924d5761cc3841209d91b4_normal.jpeg",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Sat Nov 10 21:18:56 +0000 2012",
+   "id": 267375813421326340,
+   "id_str": "267375813421326336",
+   "text": "《天皇杯4回戦以降の日程,会場が決定》12月15日(土) vs横浜F・マリノス(16:00キックオフ・熊谷陸) ※浦和レッズはホーム側 (オフィシャル) http://t.co/tVM4FfC1 #go_urawa_reds #urawareds",
+   "source": "<a href=\"http://www.hootsuite.com\" rel=\"nofollow\">HootSuite</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 170119246,
+    "id_str": "170119246",
+    "name": "レッズインターネットクラブ",
+    "screen_name": "go_urawa_reds",
+    "location": "埼玉県さいたま市浦和区",
+    "description": "浦和レッズファン・サポーターサイト『レッズインターネットクラブ since 1995』 のオフィシャルツイッターです.フェイスブック,ブログ,掲示板,YouTube動画,通販サイト,携帯サイト,スマホサイト,PCサイトにて浦和レッズ情報を配信中！WE ARE 
+NO.1 URAWA REDS NETWORK!",
+    "url": "http://redsic.com/",
+    "entities": {
+     "url": {
+      "urls": [
+       {
+        "url": "http://redsic.com/",
+        "expanded_url": null,
+        "indices": [
+         0,
+         18
+        ]
+       }
+      ]
+     },
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 8650,
+    "friends_count": 6,
+    "listed_count": 421,
+    "created_at": "Sat Jul 24 00:17:44 +0000 2010",
+    "favourites_count": 3,
+    "utc_offset": 32400,
+    "time_zone": "Tokyo",
+    "geo_enabled": true,
+    "verified": false,
+    "statuses_count": 2033,
+    "lang": "ja",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "FF1212",
+    "profile_background_image_url": "http://a0.twimg.com/profile_background_images/132708215/qr.jpg",
+    "profile_background_image_url_https": "https://si0.twimg.com/profile_background_images/132708215/qr.jpg",
+    "profile_background_tile": false,
+    "profile_image_url": "http://a0.twimg.com/profile_images/1186643954/urawareds_normal.jpg",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/1186643954/urawareds_normal.jpg",
+    "profile_link_color": "29850D",
+    "profile_sidebar_border_color": "F2E195",
+    "profile_sidebar_fill_color": "FFF7CC",
+    "profile_text_color": "0C3E53",
+    "profile_use_background_image": false,
+    "show_all_inline_media": false,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 2,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "go_urawa_reds",
+      "indices": [
+       98,
+       112
+      ]
+     },
+     {
+      "text": "urawareds",
+      "indices": [
+       113,
+       123
+      ]
+     }
+    ],
+    "urls": [
+     {
+      "url": "http://t.co/tVM4FfC1",
+      "expanded_url": "http://redsic.com/",
+      "display_url": "redsic.com",
+      "indices": [
+       77,
+       97
+      ]
+     }
+    ],
+    "user_mentions": []
+   },
+   "favorited": false,
+   "retweeted": false,
+   "possibly_sensitive": false
+  },
+  "retweet_count": 2,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "go_urawa_reds",
+     "indices": [
+      117,
+      131
+     ]
+    },
+    {
+     "text": "ura",
+     "indices": [
+      132,
+      136
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/tVM4FfC1",
+     "expanded_url": "http://redsic.com/",
+     "display_url": "redsic.com",
+     "indices": [
+      96,
+      116
+     ]
+    }
+   ],
+   "user_mentions": [
+    {
+     "screen_name": "go_urawa_reds",
+     "name": "レッズインターネットクラブ",
+     "id": 170119246,
+     "id_str": "170119246",
+     "indices": [
+      3,
+      17
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 21:18:56 +0000 2012",
+  "id": 267375813421326340,
+  "id_str": "267375813421326336",
+  "text": "《天皇杯4回戦以降の日程,会場が決定》12月15日(土) vs横浜F・マリノス(16:00キックオフ・熊谷陸) ※浦和レッズはホーム側 (オフィシャル) http://t.co/tVM4FfC1 #go_urawa_reds #urawareds",
+  "source": "<a href=\"http://www.hootsuite.com\" rel=\"nofollow\">HootSuite</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 170119246,
+   "id_str": "170119246",
+   "name": "レッズインターネットクラブ",
+   "screen_name": "go_urawa_reds",
+   "location": "埼玉県さいたま市浦和区",
+   "description": "浦和レッズファン・サポーターサイト『レッズインターネットクラブ since 1995』 のオフィシャルツイッターです.フェイスブック,ブログ,掲示板,YouTube動画,通販サイト,携帯サイト,スマホサイト,PCサイトにて浦和レッズ情報を配信中！WE ARE N
+O.1 URAWA REDS NETWORK!",
+   "url": "http://redsic.com/",
+   "entities": {
+    "url": {
+     "urls": [
+      {
+       "url": "http://redsic.com/",
+       "expanded_url": null,
+       "indices": [
+        0,
+        18
+       ]
+      }
+     ]
+    },
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 8650,
+   "friends_count": 6,
+   "listed_count": 421,
+   "created_at": "Sat Jul 24 00:17:44 +0000 2010",
+   "favourites_count": 3,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": true,
+   "verified": false,
+   "statuses_count": 2033,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "FF1212",
+   "profile_background_image_url": "http://a0.twimg.com/profile_background_images/132708215/qr.jpg",
+   "profile_background_image_url_https": "https://si0.twimg.com/profile_background_images/132708215/qr.jpg",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/1186643954/urawareds_normal.jpg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/1186643954/urawareds_normal.jpg",
+   "profile_link_color": "29850D",
+   "profile_sidebar_border_color": "F2E195",
+   "profile_sidebar_fill_color": "FFF7CC",
+   "profile_text_color": "0C3E53",
+   "profile_use_background_image": false,
+   "show_all_inline_media": false,
+   "default_profile": false,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 2,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "go_urawa_reds",
+     "indices": [
+      98,
+      112
+     ]
+    },
+    {
+     "text": "urawareds",
+     "indices": [
+      113,
+      123
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/tVM4FfC1",
+     "expanded_url": "http://redsic.com/",
+     "display_url": "redsic.com",
+     "indices": [
+      77,
+      97
+     ]
+    }
+   ],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 18:00:47 +0000 2012",
+  "id": 267325948666466300,
+  "id_str": "267325948666466305",
+  "text": "【自動】アイコンは頻繁に変える方なので、IDかハンネで覚えていただければ幸いです。(元Yukko_URAWAREDS/浦和亭ゆっこ☆ユッケ)",
+  "source": "<a href=\"http://twirobo.com/\" rel=\"nofollow\">twiroboJP</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 296715470,
+   "id_str": "296715470",
+   "name": "浦和亭魔梨威",
+   "screen_name": "URAWATEI_Marii",
+   "location": "彩の国",
+   "description": "浦和･水どう･CLANNADは人生 浦和レッズを熱狂的に愛する鉄道と声優クラスタの男子高校生 銀魂/AB/氷菓/SAO/けいおん!/中二病/さくら荘/俺妹/じょしらく/キルミー/パパ聞き/ゆるゆり/はがない/ジョジョ/中妹/らきすた/ニャル子/WORKING!!
+/役員共/まどマギ/日常/イカ娘/花いろetc",
+   "url": "http://tobuna-nichijou-doudeshow.blogspot.com/",
+   "entities": {
+    "url": {
+     "urls": [
+      {
+       "url": "http://tobuna-nichijou-doudeshow.blogspot.com/",
+       "expanded_url": null,
+       "indices": [
+        0,
+        46
+       ]
+      }
+     ]
+    },
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 1290,
+   "friends_count": 1140,
+   "listed_count": 51,
+   "created_at": "Wed May 11 08:40:10 +0000 2011",
+   "favourites_count": 316,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": true,
+   "verified": false,
+   "statuses_count": 31672,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "352726",
+   "profile_background_image_url": "http://a0.twimg.com/profile_background_images/707519315/1b7d16ddfb3e1da1bbcd46d69ca3f6b0.jpeg",
+   "profile_background_image_url_https": "https://si0.twimg.com/profile_background_images/707519315/1b7d16ddfb3e1da1bbcd46d69ca3f6b0.jpeg",
+   "profile_background_tile": true,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2831739307/fb005baaa0c3ec52c625e8726c8687fc_normal.png",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2831739307/fb005baaa0c3ec52c625e8726c8687fc_normal.png",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/296715470/1348408043",
+   "profile_link_color": "FC0000",
+   "profile_sidebar_border_color": "000000",
+   "profile_sidebar_fill_color": "99CC33",
+   "profile_text_color": "3E4415",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": false,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 0,
+  "entities": {
+   "hashtags": [],
+   "urls": [],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 17:03:35 +0000 2012",
+  "id": 267311552745590800,
+  "id_str": "267311552745590784",
+  "text": "RT @JPFA_NEWS: チャリティーマッチ出場選手に乾、宇佐美らの海外組が追加／日本プロサッカー選手会 http://t.co/pQxIizvT @SoccerKingJPさんから #vegalta #montedio #cerezo #fmarinos #fron ..
+.",
+  "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 240473893,
+   "id_str": "240473893",
+   "name": "ナナスケ",
+   "screen_name": "na7sama",
+   "location": "サッカー日本代表と共に！",
+   "description": "都会の夜景をみると、無性に「どこか」に帰りたくなります。 雨が降る夜は、やけに心穏やかに過ごせます。 かりゆし58の音楽は私の道標です。 お１人時間ラブ。団体行動…嫌いじゃないけど、すこぶるニガテ。やたらジャイアンに惹かれる傾向有り。とにかくサッカーが好きすぎる
+！ザックJAPANは、我が誇り(`.ω.´)",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 19,
+   "friends_count": 34,
+   "listed_count": 0,
+   "created_at": "Thu Jan 20 00:54:12 +0000 2011",
+   "favourites_count": 6,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": true,
+   "verified": false,
+   "statuses_count": 2554,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "0099B9",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme4/bg.gif",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme4/bg.gif",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/1585913462/p1_normal.jpg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/1585913462/p1_normal.jpg",
+   "profile_link_color": "0099B9",
+   "profile_sidebar_border_color": "5ED4DC",
+   "profile_sidebar_fill_color": "95E8EC",
+   "profile_text_color": "3C3940",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": false,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Fri Nov 09 08:28:08 +0000 2012",
+   "id": 266819449523404800,
+   "id_str": "266819449523404801",
+   "text": "チャリティーマッチ出場選手に乾、宇佐美らの海外組が追加／日本プロサッカー選手会 http://t.co/pQxIizvT @SoccerKingJPさんから #vegalta #montedio #cerezo #fmarinos #frontale #urawareds #
+cl",
+   "source": "<a href=\"http://twitter.com/tweetbutton\" rel=\"nofollow\">Tweet Button</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 203003051,
+    "id_str": "203003051",
+    "name": "日本プロサッカー選手会",
+    "screen_name": "JPFA_NEWS",
+    "location": "",
+    "description": "Jクラブに所属する日本人選手（一部の外国人選手を含む）と海外のプロサッカークラブに所属する日本人選手 が会員となっている組織です。",
+    "url": "http://www.j-pfa.or.jp/",
+    "entities": {
+     "url": {
+      "urls": [
+       {
+        "url": "http://www.j-pfa.or.jp/",
+        "expanded_url": null,
+        "indices": [
+         0,
+         23
+        ]
+       }
+      ]
+     },
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 10056,
+    "friends_count": 0,
+    "listed_count": 928,
+    "created_at": "Fri Oct 15 09:23:58 +0000 2010",
+    "favourites_count": 0,
+    "utc_offset": 32400,
+    "time_zone": "Tokyo",
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 2725,
+    "lang": "ja",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "C0DEED",
+    "profile_background_image_url": "http://a0.twimg.com/profile_background_images/474221157/03.jpg",
+    "profile_background_image_url_https": "https://si0.twimg.com/profile_background_images/474221157/03.jpg",
+    "profile_background_tile": true,
+    "profile_image_url": "http://a0.twimg.com/profile_images/1145923754/JPFALOGO300.jpge_normal.jpg",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/1145923754/JPFALOGO300.jpge_normal.jpg",
+    "profile_link_color": "0084B4",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "show_all_inline_media": false,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 27,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "vegalta",
+      "indices": [
+       79,
+       87
+      ]
+     },
+     {
+      "text": "montedio",
+      "indices": [
+       88,
+       97
+      ]
+     },
+     {
+      "text": "cerezo",
+      "indices": [
+       98,
+       105
+      ]
+     },
+     {
+      "text": "fmarinos",
+      "indices": [
+       106,
+       115
+      ]
+     },
+     {
+      "text": "frontale",
+      "indices": [
+       116,
+       125
+      ]
+     },
+     {
+      "text": "urawareds",
+      "indices": [
+       126,
+       136
+      ]
+     },
+     {
+      "text": "cl",
+      "indices": [
+       137,
+       140
+      ]
+     }
+    ],
+    "urls": [
+     {
+      "url": "http://t.co/pQxIizvT",
+      "expanded_url": "http://www.soccer-king.jp/news/japan/jl/20101109/80718.html",
+      "display_url": "soccer-king.jp/news/japan/jl/…",
+      "indices": [
+       40,
+       60
+      ]
+     }
+    ],
+    "user_mentions": [
+     {
+      "screen_name": "SoccerKingJP",
+      "name": "サッカーキング",
+      "id": 46588298,
+      "id_str": "46588298",
+      "indices": [
+       61,
+       74
+      ]
+     }
+    ]
+   },
+   "favorited": false,
+   "retweeted": false,
+   "possibly_sensitive": false
+  },
+  "retweet_count": 27,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "vegalta",
+     "indices": [
+      94,
+      102
+     ]
+    },
+    {
+     "text": "montedio",
+     "indices": [
+      103,
+      112
+     ]
+    },
+    {
+     "text": "cerezo",
+     "indices": [
+      113,
+      120
+     ]
+    },
+    {
+     "text": "fmarinos",
+     "indices": [
+      121,
+      130
+     ]
+    },
+    {
+     "text": "fron",
+     "indices": [
+      131,
+      136
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/pQxIizvT",
+     "expanded_url": "http://www.soccer-king.jp/news/japan/jl/20101109/80718.html",
+     "display_url": "soccer-king.jp/news/japan/jl/…",
+     "indices": [
+      55,
+      75
+     ]
+    }
+   ],
+   "user_mentions": [
+    {
+     "screen_name": "JPFA_NEWS",
+     "name": "日本プロサッカー選手会",
+     "id": 203003051,
+     "id_str": "203003051",
+     "indices": [
+      3,
+      13
+     ]
+    },
+    {
+     "screen_name": "SoccerKingJP",
+     "name": "サッカーキング",
+     "id": 46588298,
+     "id_str": "46588298",
+     "indices": [
+      76,
+      89
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 16:54:13 +0000 2012",
+  "id": 267309195429294080,
+  "id_str": "267309195429294080",
+  "text": "RT @hadasaori: テレ玉で中継します♪→RT @go_urawa_reds: 《全国高校サッカー埼玉大会準決勝》１１日、浦和駒場スタジアムで準決勝 本庄一と正智深谷（１１時３５分）、浦和東と浦和南（１３時３５分）が激突 (埼玉新聞)  #urawareds",
+  "source": "<a href=\"http://twipple.jp/\" rel=\"nofollow\">ついっぷる Pro for iPhone</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 116608666,
+   "id_str": "116608666",
+   "name": "たかちん",
+   "screen_name": "takaSKC",
+   "location": "千葉県",
+   "description": "女性アイドルと野球が大好きです☆\n\n橋本楓／星野みなみ／西野七瀬／斉藤遥海／傳谷英里香／桜愛美／天野なつ／瑞季／伊藤萌々香／千葉ロッテ／高校野球／柏レイソル",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 514,
+   "friends_count": 628,
+   "listed_count": 12,
+   "created_at": "Tue Feb 23 02:17:57 +0000 2010",
+   "favourites_count": 62,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 7201,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2347918226/image_normal.png",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2347918226/image_normal.png",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Sat Nov 10 06:32:11 +0000 2012",
+   "id": 267152658035511300,
+   "id_str": "267152658035511297",
+   "text": "テレ玉で中継します♪→RT @go_urawa_reds: 《全国高校サッカー埼玉大会準決勝》１１日、浦和駒場スタジアムで準決勝 本庄一と正智深谷（１１時３５分）、浦和東と浦和南（１３時３５分）が激突 (埼玉新聞)  #urawareds",
+   "source": "<a href=\"http://www.tweetcaster.com\" rel=\"nofollow\">TweetCaster for Android</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 234773997,
+    "id_str": "234773997",
+    "name": "羽田沙織",
+    "screen_name": "hadasaori",
+    "location": "",
+    "description": "ホリプロアナウンス室所属フリーアナウンサー\n元NHK宇都宮放送局キャスター\n\nゴルフとダイビングと漫画ワンピースが大好き♡最近、絵を見ることにはまり中。今は、クリムトとゴッホとピカソと竹久夢二が好き。\n浦和レッズを応援してます！\nそれと、ラジオLOV
+ERです♡♡\n",
+    "url": "http://ameblo.jp/hadasaori/",
+    "entities": {
+     "url": {
+      "urls": [
+       {
+        "url": "http://ameblo.jp/hadasaori/",
+        "expanded_url": null,
+        "indices": [
+         0,
+         27
+        ]
+       }
+      ]
+     },
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 892,
+    "friends_count": 176,
+    "listed_count": 34,
+    "created_at": "Thu Jan 06 14:50:31 +0000 2011",
+    "favourites_count": 74,
+    "utc_offset": -36000,
+    "time_zone": "Hawaii",
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 5407,
+    "lang": "en",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "FF6699",
+    "profile_background_image_url": "http://a0.twimg.com/images/themes/theme11/bg.gif",
+    "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme11/bg.gif",
+    "profile_background_tile": true,
+    "profile_image_url": "http://a0.twimg.com/profile_images/1745700160/profile_normal.jpg",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/1745700160/profile_normal.jpg",
+    "profile_link_color": "B40B43",
+    "profile_sidebar_border_color": "CC3366",
+    "profile_sidebar_fill_color": "E5507E",
+    "profile_text_color": "362720",
+    "profile_use_background_image": true,
+    "show_all_inline_media": false,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 2,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "urawareds",
+      "indices": [
+       109,
+       119
+      ]
+     }
+    ],
+    "urls": [],
+    "user_mentions": [
+     {
+      "screen_name": "go_urawa_reds",
+      "name": "レッズインターネットクラブ",
+      "id": 170119246,
+      "id_str": "170119246",
+      "indices": [
+       14,
+       28
+      ]
+     }
+    ]
+   },
+   "favorited": false,
+   "retweeted": false
+  },
+  "retweet_count": 2,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      124,
+      134
+     ]
+    }
+   ],
+   "urls": [],
+   "user_mentions": [
+    {
+     "screen_name": "hadasaori",
+     "name": "羽田沙織",
+     "id": 234773997,
+     "id_str": "234773997",
+     "indices": [
+      3,
+      13
+     ]
+    },
+    {
+     "screen_name": "go_urawa_reds",
+     "name": "レッズインターネットクラブ",
+     "id": 170119246,
+     "id_str": "170119246",
+     "indices": [
+      29,
+      43
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 16:01:30 +0000 2012",
+  "id": 267295928183054340,
+  "id_str": "267295928183054337",
+  "text": "【拡散希望】11月24日の鳥栖戦のチケット(アウェー大人)が2枚たぶってしまい、余っているので定価+手数料でお譲りします。お心当たりのある方いらっしゃいましたらりぷかDM下さい。受け渡しは事前、もしくは当日の手渡しでお願いします。 #urawareds",
+  "source": "<a href=\"http://twittbot.net/\" rel=\"nofollow\">twittbot.net</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 153192439,
+   "id_str": "153192439",
+   "name": "まいぴろ",
+   "screen_name": "pirotan_81",
+   "location": "とーきょー(*′Д′*)",
+   "description": "93-94年組eighter！関ジャニ∞/内Ｑらぶ！共通点ある方フォローミー♪← その際の挨拶絶対！無言は知り合い以外スルー。 ☆eighterサッカー部＊MF#3 ※腐発言有。苦手な方要注意。http://t.co/Q6ddVeeH",
+   "url": "http://twpf.jp/pirotan_81",
+   "entities": {
+    "url": {
+     "urls": [
+      {
+       "url": "http://twpf.jp/pirotan_81",
+       "expanded_url": null,
+       "indices": [
+        0,
+        25
+       ]
+      }
+     ]
+    },
+    "description": {
+     "urls": [
+      {
+       "url": "http://t.co/Q6ddVeeH",
+       "expanded_url": "http://twpr.jp/prof/c28cc8be",
+       "display_url": "twpr.jp/prof/c28cc8be",
+       "indices": [
+        97,
+        117
+       ]
+      }
+     ]
+    }
+   },
+   "protected": false,
+   "followers_count": 261,
+   "friends_count": 243,
+   "listed_count": 3,
+   "created_at": "Mon Jun 07 22:53:31 +0000 2010",
+   "favourites_count": 1083,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 30989,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2832346511/a6e613ab4cdcba9006d2964780c33bb9_normal.jpeg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2832346511/a6e613ab4cdcba9006d2964780c33bb9_normal.jpeg",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/153192439/1349615696",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 1,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      116,
+      126
+     ]
+    }
+   ],
+   "urls": [],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 15:58:37 +0000 2012",
+  "id": 267295204866932740,
+  "id_str": "267295204866932736",
+  "text": "http://t.co/hDccG2R8 サッカークイズ 日本編 (熱闘!激闘! スポーツクイズ選手権) スポーツクイズ研究会 (2012/11/9) #urawareds 00:58 http://t.co/bX8v83Dw",
+  "source": "<a href=\"http://www.a8.net/\" rel=\"nofollow\">Twitt Web Api</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 765154922,
+   "id_str": "765154922",
+   "name": "すぽぼん書店",
+   "screen_name": "spobon",
+   "location": "",
+   "description": "発売前のスポーツ関連書籍、DVDを中心に紹介してます♪ [注意] タイトルや発売日の変更、販売中止の場合がございます。内容など最新情報はリンク先でご確認ください。",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 421,
+   "friends_count": 417,
+   "listed_count": 0,
+   "created_at": "Sat Aug 18 05:56:20 +0000 2012",
+   "favourites_count": 0,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 3488,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2645123301/99f9fa48e36da49535641b2d742d2c3c_normal.jpeg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2645123301/99f9fa48e36da49535641b2d742d2c3c_normal.jpeg",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/765154922/1348757339",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "FFFFFF",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": false,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 0,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      76,
+      86
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/hDccG2R8",
+     "expanded_url": "http://twitpic.com/bazs84",
+     "display_url": "twitpic.com/bazs84",
+     "indices": [
+      0,
+      20
+     ]
+    },
+    {
+     "url": "http://t.co/bX8v83Dw",
+     "expanded_url": "http://bit.ly/YMjY0G",
+     "display_url": "bit.ly/YMjY0G",
+     "indices": [
+      93,
+      113
+     ]
+    }
+   ],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 15:48:51 +0000 2012",
+  "id": 267292748397305860,
+  "id_str": "267292748397305857",
+  "text": "RT @REDSOFFICIAL: トレーニングマッチ vs慶應大学について #urawareds http://t.co/80xULvcg",
+  "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 906054524,
+   "id_str": "906054524",
+   "name": "遠藤基世",
+   "screen_name": "endokiyo1105",
+   "location": "",
+   "description": "実践女子大学文学部4年/2011年度ミス実践/2011年度ミスシフトワークス/ミスe.m./成人式実行委員/FC東京ドロンパくんイベントMC/ねこガール/化粧品/パズドラ/スポーツ観戦(サッカー・野球)/友達アカウント @pochi021105",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 75,
+   "friends_count": 61,
+   "listed_count": 0,
+   "created_at": "Fri Oct 26 13:57:25 +0000 2012",
+   "favourites_count": 0,
+   "utc_offset": null,
+   "time_zone": null,
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 129,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2816722607/98987f72844335f28de393f88e5d4d4b_normal.jpeg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2816722607/98987f72844335f28de393f88e5d4d4b_normal.jpeg",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/906054524/1352251712",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Sat Nov 10 07:55:58 +0000 2012",
+   "id": 267173740129968130,
+   "id_str": "267173740129968128",
+   "text": "トレーニングマッチ vs慶應大学について #urawareds http://t.co/80xULvcg",
+   "source": "<a href=\"http://twitter.com/tweetbutton\" rel=\"nofollow\">Tweet Button</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 580657815,
+    "id_str": "580657815",
+    "name": "浦和レッズオフィシャル",
+    "screen_name": "REDSOFFICIAL",
+    "location": "埼玉県さいたま市",
+    "description": "Jリーグ『浦和レッズ』の公式アカウントです。チーム、クラブからの情報をTwitterで配信していきます。※Twitterからクラブへのご質問には、お答えできません。予めご了承ください。",
+    "url": "http://www.urawa-reds.co.jp/",
+    "entities": {
+     "url": {
+      "urls": [
+       {
+        "url": "http://www.urawa-reds.co.jp/",
+        "expanded_url": null,
+        "indices": [
+         0,
+         28
+        ]
+       }
+      ]
+     },
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 12179,
+    "friends_count": 0,
+    "listed_count": 373,
+    "created_at": "Tue May 15 05:30:24 +0000 2012",
+    "favourites_count": 0,
+    "utc_offset": 32400,
+    "time_zone": "Irkutsk",
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 789,
+    "lang": "ja",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "F5F0F1",
+    "profile_background_image_url": "http://a0.twimg.com/images/themes/theme14/bg.gif",
+    "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme14/bg.gif",
+    "profile_background_tile": false,
+    "profile_image_url": "http://a0.twimg.com/profile_images/2761811959/df5a6955acf137b11d44868d190406ad_normal.jpeg",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/2761811959/df5a6955acf137b11d44868d190406ad_normal.jpeg",
+    "profile_link_color": "1309A8",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "show_all_inline_media": false,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 13,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "urawareds",
+      "indices": [
+       21,
+       31
+      ]
+     }
+    ],
+    "urls": [
+     {
+      "url": "http://t.co/80xULvcg",
+      "expanded_url": "http://www.urawa-reds.co.jp/topteamtopics/%e3%83%88%e3%83%ac%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0%e3%83%9e%e3%83%83%e3%83%81-vs%
+e6%85%b6%e6%87%89%e5%a4%a7%e5%ad%a6%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6/",
+      "display_url": "urawa-reds.co.jp/topteamtopics/…",
+      "indices": [
+       32,
+       52
+      ]
+     }
+    ],
+    "user_mentions": []
+   },
+   "favorited": false,
+   "retweeted": false,
+   "possibly_sensitive": false
+  },
+  "retweet_count": 13,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      39,
+      49
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/80xULvcg",
+     "expanded_url": "http://www.urawa-reds.co.jp/topteamtopics/%e3%83%88%e3%83%ac%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0%e3%83%9e%e3%83%83%e3%83%81-vs%e
+6%85%b6%e6%87%89%e5%a4%a7%e5%ad%a6%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6/",
+     "display_url": "urawa-reds.co.jp/topteamtopics/…",
+     "indices": [
+      50,
+      70
+     ]
+    }
+   ],
+   "user_mentions": [
+    {
+     "screen_name": "REDSOFFICIAL",
+     "name": "浦和レッズオフィシャル",
+     "id": 580657815,
+     "id_str": "580657815",
+     "indices": [
+      3,
+      16
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 15:39:40 +0000 2012",
+  "id": 267290434164899840,
+  "id_str": "267290434164899841",
+  "text": "RT @ato_UR: さっきの電車内での俺の思考「お、あの人の黄色いジャケット、お洒落だな。今度黄色いジャケットでも買うか…って、俺、レッズサポだった！黄色いジャケットなんてｲﾗﾈｪ!!赤い服買おっと。」#urawareds",
+  "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 564576075,
+   "id_str": "564576075",
+   "name": "さやぞ",
+   "screen_name": "sayazoooooh",
+   "location": "ださいたま",
+   "description": "高小/豊中/向陽/日八スポ科 三樹組/浦和レッズ/FCバルセロナ/バトントワリング14年間やってた/4月から社会人 クリスマスは稼ぎ時だぜうおおおお！/1回ツイート全消ししました",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 37,
+   "friends_count": 74,
+   "listed_count": 0,
+   "created_at": "Fri Apr 27 10:55:41 +0000 2012",
+   "favourites_count": 55,
+   "utc_offset": null,
+   "time_zone": null,
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 32,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2822899141/ec9039670bcbc4276d90669bd33755ff_normal.gif",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2822899141/ec9039670bcbc4276d90669bd33755ff_normal.gif",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/564576075/1351775691",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Sat Nov 10 15:15:19 +0000 2012",
+   "id": 267284306286743550,
+   "id_str": "267284306286743552",
+   "text": "さっきの電車内での俺の思考「お、あの人の黄色いジャケット、お洒落だな。今度黄色いジャケットでも買うか…って、俺、レッズサポだった！黄色いジャケットなんてｲﾗﾈｪ!!赤い服買おっと。」#urawareds",
+   "source": "<a href=\"http://yubitter.com/\" rel=\"nofollow\">yubitter</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 225813815,
+    "id_str": "225813815",
+    "name": "あと",
+    "screen_name": "ato_UR",
+    "location": "江戸",
+    "description": "人生の岐路に立つ、サッカー大好き人間。特に、浦和レッズ贔屓。中でも、原口元気、山田直輝、大島優子(?)が好きです。日本史も大好き。フォローしてくれた方は、感謝の気持ちを込めてリフォローさせていただきます!!(注.サッカーの試合中はツイートが凄い数になります。ご
+了承ください。)",
+    "url": null,
+    "entities": {
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 1289,
+    "friends_count": 1739,
+    "listed_count": 52,
+    "created_at": "Sun Dec 12 14:21:44 +0000 2010",
+    "favourites_count": 28,
+    "utc_offset": 32400,
+    "time_zone": "Tokyo",
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 6705,
+    "lang": "ja",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "C0DEED",
+    "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile": false,
+    "profile_image_url": "http://a0.twimg.com/profile_images/1646502398/1321695097_normal.png",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/1646502398/1321695097_normal.png",
+    "profile_banner_url": "https://si0.twimg.com/profile_banners/225813815/1348736826",
+    "profile_link_color": "0084B4",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "show_all_inline_media": false,
+    "default_profile": true,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 2,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "urawareds",
+      "indices": [
+       91,
+       101
+      ]
+     }
+    ],
+    "urls": [],
+    "user_mentions": []
+   },
+   "favorited": false,
+   "retweeted": false
+  },
+  "retweet_count": 2,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      103,
+      113
+     ]
+    }
+   ],
+   "urls": [],
+   "user_mentions": [
+    {
+     "screen_name": "ato_UR",
+     "name": "あと",
+     "id": 225813815,
+     "id_str": "225813815",
+     "indices": [
+      3,
+      10
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 15:34:23 +0000 2012",
+  "id": 267289105057079300,
+  "id_str": "267289105057079297",
+  "text": "メディアに踊らされ浦和を勘違いしてる人が多い。確かに馬鹿な奴もいるが、あれだけ選手とサポが1つになって笑ったり泣いたり出来るチームは私には浦和しかないし誇りだから浦和が好き。そして他のチームの感動的なドラマも垣間見れる。だからサッカー観戦はやめられない。 #urawareds"
+,
+  "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 564576075,
+   "id_str": "564576075",
+   "name": "さやぞ",
+   "screen_name": "sayazoooooh",
+   "location": "ださいたま",
+   "description": "高小/豊中/向陽/日八スポ科 三樹組/浦和レッズ/FCバルセロナ/バトントワリング14年間やってた/4月から社会人 クリスマスは稼ぎ時だぜうおおおお！/1回ツイート全消ししました",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 37,
+   "friends_count": 74,
+   "listed_count": 0,
+   "created_at": "Fri Apr 27 10:55:41 +0000 2012",
+   "favourites_count": 55,
+   "utc_offset": null,
+   "time_zone": null,
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 32,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2822899141/ec9039670bcbc4276d90669bd33755ff_normal.gif",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2822899141/ec9039670bcbc4276d90669bd33755ff_normal.gif",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/564576075/1351775691",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 1,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      128,
+      138
+     ]
+    }
+   ],
+   "urls": [],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 15:17:27 +0000 2012",
+  "id": 267284844239806460,
+  "id_str": "267284844239806466",
+  "text": "RT @92sho: 陽介が、広島が優勝しそうだけど浦和に来たことは後悔してない。って言ってくれて感謝の言葉しかでないよ。去年あんな思いしたのに残ってくれて今年も体ボロボロなのにあんだけ走ってる。陽介、引退するまで全力で応援するぜ。 #urawareds",
+  "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 573243932,
+   "id_str": "573243932",
+   "name": "ちひろ",
+   "screen_name": "chiiiro_27",
+   "location": "群馬⇒東京",
+   "description": "渋北→共愛→武蔵野音大( pf )　浦和レッズ / 田中達也 / 長谷部誠 / 高橋峻希 / 嵐 ♡",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 163,
+   "friends_count": 152,
+   "listed_count": 2,
+   "created_at": "Mon May 07 03:03:28 +0000 2012",
+   "favourites_count": 31,
+   "utc_offset": 32400,
+   "time_zone": "Irkutsk",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 2165,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "FF6699",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme11/bg.gif",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme11/bg.gif",
+   "profile_background_tile": true,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2826213030/cd6543f17b253f107da36056cb75deaa_normal.jpeg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2826213030/cd6543f17b253f107da36056cb75deaa_normal.jpeg",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/573243932/1352214956",
+   "profile_link_color": "B40B43",
+   "profile_sidebar_border_color": "CC3366",
+   "profile_sidebar_fill_color": "E5507E",
+   "profile_text_color": "362720",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": false,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Wed Nov 07 15:12:23 +0000 2012",
+   "id": 266196404119166980,
+   "id_str": "266196404119166976",
+   "text": "陽介が、広島が優勝しそうだけど浦和に来たことは後悔してない。って言ってくれて感謝の言葉しかでないよ。去年あんな思いしたのに残ってくれて今年も体ボロボロなのにあんだけ走ってる。陽介、引退するまで全力で応援するぜ。 #urawareds",
+   "source": "<a href=\"http://www.echofon.com/\" rel=\"nofollow\">Echofon</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 352507305,
+    "id_str": "352507305",
+    "name": "くにしょー",
+    "screen_name": "92sho",
+    "location": "埼玉スタジアム2○○2 北ゴール裏",
+    "description": "浦和レッズ/海外サッカー/電気グルーヴ/水どう/Team NACS/漫画/食べ歩き/旅行/読書/舞台/コーヒー/愛車はBianchi ROMA2/ 群像劇が好きです。美味しい物を食べることと浦和レッズを生き甲斐としてます。\n",
+    "url": null,
+    "entities": {
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 135,
+    "friends_count": 175,
+    "listed_count": 4,
+    "created_at": "Wed Aug 10 18:31:11 +0000 2011",
+    "favourites_count": 57,
+    "utc_offset": null,
+    "time_zone": null,
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 3867,
+    "lang": "ja",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "352726",
+    "profile_background_image_url": "http://a0.twimg.com/images/themes/theme5/bg.gif",
+    "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme5/bg.gif",
+    "profile_background_tile": false,
+    "profile_image_url": "http://a0.twimg.com/profile_images/2791985514/040ffa8cbba73266c19135bdc0430d31_normal.jpeg",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/2791985514/040ffa8cbba73266c19135bdc0430d31_normal.jpeg",
+    "profile_link_color": "D02B55",
+    "profile_sidebar_border_color": "829D5E",
+    "profile_sidebar_fill_color": "99CC33",
+    "profile_text_color": "3E4415",
+    "profile_use_background_image": true,
+    "show_all_inline_media": false,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 88,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "urawareds",
+      "indices": [
+       106,
+       116
+      ]
+     }
+    ],
+    "urls": [],
+    "user_mentions": []
+   },
+   "favorited": false,
+   "retweeted": false
+  },
+  "retweet_count": 88,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      117,
+      127
+     ]
+    }
+   ],
+   "urls": [],
+   "user_mentions": [
+    {
+     "screen_name": "92sho",
+     "name": "くにしょー",
+     "id": 352507305,
+     "id_str": "352507305",
+     "indices": [
+      3,
+      9
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 15:15:19 +0000 2012",
+  "id": 267284306286743550,
+  "id_str": "267284306286743552",
+  "text": "さっきの電車内での俺の思考「お、あの人の黄色いジャケット、お洒落だな。今度黄色いジャケットでも買うか…って、俺、レッズサポだった！黄色いジャケットなんてｲﾗﾈｪ!!赤い服買おっと。」#urawareds",
+  "source": "<a href=\"http://yubitter.com/\" rel=\"nofollow\">yubitter</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 225813815,
+   "id_str": "225813815",
+   "name": "あと",
+   "screen_name": "ato_UR",
+   "location": "江戸",
+   "description": "人生の岐路に立つ、サッカー大好き人間。特に、浦和レッズ贔屓。中でも、原口元気、山田直輝、大島優子(?)が好きです。日本史も大好き。フォローしてくれた方は、感謝の気持ちを込めてリフォローさせていただきます!!(注.サッカーの試合中はツイートが凄い数になります。ご了
+承ください。)",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 1289,
+   "friends_count": 1739,
+   "listed_count": 52,
+   "created_at": "Sun Dec 12 14:21:44 +0000 2010",
+   "favourites_count": 28,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 6705,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/1646502398/1321695097_normal.png",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/1646502398/1321695097_normal.png",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/225813815/1348736826",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 2,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      91,
+      101
+     ]
+    }
+   ],
+   "urls": [],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 14:28:47 +0000 2012",
+  "id": 267272598902169600,
+  "id_str": "267272598902169602",
+  "text": "サッカー オフ・ザ・ボールの動き・戦術・トレーニング 林 雅人 (2012/11/8) #urawareds 23:28 http://t.co/ogn2VzQJ",
+  "source": "<a href=\"http://www.a8.net/\" rel=\"nofollow\">Twitt Web Api</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 765154922,
+   "id_str": "765154922",
+   "name": "すぽぼん書店",
+   "screen_name": "spobon",
+   "location": "",
+   "description": "発売前のスポーツ関連書籍、DVDを中心に紹介してます♪ [注意] タイトルや発売日の変更、販売中止の場合がございます。内容など最新情報はリンク先でご確認ください。",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 421,
+   "friends_count": 417,
+   "listed_count": 0,
+   "created_at": "Sat Aug 18 05:56:20 +0000 2012",
+   "favourites_count": 0,
+   "utc_offset": 32400,
+   "time_zone": "Tokyo",
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 3488,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/2645123301/99f9fa48e36da49535641b2d742d2c3c_normal.jpeg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/2645123301/99f9fa48e36da49535641b2d742d2c3c_normal.jpeg",
+   "profile_banner_url": "https://si0.twimg.com/profile_banners/765154922/1348757339",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "FFFFFF",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": false,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 0,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      44,
+      54
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/ogn2VzQJ",
+     "expanded_url": "http://bit.ly/SpYukA",
+     "display_url": "bit.ly/SpYukA",
+     "indices": [
+      61,
+      81
+     ]
+    }
+   ],
+   "user_mentions": []
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ },
+ {
+  "metadata": {
+   "result_type": "recent",
+   "iso_language_code": "ja"
+  },
+  "created_at": "Sat Nov 10 14:28:37 +0000 2012",
+  "id": 267272553763074050,
+  "id_str": "267272553763074049",
+  "text": "RT @REDSOFFICIAL: トレーニングマッチ vs慶應大学について #urawareds http://t.co/80xULvcg",
+  "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+   "id": 147983984,
+   "id_str": "147983984",
+   "name": "あんな",
+   "screen_name": "annin1123",
+   "location": "神奈川",
+   "description": "慶應ソッカー部女子\r\n伊奈学園・レッズ出身",
+   "url": null,
+   "entities": {
+    "description": {
+     "urls": []
+    }
+   },
+   "protected": false,
+   "followers_count": 292,
+   "friends_count": 281,
+   "listed_count": 6,
+   "created_at": "Tue May 25 14:55:08 +0000 2010",
+   "favourites_count": 65,
+   "utc_offset": null,
+   "time_zone": null,
+   "geo_enabled": false,
+   "verified": false,
+   "statuses_count": 2539,
+   "lang": "ja",
+   "contributors_enabled": false,
+   "is_translator": false,
+   "profile_background_color": "C0DEED",
+   "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+   "profile_background_tile": false,
+   "profile_image_url": "http://a0.twimg.com/profile_images/1717500682/image_normal.jpg",
+   "profile_image_url_https": "https://si0.twimg.com/profile_images/1717500682/image_normal.jpg",
+   "profile_link_color": "0084B4",
+   "profile_sidebar_border_color": "C0DEED",
+   "profile_sidebar_fill_color": "DDEEF6",
+   "profile_text_color": "333333",
+   "profile_use_background_image": true,
+   "show_all_inline_media": false,
+   "default_profile": true,
+   "default_profile_image": false,
+   "following": null,
+   "follow_request_sent": null,
+   "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+   "metadata": {
+    "result_type": "recent",
+    "iso_language_code": "ja"
+   },
+   "created_at": "Sat Nov 10 07:55:58 +0000 2012",
+   "id": 267173740129968130,
+   "id_str": "267173740129968128",
+   "text": "トレーニングマッチ vs慶應大学について #urawareds http://t.co/80xULvcg",
+   "source": "<a href=\"http://twitter.com/tweetbutton\" rel=\"nofollow\">Tweet Button</a>",
+   "truncated": false,
+   "in_reply_to_status_id": null,
+   "in_reply_to_status_id_str": null,
+   "in_reply_to_user_id": null,
+   "in_reply_to_user_id_str": null,
+   "in_reply_to_screen_name": null,
+   "user": {
+    "id": 580657815,
+    "id_str": "580657815",
+    "name": "浦和レッズオフィシャル",
+    "screen_name": "REDSOFFICIAL",
+    "location": "埼玉県さいたま市",
+    "description": "Jリーグ『浦和レッズ』の公式アカウントです。チーム、クラブからの情報をTwitterで配信していきます。※Twitterからクラブへのご質問には、お答えできません。予めご了承ください。",
+    "url": "http://www.urawa-reds.co.jp/",
+    "entities": {
+     "url": {
+      "urls": [
+       {
+        "url": "http://www.urawa-reds.co.jp/",
+        "expanded_url": null,
+        "indices": [
+         0,
+         28
+        ]
+       }
+      ]
+     },
+     "description": {
+      "urls": []
+     }
+    },
+    "protected": false,
+    "followers_count": 12179,
+    "friends_count": 0,
+    "listed_count": 373,
+    "created_at": "Tue May 15 05:30:24 +0000 2012",
+    "favourites_count": 0,
+    "utc_offset": 32400,
+    "time_zone": "Irkutsk",
+    "geo_enabled": false,
+    "verified": false,
+    "statuses_count": 789,
+    "lang": "ja",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "F5F0F1",
+    "profile_background_image_url": "http://a0.twimg.com/images/themes/theme14/bg.gif",
+    "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme14/bg.gif",
+    "profile_background_tile": false,
+    "profile_image_url": "http://a0.twimg.com/profile_images/2761811959/df5a6955acf137b11d44868d190406ad_normal.jpeg",
+    "profile_image_url_https": "https://si0.twimg.com/profile_images/2761811959/df5a6955acf137b11d44868d190406ad_normal.jpeg",
+    "profile_link_color": "1309A8",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "show_all_inline_media": false,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+   },
+   "geo": null,
+   "coordinates": null,
+   "place": null,
+   "contributors": null,
+   "retweet_count": 13,
+   "entities": {
+    "hashtags": [
+     {
+      "text": "urawareds",
+      "indices": [
+       21,
+       31
+      ]
+     }
+    ],
+    "urls": [
+     {
+      "url": "http://t.co/80xULvcg",
+      "expanded_url": "http://www.urawa-reds.co.jp/topteamtopics/%e3%83%88%e3%83%ac%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0%e3%83%9e%e3%83%83%e3%83%81-vs%
+e6%85%b6%e6%87%89%e5%a4%a7%e5%ad%a6%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6/",
+      "display_url": "urawa-reds.co.jp/topteamtopics/…",
+      "indices": [
+       32,
+       52
+      ]
+     }
+    ],
+    "user_mentions": []
+   },
+   "favorited": false,
+   "retweeted": false,
+   "possibly_sensitive": false
+  },
+  "retweet_count": 13,
+  "entities": {
+   "hashtags": [
+    {
+     "text": "urawareds",
+     "indices": [
+      39,
+      49
+     ]
+    }
+   ],
+   "urls": [
+    {
+     "url": "http://t.co/80xULvcg",
+     "expanded_url": "http://www.urawa-reds.co.jp/topteamtopics/%e3%83%88%e3%83%ac%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0%e3%83%9e%e3%83%83%e3%83%81-vs%e
+6%85%b6%e6%87%89%e5%a4%a7%e5%ad%a6%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6/",
+     "display_url": "urawa-reds.co.jp/topteamtopics/…",
+     "indices": [
+      50,
+      70
+     ]
+    }
+   ],
+   "user_mentions": [
+    {
+     "screen_name": "REDSOFFICIAL",
+     "name": "浦和レッズオフィシャル",
+     "id": 580657815,
+     "id_str": "580657815",
+     "indices": [
+      3,
+      16
+     ]
+    }
+   ]
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false
+ }
+]

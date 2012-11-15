@@ -50,17 +50,10 @@ exports.optimizeSiteName = function(siteName) {
 		siteName.indexOf("Pipes Output") == 0) {
 		return "";
 	}
+	siteName = util.deleteUnnecessaryText(siteName);
     siteName = util.replaceAll(siteName, "Powered by Ameba", "");
-    siteName = util.replaceAll(siteName, "<b>", "");
-    siteName = util.replaceAll(siteName, "</b>", "");
-    siteName = util.replaceAll(siteName, "<br><br>", " ");
-    siteName = util.replaceAll(siteName, "<br>", " ");
-    siteName = util.replaceAll(siteName, "<br/><br/>", " ");
-    siteName = util.replaceAll(siteName, "<br/>", " ");
-    siteName = util.replaceAll(siteName, "&amp;", "&");
     siteName = util.replaceAll(siteName, "浦和レッドダイヤモンズ", "浦和レッズ");
     siteName = unescape(siteName);
-	siteName = util.replaceAll(siteName, "&#39;", "'")
 	if(siteName.length > siteNameMaxLength) {
 		siteName = siteName.substring(0, siteNameMaxLength) + "...";
 	}

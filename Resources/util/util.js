@@ -15,7 +15,7 @@ exports.util = {
 		return year;
 	},
 	/**
-	 * 
+	 * 文字列(expression)中の指定文字列(org)をdestに置換する
 	 */
 	replaceAll : function(expression, org, dest) { 
 		return expression.split(org).join(dest);  
@@ -119,6 +119,38 @@ exports.util = {
             else if (s>=60*60*24*30*365)                    return [Math.floor(s/60/60/24/30/365), '年前'].join('');
         }        return "";
     },
+    // 日付のパース
+    parseDate : function(str){// str==yyyy-mm-ddThh:mm:ssZ
+        //strdate==YYYY/mm/dd hh:mm:ss
+        var strDate = str.split('\+')[0].replace('T',' ').replace('-','\/').replace('-','\/').replace('Z','');
+        var date = new Date(strDate);
+        var time = date.getTime() + 32400000;
+        date.setTime(time);
+        return date;
+    },
+    /**
+     *不要な文字列（タグや制御文字）を削除して返す 
+     */
+    deleteUnnecessaryText : function(text) {
+        var replaceAll = function(expression, org, dest) { 
+            return expression.split(org).join(dest);
+        };
+        if(text) {
+            text = text.replace(/\n\n/g, "\n");
+            text = replaceAll(text, "<b>", "");
+            text = replaceAll(text, "</b>", "");
+            text = replaceAll(text, "<br><br><br>", " ");
+            text = replaceAll(text, "<br><br>", " ");
+            text = replaceAll(text, "<br>", " ");
+            text = replaceAll(text, "<br/><br/><br/>", " ");
+            text = replaceAll(text, "<br/><br/>", " ");
+            text = replaceAll(text, "<br/>", " ");
+            text = replaceAll(text, "&amp;", "&");
+            text = replaceAll(text, "&quot;", '"');
+            text = replaceAll(text, "&#39;", "'");
+        }
+        return text;
+    },
     /**
      * アイコンやアフィリエイト等の不要な画像の場合にtrueを返す
      */
@@ -132,6 +164,17 @@ exports.util = {
             imgUrl.indexOf("http://counter2.blog.livedoor.com") == 0
         ) {
             return true;
+        }
+        return false;
+    },
+    /**
+     * 配列に値が含まれるかどうかを返す
+     */
+    contains : function(array, item) {
+        for(var i in array) {
+            if(array[i] == item) {
+                return true;
+            }
         }
         return false;
     },

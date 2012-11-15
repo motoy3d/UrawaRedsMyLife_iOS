@@ -53,6 +53,7 @@ function NewsWindow(tabGroup) {
 		Ti.API.debug("  サイト名＝＝＝＝＝＝＝＝＝" + e.rowData.siteName);
 		visitedUrls.push(e.rowData.link);
 		e.row.backgroundColor = style.news.visitedBgColor;
+		news.saveVisitedUrl(e.rowData.link);
 		var webData = {
 			title : e.rowData.pageTitle,
 			siteName : e.rowData.fullSiteName,
@@ -84,15 +85,6 @@ function NewsWindow(tabGroup) {
 	function endUpdate() {
 		updating = false;
 		Ti.API.info(" endUpdate. lastRow=" + lastRow + ", table.size=" + table.data[0].length);
-		// just scroll down a bit to the new rows to bring them into view
-		// 追加読み込み終了時の強制スクロール
-		// table.scrollToIndex(
-			// lastRow-9,	
-			// {
-				// animated:true,
-				// position:Ti.UI.iPhone.TableViewScrollPosition.BOTTOM
-			// }
-		// );
 	}
 	
 	var lastDistance = 0; // calculate location to determine direction
@@ -175,12 +167,6 @@ function NewsWindow(tabGroup) {
 		});
 	}
 	loadFeed(news);	
-
-	// window openイベント
-	// self.addEventListener('open', function(){
-		// loadFeed(news);	
-	// });
 	return self;
 };
-
 module.exports = NewsWindow;

@@ -35,7 +35,11 @@ function TwitterWindow(tabGroup) {
     });
     //refreshイベント
     refreshButton.addEventListener('click', function(e){
-        loadTweets("newerTweets");
+        if(table.data[0]) {
+            loadTweets("newerTweets");
+        } else {
+            loadTweets("firstTime");
+        }
     });
     
     // テーブル
@@ -123,7 +127,8 @@ function TwitterWindow(tabGroup) {
         textLabel.text = tweet.text;
         // 時間ラベル
         var timeLabel = Ti.UI.createLabel(style.twitter.timeLabel);
-        var timeText = util.parseDate2(tweet.createDatetime);
+        var timeText = tweet.timeText;
+
         timeLabel.text = timeText;
         row.add(userNameLabel);
         row.add(profileImg);

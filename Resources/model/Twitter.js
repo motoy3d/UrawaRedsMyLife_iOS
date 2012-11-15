@@ -20,15 +20,15 @@ function Twitter() {
     var refreshUrlParam;
 
     /**
-     * 
+     * オブジェクトが配列の場合にtrueを返す
      */
-    function isArray(input){
-        return typeof(input)=='object' && (input instanceof Array);
-    }
+    // function isArray(input){
+        // return typeof(input)=='object' && (input instanceof Array);
+    // }
     
     /**
      * twitter apiを使用して#urawaredsのツイート一覧を取得
-     * @param kind ("firstTime" or "olderTweets")
+     * @param kind ("firstTime" or "olderTweets" or "newerTweets")
      * @param callback (TwitterWindow.js)
      */
     function loadTweets(kind, callback) {
@@ -56,61 +56,62 @@ function Twitter() {
             query += nextPageParam + "'";
         }
         Ti.API.info('★★query=' + query);
-            Ti.Yahoo.yql(query, function(e) {
-                try {
-                    var b = isArray(e.data.json);
-                    Ti.API.info('>>>>>>>>>>> e.data.json=' + e.data.json + " is Array=" + b);
-                    if(!b) {
-                        for(var v in e.data.json) {
-                            Ti.API.info(v + ' = ' + e.data.json[v]);
-                        }
-                    }
-                    if(e.data == null /*|| isArray(e.data.json)*/) {
-                        callback.fail(style.common.loadingFailMsg);
-                        return;
-                    }
-                    if(!e.data.json.map) {
-//                        callback.fail("データなし");
-                        return;
-                    }
+        Ti.Yahoo.yql(query, function(e) {
+            try {
+                Ti.API.info('JSON length = ' + JSON.stringify(e.data.json, null, ' ').length);
+                if(e.data == null /*|| isArray(e.data.json)*/) {
+                    callback.fail(style.common.loadingFailMsg);
+                    return;
+                }
+                if(!e.data.json.map) {
+                    return;
+                }
                     
-                    // ページネーション用パラメータ
+                // ページネーション用パラメータ
 //                    nextPageParam = e.data.json.next_page;
 //                    Ti.API.info("★nextPageParam ====== " + nextPageParam);
                     // 取得したJSONをリスト化する
-                    var tweetList = e.data.json.map(
-                        function(item) {
-                            // ページネーション用パラメータ
-                            if("newerTweets" != kind) {
-                                nextPageParam = item.next_page + "&rpp=" + tweetsPerPage;
-                            }
-                            refreshUrlParam = item.refresh_url;
-                            var timeText = util.parseDate2(item.results.created_at);
-                            var data = {
-                                id: item.results.id
-                                ,text: item.results.text
-                                ,profileImageUrl: item.results.profile_image_url
-                                ,userName: item.results.from_user
-                                ,userId: item.results.from_user_id
-                                ,createDatetime: item.results.created_at 
-                                ,timeText: timeText
-                            };
-                            return data;
+                var tweetList = e.data.json.map(
+                    function(item) {
+                        // ページネーション用パラメータ
+                        if("newerTweets" != kind) {
+                            nextPageParam = item.next_page + "&rpp=" + tweetsPerPage;
                         }
-                    );
-    
-                    callback.success(tweetList);
-                    Ti.API.info('+++++++++++++++++++ YQL終了')
-                } catch(ex) {
-                    Ti.API.error('---------------------\n' + ex);  
-                    callback.fail(style.common.loadingFailMsg);
-                } finally {
-                }
-                var after = new Date();
-                Ti.API.info("Twitter.js#loadTweets() 処理時間★" 
-                    + (after.getTime()-before.getTime())/1000.0 + "秒");
-            });
-        }
-        return self;
+                        refreshUrlParam = item.refresh_url;
+                        //「10秒前」のような形式
+                        //var timeText = util.parseDate2(item.results.created_at);
+                        var creDate = util.parseDate(item.results.created_at);
+                        var minutes = creDate.getMinutes();
+                        if(minutes < 10) {
+                            minutes = "0" + minutes;
+                        }
+                        var timeText = (creDate.getMonth() + 1) + "/" + creDate.getDate() 
+                            + " " + creDate.getHours() + ":" + minutes;
+                        
+                        var data = {
+                            id: item.results.id
+                            ,text: util.deleteUnnecessaryText(item.results.text)
+                            ,profileImageUrl: item.results.profile_image_url
+                            ,userName: item.results.from_user
+                            ,userId: item.results.from_user_id
+                            ,createDatetime: item.results.created_at 
+                            ,timeText: timeText
+                        };
+                        return data;
+                    }
+                );
+                callback.success(tweetList);
+                Ti.API.info('+++++++++++++++++++ YQL終了')
+            } catch(ex) {
+                Ti.API.error('---------------------\n' + ex);  
+                callback.fail(style.common.loadingFailMsg + " ¥n " + ex);
+            } finally {
+            }
+            var after = new Date();
+            Ti.API.info("Twitter.js#loadTweets() 処理時間★" 
+                + (after.getTime()-before.getTime())/1000.0 + "秒");
+        });
     }
+    return self;
+}
 module.exports = Twitter;

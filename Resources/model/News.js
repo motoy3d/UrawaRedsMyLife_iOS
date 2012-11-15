@@ -5,6 +5,7 @@ var newsSource = require("model/newsSource");
 var LOAD_FEED_SIZE = 25;
 var feedUrl = "http://www.google.com/reader/public/atom/user"
 	+ "%2F12632507706320288487%2Flabel%2FUrawaReds?n=" + LOAD_FEED_SIZE;
+var visitedUrlList = new Array();
 
 /**
  * ニュース情報
@@ -18,7 +19,12 @@ function News() {
 	
 	self.loadNewsFeed = loadNewsFeed;	//function
 	self.getContinuation = getContinuation;	//function
+	self.saveVisitedUrl = saveVisitedUrl;  //function
 	
+	visitedUrlList = getVisitedUrlList();
+//	Ti.API.info('visitedUrlList読み込み：' + visitedUrlList);
+//    Ti.API.info('visitedUrlList数：' + visitedUrlList.length);
+	self.visitedUrlList = visitedUrlList;
 	return self;
 };
 
@@ -133,7 +139,7 @@ function createNewsRow(item) {
             var urlEndIdx = content.indexOf('"', urlStartIdx);
             var imgUrl = content.substring(urlStartIdx, urlEndIdx);
             imgUrl = util.replaceAll(imgUrl, "&amp;", "&");
-            Ti.API.info('画像＝＝＝＝＝' + imgUrl + "  >  " + item.title);
+            Ti.API.debug('画像＝＝＝＝＝' + imgUrl + "  >  " + item.title);
             // アイコン等はgifが多いのでスキップ
             if(!util.isUnnecessaryImage(imgUrl)) {
                 var imgLabel = Ti.UI.createImageView(style.news.imgView);
@@ -145,17 +151,8 @@ function createNewsRow(item) {
     }
 	// タイトルラベル
 	var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
-	var itemTitle = item.title;
+	var itemTitle = util.deleteUnnecessaryText(item.title);
 //	Ti.API.info('itemTitle=' + itemTitle);
-	itemTitle = itemTitle.replace(/\n\n/g, "\n");
-	itemTitle = util.replaceAll(itemTitle, "<b>", "");
-	itemTitle = util.replaceAll(itemTitle, "</b>", "");
-    itemTitle = util.replaceAll(itemTitle, "<br><br>", " ");
-	itemTitle = util.replaceAll(itemTitle, "<br>", " ");
-	itemTitle = util.replaceAll(itemTitle, "<br/><br/>", " ");
-    itemTitle = util.replaceAll(itemTitle, "<br/>", " ");
-    itemTitle = util.replaceAll(itemTitle, "&amp;", "&");
-    itemTitle = util.replaceAll(itemTitle, "&quot;", '"');
     itemTitle = unescape(itemTitle);
     if(itemTitle.length > 50) {
         itemTitle = itemTitle.substring(0, 50) + "...";
@@ -199,12 +196,17 @@ function createNewsRow(item) {
 		link = item.link.href;
 //		Ti.API.info("リンク3====" + link);
 	}
+	// 既読確認
+	if(util.contains(visitedUrlList, link)) {
+        row.backgroundColor = style.news.visitedBgColor;
+	}
+    // サイト名
 	var fullSiteName = item.source.title;
 	if(fullSiteName.toString().indexOf("Google") == 0) {
 		fullSiteName = "";
 	}
 	var siteName = newsSource.optimizeSiteName(item.source.title);
-	Ti.API.info("siteName1====" + siteName + ", link=" + link);
+	Ti.API.debug("siteName1====" + siteName + ", link=" + link);
 	if('UrawaReds' == siteName) {
 		siteName = newsSource.getSiteName(link);
 		fullSiteName = siteName;
@@ -216,16 +218,16 @@ function createNewsRow(item) {
 	row.add(siteNameLabel);
 	row.fullSiteName = fullSiteName;
 	row.siteName = siteName;
-	row.pageTitle = item.title;
+	row.pageTitle = itemTitle;
 	row.link = link;
 	row.content = content;
-	
-//	Ti.API.info("-------------return row" + row);
 	row.pubDate = pubDateText;
     return row;
 }
 
-// 日付のパース
+/**
+ *  日付をパースして返す
+ */
 function parseDate(str){// str==yyyy-mm-ddThh:mm:ssZ
     //strdate==YYYY/mm/dd hh:mm:ss
     var strDate = str.split('\+')[0].replace('T',' ').replace('-','\/').replace('-','\/').replace('Z','');
@@ -234,5 +236,42 @@ function parseDate(str){// str==yyyy-mm-ddThh:mm:ssZ
     date.setTime(time);
     return date;
 };
+
+/**
+ * DBに既読URLを保存する
+ */
+function saveVisitedUrl(url) {
+    var now = new Date();
+    var date = now.getYear() + '' + now.getMonth() + '' + now.getDate();
+    var db = Ti.Database.open('urawareds.my.life');
+    try {
+        db.execute('INSERT INTO visitedUrl(url, date) VALUES(?, ?)', url, date);
+    } finally{
+        db.close();
+    }
+}
+
+/**
+ * DBから既読URLリストを返す
+ */
+function getVisitedUrlList() {
+    Ti.API.info('■getVisitedUrlList');
+    var db = Ti.Database.open('urawareds.my.life');
+    var urlList = new Array();
+    try {
+        var rows = db.execute('SELECT url, date FROM visitedUrl');
+        while (rows.isValidRow()) {
+            urlList.push(rows.field(0));
+            Ti.API.info('既読　######## ' + rows.field(0));
+            // Ti.API.info('Person ---> ROWID: ' + rows.fieldByName('rowid') 
+                // + ', name:' + rows.field(1) + ', phone_number: ' 
+                // + rows.fieldByName('phone_number') + ', city: ' + rows.field(3));
+            rows.next();
+        }
+    } finally{
+        db.close();
+    }
+    return urlList;
+}
 
 module.exports = News;

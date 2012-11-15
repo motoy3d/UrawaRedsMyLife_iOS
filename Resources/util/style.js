@@ -198,7 +198,8 @@ exports.style = {
 			bottom : 24
 		},
 		timeLabel : {
-		    color : "#d87",
+		    /*color : "#d87",*/
+		   color : "white",
             font : {fontSize : 13},
             height : Ti.UI.SIZE,
             bottom : 5,

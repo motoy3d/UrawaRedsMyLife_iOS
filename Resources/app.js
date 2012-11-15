@@ -19,6 +19,7 @@ if (Ti.version < 1.8 ) {
 (function() {
 	Ti.include('util/analytics.js');
 	startAnalytics();
+	initDB();
 	
 	//determine platform and form factor and render approproate components
 	var osname = Ti.Platform.osname,
@@ -58,6 +59,15 @@ if (Ti.version < 1.8 ) {
 //    tabGroup.open();
 
 })();
+
+/**
+ * DB初期化
+ */
+function initDB() {
+    var db = Ti.Database.open('urawareds.my.life');
+    db.execute('CREATE TABLE IF NOT EXISTS visitedUrl (url TEXT, date INTEGER)');
+    db.close();
+}
 
 /**
  * Google Analyticsの処理を初期化する
