@@ -71,6 +71,10 @@ function Results(resultsWindow) {
 		}
 	//Ti.API.info('compe=' + compe);
 		var date = tdList[1].p;
+		if(date.content) {
+		    date = util.removeLineBreak(util.replaceAll(date.content, "<br/>", ""));
+		}
+		Ti.API.info('■' + date);
 		var time = tdList[2].p;
 		var team = tdList[3].p;
 		if(team == "") {

@@ -96,7 +96,7 @@ exports.style = {
 			type: 'CONTENT'
 		},
 		dateLabel : {
-			width : 120,
+			width : 135,
 			color : 'gray',
 			font : {fontSize : 13},
 			height : 24,
@@ -109,7 +109,7 @@ exports.style = {
 			width : 140,
 			height : 24,
 			top : 4,
-			left : 145			
+			left : 155			
 		},
 		stadiumLabel : {
 			width : 200,

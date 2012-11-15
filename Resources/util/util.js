@@ -179,6 +179,14 @@ exports.util = {
         return false;
     },
     /**
+     * 改行を削除して返す 
+     */
+    removeLineBreak : function(text) {
+        text = text.replace((new RegExp("\r\n","g")),"");
+        text = text.replace((new RegExp("\n","g")),"");
+        return text;
+    },
+    /**
      * TweetのURLとハッシュタグにアンカータグを埋め込んで返す 
      */
     tweetTrimer : function(t) {
