@@ -210,11 +210,11 @@ exports.util = {
         while ( true ) {
             var flgAllReplaced = true;
             if ( ( matchesHash = patternHash.exec( text ) ) != null ) {
-                text = text.replace( patternHash, ' <a href="' + twitterPath + 'search?q=%23' + RegExp.$1 + '" target="_blank" class="twitter-intext-link"><s>#</s><b>' + RegExp.$1 + '</b></a>' ); 
+                text = text.replace( patternHash, ' <a href="' + twitterPath + 'search?q=%23' + RegExp.$1 + '" target="_blank" class="twitter-intext-link">#' + RegExp.$1 + '</a>' ); 
                 flgAllReplaced = false;
             }
             if ( ( matchesName = patternName.exec( text ) ) != null ) {
-                text = text.replace( patternName, ' <a href="' + twitterPath + RegExp.$1 + '" target="_blank" class="twitter-intext-link"><s>@</s><b>' + RegExp.$1 + "</b></a>" ); 
+                text = text.replace( patternName, ' <a href="' + twitterPath + RegExp.$1 + '" target="_blank" class="twitter-intext-link">@' + RegExp.$1 + "</a>" ); 
                 flgAllReplaced = false;
             }
             if ( flgAllReplaced ) break;

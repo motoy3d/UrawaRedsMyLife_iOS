@@ -63,6 +63,7 @@ if (Ti.version < 1.8 ) {
 /**
  * DB初期化
  */
+//TODO 古いデータの削除
 function initDB() {
     var db = Ti.Database.open('urawareds.my.life');
     db.execute('CREATE TABLE IF NOT EXISTS visitedUrl (url TEXT, date INTEGER)');

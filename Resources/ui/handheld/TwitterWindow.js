@@ -177,10 +177,44 @@ function TwitterWindow(tabGroup) {
         html = util.replaceAll(html, "{text}", text);
         html = util.replaceAll(html, "{timeText}", t.timeText);
 
-        var web = Ti.UI.createWebView({
+        var webView = Ti.UI.createWebView({
             html: html
         });
-        tweetWin.add(web);
+
+        // ロード前のイベント
+        var ind;
+        webView.addEventListener('beforeload',function(e){
+            if(e.navigationType != 5) {//リンク先URLのhtml中の画像やiframeの場合、5
+                Ti.API.info('beforeload #################### ');
+                for(i in e) {
+                    Ti.API.info('   ' + i + ' = ' + e[i]);
+                }
+                webView.opacity = 0.8;
+                Ti.API.info('インジケータshow');
+                ind = Ti.UI.createActivityIndicator({color: 'red'});
+                webView.add(ind);
+                ind.show();
+                indicator.show();//TODO
+                webView.url = e.url;
+            }
+        }); 
+        // ロード完了時にインジケータを隠す
+        webView.addEventListener("load", function(e) {
+            if(ind) {
+                for(i in e) {
+                    Ti.API.info('   ' + i + ' = ' + e[i]);
+                }
+                Ti.API.info('load ####################');
+                Ti.API.info('インジケータhide');
+                webView.opacity = 1.0;
+                ind.hide();
+                indicator.hide();//TODO
+                ind = null;
+            }
+        });
+
+
+        tweetWin.add(webView);
         tabGroup.activeTab.open(tweetWin, {animated: true});
     });
 
