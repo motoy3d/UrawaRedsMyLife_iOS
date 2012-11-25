@@ -103,6 +103,41 @@ exports.util = {
         else if(teamName == 'ガイナーレ鳥取') return '鳥取';
         else if(teamName == 'FC町田ゼルビア') return '町田';
 	},
+	/**
+	 *  ゼロパディング
+	 */
+	zeroPad : function(str, length) {
+	    return new Array(length - ('' + str).length + 1).join('0') + str;
+	},
+	/**
+	 * 日付をフォーマットする 
+	 */
+    formatDate : function(date) {
+        var zeroPad = function(str, length) {
+            return new Array(length - ('' + str).length + 1).join('0') + str;
+        }
+        if(!date) {
+            date = new Date();
+        }
+        var datestr = '' + (1900 + date.getYear())+'/'+ zeroPad(date.getMonth()+1, 2) 
+            + "/" + zeroPad(date.getDate(), 2);
+        return datestr;
+    },	
+    /**
+     * 日時をフォーマットする 
+     */
+    formatDatetime : function(date) {
+        var zeroPad = function(str, length) {
+            return new Array(length - ('' + str).length + 1).join('0') + str;
+        }
+        if(!date) {
+            date = new Date();
+        }
+        var datestr = '' + (1900 + date.getYear())+'/'+ zeroPad(date.getMonth()+1, 2) 
+            + "/" + zeroPad(date.getDate(), 2)
+            + "  " + date.getHours() + ":" + date.getMinutes();
+        return datestr;
+    },  
     /**
      *  日付のパースして現在からのどのくらい前かを返す。例：「３分前、５時間前、2日前」
      */

@@ -10,11 +10,6 @@
  *  
  */
 
-//bootstrap and check dependencies
-if (Ti.version < 1.8 ) {
-	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');
-}
-
 // This is a single context application with mutliple windows in a stack
 (function() {
 	Ti.include('util/analytics.js');
@@ -65,8 +60,16 @@ if (Ti.version < 1.8 ) {
  */
 //TODO 古いデータの削除
 function initDB() {
+    var util = require("util/util").util;
     var db = Ti.Database.open('urawareds.my.life');
     db.execute('CREATE TABLE IF NOT EXISTS visitedUrl (url TEXT, date INTEGER)');
+    var date = new Date();
+    var days = 10;
+    date.setTime(date.getTime() - 24 * 60 * 60 * 1000 * days);
+    var condDate = "'" + util.formatDate(date) + "'";
+    // 一定日数以前のデータを削除する
+    var deleteSql = "DELETE FROM visitedUrl WHERE date < " + condDate;
+    db.execute(deleteSql);
     db.close();
 }
 

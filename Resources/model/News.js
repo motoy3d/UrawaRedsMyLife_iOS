@@ -3,8 +3,10 @@ var style = require("util/style").style;
 var newsSource = require("model/newsSource");
 
 var LOAD_FEED_SIZE = 25;
+// Google Reader Atom Feed (http://colo-ri.jp/develop/2009/12/google-reader-apiapi.html)
 var feedUrl = "http://www.google.com/reader/public/atom/user"
-	+ "%2F12632507706320288487%2Flabel%2FUrawaReds?n=" + LOAD_FEED_SIZE;
+	+ "%2F12632507706320288487%2Flabel%2FUrawaReds?"
+	+ "n=" + LOAD_FEED_SIZE;
 var visitedUrlList = new Array();
 
 /**
@@ -12,6 +14,7 @@ var visitedUrlList = new Array();
  */
 function News() {
 	var self = {};
+    self.newest_item_timestamp = 0; // 最新データを読み込む場合のパラメータ（最新フィードのタイムスタンプ）
 	self.continuation = "";	// さらに読み込む場合のGoogle Readerキーワード
 	self.updating = false;	// スクロール時のテーブルビュー更新
 	self.visitedUrls = new Array();
@@ -30,9 +33,13 @@ function News() {
 
 /**
  * フィードを読み込んで表示する
+ * @kind ("firstTime" or "olderEntries" or "newerEntries")
+ * @continuation kind=olderEntriesの場合のみ使用。Google Reader用「次へ」用パラメータ 
+ * ＠newest_item_timestamp kind=newerEntriesの場合のみ使用。最新データ取得時のstart_time
+ * @callback
  */
-function loadNewsFeed(continuation, callback, reloadRow) {
-	Ti.API.info('loadNewsFeed start-------------------------------');
+function loadNewsFeed(kind, continuation, newest_item_timestamp, callback) {
+	Ti.API.info('loadNewsFeed start-------------------------------kind=' + kind);
 	// オンラインチェック
 	if(!Ti.Network.online) {
 		callback.fail(style.common.offlineMsg);
@@ -41,41 +48,52 @@ function loadNewsFeed(continuation, callback, reloadRow) {
     Ti.App.Analytics.trackPageview('/newsList');
 
 	// Google Readerで「次へ」をするためのキー文字列
-	var continuationPart = "";
-	if(continuation != "") {
-		continuationPart = "&c=" + continuation; 
-	}
-
+	var condition = "";
+	if('olderEntries' == kind) {
+        condition = "&c=" + continuation; //c=continuation
+    } else if('newerEntries' == kind) {
+        condition = "&ot=" + newest_item_timestamp; //ot=start_time
+    }
 	// フィードを取得
 	var selectFeedQuery = "SELECT "
 		+ "id.original-id, link.href, title.content, source.title.content,"
 		+ "published, content.content, summary.content"
-		+ " FROM feed WHERE url='" + feedUrl + continuationPart + "'"
+		+ ", crawl-timestamp-msec"//最新データ取得時に使用
+		+ " FROM feed WHERE url='" + feedUrl 
+		+ condition + "'"
 		+ " AND title.content NOT LIKE 'PR%'"
 		+ " | sort (field=\"published\", descending=\"true\")"
-		+ " | unique (field=\"title\")";
+		+ " | unique (field=\"title\")"
+		;
 		
 	Ti.API.info("★★★YQL " + selectFeedQuery);
 	Ti.Yahoo.yql(selectFeedQuery, function(e) {
         if(e.data == null) {
+            Ti.API.info('e.data = null');
             return;
         }
 		try {
 			Ti.API.info("e.data.entry■" + e.data.entry);
-			var rowsData = e.data.entry.map(
-				function(item) {
-					var row = createNewsRow(item);
-//					Ti.API.info("row=====" + row);
-					return (row);
-				}
-			);
+			var rowsData = null;
+			var next_newest_item_timestamp = 0;
+			if(e.data.entry.map) {
+                rowsData = e.data.entry.map(
+                    function(item) {
+                        var row = createNewsRow(item);
+                        if(next_newest_item_timestamp < row.newest_item_timestamp) {
+                            next_newest_item_timestamp = row.newest_item_timestamp;
+                        }
+    //                  Ti.API.info("row=====" + row);
+                        return (row);
+                    }
+                );
+			}
 //			Ti.API.info("return rowsData■" + rowsData);
-			callback.success(rowsData, continuation);
+			callback.success(rowsData, next_newest_item_timestamp);
 		} catch(ex) {
 			Ti.API.error("loadNewsFeedエラー：" + ex);
 			callback.fail('読み込みに失敗しました');
 			//indWin.close();
-		} finally {
 		}
 	});
 }
@@ -87,18 +105,20 @@ function getContinuation(continuation, callback) {
     if(!Ti.Network.online) {
         return;
     }
-	// Google Readerで「次へ」をするためのキー文字列
-	var continuationPart = "";
-	if(continuation != "") {
-		continuationPart = "&c=" + continuation; 
-	}
-
+    // Google Readerで「次へ」をするためのキー文字列
+    var continuationPart = "";
+    if(continuation != '') {
+        continuationPart = "&c=" + continuation; //c=continuation
+    }
 	// continuationの取得
 	var selectContinuationQuery = "SELECT continuation FROM xml WHERE url='" 
 		+ feedUrl + continuationPart + "'";
 	var isContinuationUpdate = false;
 	Ti.API.info("★YQL " + selectContinuationQuery);
 	Ti.Yahoo.yql(selectContinuationQuery, function(e) {
+	    Ti.API.info('e=' + e);
+	    Ti.API.info('e.data=' + e.data);
+	    Ti.API.info('e.data.feed=' + e.data.feed);
 		continuation = e.data.feed.continuation;
 		Ti.API.info("continuation=== " + continuation);
 		callback.success(continuation);
@@ -222,6 +242,9 @@ function createNewsRow(item) {
 	row.link = link;
 	row.content = content;
 	row.pubDate = pubDateText;
+	// ミリ秒から秒に変換
+	row.newest_item_timestamp = Math.round(item['crawl-timestamp-msec'] / 1000);
+	Ti.API.info('★★row.newest_item_timestamp = ' + row.newest_item_timestamp + " / " + itemTitle);
     return row;
 }
 
@@ -241,8 +264,7 @@ function parseDate(str){// str==yyyy-mm-ddThh:mm:ssZ
  * DBに既読URLを保存する
  */
 function saveVisitedUrl(url) {
-    var now = new Date();
-    var date = now.getYear() + '' + now.getMonth() + '' + now.getDate();
+    var date = util.formatDate();
     var db = Ti.Database.open('urawareds.my.life');
     try {
         db.execute('INSERT INTO visitedUrl(url, date) VALUES(?, ?)', url, date);
@@ -262,7 +284,7 @@ function getVisitedUrlList() {
         var rows = db.execute('SELECT url, date FROM visitedUrl');
         while (rows.isValidRow()) {
             urlList.push(rows.field(0));
-            Ti.API.info('既読　######## ' + rows.field(0));
+            Ti.API.info('既読　######## ' + rows.field(1) + " : " + rows.field(0));
             // Ti.API.info('Person ---> ROWID: ' + rows.fieldByName('rowid') 
                 // + ', name:' + rows.field(1) + ', phone_number: ' 
                 // + rows.fieldByName('phone_number') + ', city: ' + rows.field(3));
