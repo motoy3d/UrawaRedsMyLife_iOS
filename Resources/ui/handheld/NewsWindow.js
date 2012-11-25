@@ -13,15 +13,10 @@ function NewsWindow(tabGroup) {
 	var style = require("util/style").style;
 	var news = new News();
     
-    // 更新ボタン
-    var refreshButton = Ti.UI.createButton({
-        systemButton: Ti.UI.iPhone.SystemButton.REFRESH
-    });
     // ウィンドウ
 	var self = Ti.UI.createWindow({
 		title: L('news')
 		,barColor: 'red'
-		,rightNavButton: refreshButton
 	});
 	// テーブル
 	var table = Ti.UI.createTableView(style.news.table);
@@ -30,15 +25,6 @@ function NewsWindow(tabGroup) {
 	var indicator = Ti.UI.createActivityIndicator();
 	self.add(indicator);
 	indicator.show();
-    // リロードボタン
-    refreshButton.addEventListener('click', function(e){
-        news = new News();
-        self.remove(table);
-        self.add(indicator);
-        indicator.show();
-        loadFeed(news, 'firstTime');
-        table.scrollToTop();
-    });
     
     // ボーダー
     var border = Ti.UI.createView({
@@ -238,7 +224,7 @@ function NewsWindow(tabGroup) {
 	 */
 	function loadFeed(news, kind) {
 		var style = require("util/style").style;
-		Ti.API.info(new Date() + '  loadFeed.................................tableView=' + table);
+		Ti.API.debug(new Date() + '  loadFeed.................................tableView=' + table);
 		//alert('loadFeed : ' + news + ", kind=" + kind);
         //alert(news.loadNewsFeed);
 		news.loadNewsFeed(
@@ -249,7 +235,7 @@ function NewsWindow(tabGroup) {
     					// 読み込み中Row削除
     					loadingInd.hide();
     					
-    					Ti.API.info("rowsData■" + rowsData);
+    					Ti.API.debug("rowsData■" + rowsData);
                         // 初回ロード時
     					if("firstTime" == kind) {
                             self.add(table);
@@ -258,7 +244,7 @@ function NewsWindow(tabGroup) {
                                 news.newest_item_timestamp = newest_item_timestamp;
                             }
                             indicator.hide();
-                            Ti.API.info('■■■newest_item_timestamp = ' + news.newest_item_timestamp);
+                            Ti.API.debug('■■■newest_item_timestamp = ' + news.newest_item_timestamp);
     					}
     					// 2回目以降の追加ロード時
     					else if("olderEntries" == kind) {
@@ -269,24 +255,24 @@ function NewsWindow(tabGroup) {
                                     if(i == 0) {
                                         //indWin.close();
                                     }
-                                    Ti.API.info("appendRow. " + i + "  " + rowsData[i].children[0].text);
+                                    Ti.API.debug("appendRow. " + i + "  " + rowsData[i].children[0].text);
                                     table.appendRow(rowsData[i]);
                                 }
     						}
-    						Ti.API.info("読み込み中Row削除：" + lastRow);
+    						Ti.API.debug("読み込み中Row削除：" + lastRow);
     						table.deleteRow(lastRow);
     						endLoadingOlder();
     					}
                         // 最新データロード時
                         else if("newerEntries" == kind) {
                             if(rowsData) {
-                                Ti.API.info('最新データ読み込み  件数＝' + rowsData.length);
+                                Ti.API.debug('最新データ読み込み  件数＝' + rowsData.length);
                                 for(i=0; i<rowsData.length; i++) {
                                     //Ti.API.info("appendRow. " + i + "  " + rowsData[i].children[0].text);
                                     table.insertRowBefore(0, rowsData[i]);
                                 }
                                 news.newest_item_timestamp = rowsData[0].newest_item_timestamp;
-                                Ti.API.info('■newest_item_timestamp = ' + news.newest_item_timestamp);
+                                Ti.API.debug('■newest_item_timestamp = ' + news.newest_item_timestamp);
                             }
                             endLoadingNewer();
     					}

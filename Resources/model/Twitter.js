@@ -32,6 +32,9 @@ function Twitter() {
      * @param callback (TwitterWindow.js)
      */
     function loadTweets(kind, callback) {
+        Ti.API.info('---------------------------------------------------------------------');
+        Ti.API.info(util.formatDatetime() + '  twitter読み込み');
+        Ti.API.info('---------------------------------------------------------------------');
         // オンラインチェック
         if(!Ti.Network.online) {
             callback.fail(style.common.offlineMsg);
@@ -58,19 +61,13 @@ function Twitter() {
         Ti.API.info('★★query=' + query);
         Ti.Yahoo.yql(query, function(e) {
             try {
-                Ti.API.info('JSON length = ' + JSON.stringify(e.data.json, null, ' ').length);
-                if(e.data == null /*|| isArray(e.data.json)*/) {
+                if(e.data == null || !e.data.json || !e.data.json.map) {
                     callback.fail(style.common.loadingFailMsg);
                     return;
                 }
-                if(!e.data.json.map) {
-                    return;
-                }
+                Ti.API.info('JSON length = ' + JSON.stringify(e.data.json, null, ' ').length);
                     
-                // ページネーション用パラメータ
-//                    nextPageParam = e.data.json.next_page;
-//                    Ti.API.info("★nextPageParam ====== " + nextPageParam);
-                    // 取得したJSONをリスト化する
+                // 取得したJSONをリスト化する
                 var tweetList = e.data.json.map(
                     function(item) {
                         // ページネーション用パラメータ

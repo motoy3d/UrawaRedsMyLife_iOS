@@ -17,6 +17,10 @@ function Standings() {
 	 * Yahooスポーツサイトのhtmlを読み込んで表示する
 	 */
 	function load(callback) {
+	    Ti.API.info('---------------------------------------------------------------------');
+	    Ti.API.info(util.formatDatetime() + '  順位表読み込み');
+        Ti.API.info('---------------------------------------------------------------------');
+        
 		// オンラインチェック
 		if(!Ti.Network.online) {
             callback.fail(style.common.offlineMsg);
@@ -25,6 +29,7 @@ function Standings() {
 		Ti.App.Analytics.trackPageview('/standings');
 		var before = new Date();
 		var standingBody = "";
+		Ti.API.info('★★順位表YQL ' + standingsQuery);
 		Ti.Yahoo.yql(standingsQuery, function(e) {
 			try {
 				if(e.data == null) {
@@ -32,7 +37,7 @@ function Standings() {
 					return;
 				}
 				var standingsDataList = new Array();
-				Ti.API.info("e.data.tr■" + e.data.tr.length);
+				Ti.API.debug("e.data.tr■" + e.data.tr.length);
 				var dataList = e.data.tr;			
 				for(i=1; i<dataList.length; i++) {
 					// タグからデータ抽出
@@ -49,7 +54,7 @@ function Standings() {
 					var diff = tdList[11].p;
 					// var gridRow = new GridRow(gridRowClassName);
 					//Ti.API.info(i + "★gridRow=" + gridRow);
-					Ti.API.info(rank + ' : ' + team + ' : ' + point);
+					Ti.API.debug(rank + ' : ' + team + ' : ' + point);
 					
 					var standingsData = {
 					    rank: rank

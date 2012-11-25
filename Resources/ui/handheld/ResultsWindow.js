@@ -8,25 +8,31 @@ function ResultsWindow(tabGroup) {
 	var util = require("util/util").util;
 	var style = require("util/style").style;
 
+    // 更新ボタン
+    var refreshButton = Ti.UI.createButton({
+        systemButton: Ti.UI.iPhone.SystemButton.REFRESH
+    });
 	var self = Ti.UI.createWindow({
-		title: '日程・結果',
+		title: L('results'),
 		backgroundColor:'black'
 		,barColor: 'red'
+        ,rightNavButton: refreshButton
 	});
 	self.loadDetailHtml = loadDetailHtml;	//function
 	self.searchMovie = searchMovie;	//function
-	
+    // テーブル
+    var tableView = Ti.UI.createTableView(style.results.table); 
+    var results = new Results(self);
+
+    // リロードボタン
+    refreshButton.addEventListener('click', function(e){
+        self.remove(tableView);
+        indicator.show();
+        loadResults();
+    });
 	// インジケータ
     var indicator = Ti.UI.createActivityIndicator();
 	self.add(indicator);
-
-	// テーブル
-	var tableView = Ti.UI.createTableView({
-		backgroundColor:'black'
-	});
-	
-	var results = new Results(self);
-
 	/**
 	 * 浦和公式サイトの試合日程htmlを読み込んで表示する
 	 */

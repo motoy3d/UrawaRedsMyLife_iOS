@@ -18,7 +18,8 @@ exports.style = {
 	},
 	news : {
 	    table : {
-	        backgroundColor:'black'
+	        backgroundColor: 'black',
+            separatorColor: '#666'
 	    },
 		tableViewRow : {
 			layout : 'horizontal',
@@ -30,14 +31,7 @@ exports.style = {
 		},
 		rowView : {
 			width : Ti.UI.FILL,
-			height : Ti.UI.SIZE,
-			backgroundGradient : {
-			    type:'linear',
-			    colors:[
-			        {position:0.00,color:'#000000'},
-			        {position:1.00,color:'#666666'}
-			    ]
-			}
+			height : Ti.UI.SIZE
 		},
 		titleLabel : {
 			color : "white",
@@ -56,7 +50,7 @@ exports.style = {
             left : 4
         },
 		siteNameLabel : {
-			color : "#ccc",
+			color : "lightgray",
 			font : {fontSize : 14},
 			width : Ti.UI.FILL,
 			height : Ti.UI.SIZE,
@@ -88,6 +82,10 @@ exports.style = {
 		visitedBgColor : '#457'
 	},
 	results : {
+	    table : {
+	        backgroundColor: 'black',
+	        separatorColor: 'gray'
+	    },
 		tableViewRow : {
 			height : 'auto',
 			backgroundColor : 'black',
@@ -97,14 +95,14 @@ exports.style = {
 		},
 		dateLabel : {
 			width : 135,
-			color : 'gray',
+			color : 'lightgray',
 			font : {fontSize : 13},
 			height : 24,
 			top : 4,
 			left : 4			
 		},
 		compeLabel : {
-			color : 'gray',
+			color : 'lightgray',
 			font : {fontSize : 13},
 			width : 140,
 			height : 24,
@@ -113,7 +111,7 @@ exports.style = {
 		},
 		stadiumLabel : {
 			width : 200,
-			color : 'gray',
+			color : 'lightgray',
 			font : {fontSize : 13},
 			top : 26,
 			left : 5			
@@ -163,7 +161,39 @@ exports.style = {
 			right : 10			
 		}
 	},
+	standings : {
+	    table : {
+            top: 37,
+            allowsSelection: false,
+            separatorColor: '#666'	        
+	    },
+	    headerView : {
+	        backgroundColor: 'black'
+	    },
+	    headerLabel : {
+            height: 33,
+            top : 1,
+            backgroundColor: 'black',
+            color: 'white'	        
+	    },
+	    border : {
+            width: Ti.UI.FILL,
+            height: 1,
+            top: 34
+            ,borderWidth: 1
+            ,borderColor: '#999'	        
+	    },
+	    tableViewRow : {
+            height: 28
+            ,color: 'white'
+            ,backgroundColor: 'black'	        
+	    }
+	},
 	twitter : {
+	    table : {
+	        separatorColor: '#666',
+	        allowsSelection: true
+	    },
 		tableViewRow : {
 			height : Ti.UI.SIZE,
 			backgroundColor : "black",
@@ -199,7 +229,7 @@ exports.style = {
 		},
 		timeLabel : {
 		    /*color : "#d87",*/
-		   color : "white",
+		   color : "lightgray",
             font : {fontSize : 13},
             height : Ti.UI.SIZE,
             bottom : 5,

@@ -135,7 +135,7 @@ exports.util = {
         }
         var datestr = '' + (1900 + date.getYear())+'/'+ zeroPad(date.getMonth()+1, 2) 
             + "/" + zeroPad(date.getDate(), 2)
-            + "  " + date.getHours() + ":" + date.getMinutes();
+            + "  " + zeroPad(date.getHours(), 2) + ":" + zeroPad(date.getMinutes(), 2);
         return datestr;
     },  
     /**

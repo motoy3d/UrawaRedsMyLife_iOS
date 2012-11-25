@@ -39,7 +39,9 @@ function News() {
  * @callback
  */
 function loadNewsFeed(kind, continuation, newest_item_timestamp, callback) {
-	Ti.API.info('loadNewsFeed start-------------------------------kind=' + kind);
+    Ti.API.info('---------------------------------------------------------------------');
+    Ti.API.info(util.formatDatetime() + '  ニュース読み込み kind=' + kind);
+    Ti.API.info('---------------------------------------------------------------------');
 	// オンラインチェック
 	if(!Ti.Network.online) {
 		callback.fail(style.common.offlineMsg);
@@ -244,7 +246,7 @@ function createNewsRow(item) {
 	row.pubDate = pubDateText;
 	// ミリ秒から秒に変換
 	row.newest_item_timestamp = Math.round(item['crawl-timestamp-msec'] / 1000);
-	Ti.API.info('★★row.newest_item_timestamp = ' + row.newest_item_timestamp + " / " + itemTitle);
+	//Ti.API.info('★★row.newest_item_timestamp = ' + row.newest_item_timestamp + " / " + itemTitle);
     return row;
 }
 

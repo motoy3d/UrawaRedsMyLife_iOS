@@ -33,13 +33,15 @@ tableView.addEventListener('click', function(e) {
 	} else {
 		playYouTube(e.row.videotitle, e.row.guid);
 	}
-
 });
 
 /**
  * Youtubeで検索し、一覧表示する。
  */
 function doYouTubeSearch(searchTerm1, searchTerm2) {
+    Ti.API.info('---------------------------------------------------------------------');
+    Ti.API.info(util.formatDatetime() + '  youtube読み込み');
+    Ti.API.info('---------------------------------------------------------------------');
 	// オンラインチェック
 	if(!Ti.Network.online) {
 		indWin.close();

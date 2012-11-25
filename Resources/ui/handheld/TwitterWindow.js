@@ -43,10 +43,7 @@ function TwitterWindow(tabGroup) {
     });
     
     // テーブル
-    var table = Ti.UI.createTableView({
-        allowsSelection: true
-        ,separatorColor: '#666'
-    });
+    var table = Ti.UI.createTableView(style.twitter.table);
     var twitter = new Twitter();
 
     /**

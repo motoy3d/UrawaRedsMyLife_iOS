@@ -4,21 +4,24 @@
 function StandingsWindow(tabGroup) {
 	var Standings = require("model/Standings");
 	// var util = require("util/util").util;
-	// var style = require("util/style").style;
+	var style = require("util/style").style;
 
+    // 更新ボタン
+    var refreshButton = Ti.UI.createButton({
+        systemButton: Ti.UI.iPhone.SystemButton.REFRESH
+    });
 	var self = Ti.UI.createWindow({
 		title: L('standings'),
 		backgroundColor: 'black'
 		,barColor: 'red'
+        ,rightNavButton: refreshButton
 	});
 		
 	//openイベント
 	self.addEventListener('open', function(e) {
 		loadStandings();
 	});
-    var head = Ti.UI.createView({
-        backgroundColor: 'black'
-    });
+    var headerView = Ti.UI.createView(style.standings.headerView);
     
     // ヘッダー
     var rankHeader = createHeaderLabel('位', 5);
@@ -32,25 +35,19 @@ function StandingsWindow(tabGroup) {
     var gotGoalHeader = createHeaderLabel('得', leftPos+(w*4));
     var lostGoalHeader = createHeaderLabel('失', leftPos+(w*5));
     var diffGoalHeader = createHeaderLabel('差', leftPos+(w*6));
-    head.add(rankHeader);
-    head.add(teamHeader);
-    head.add(pointHeader);
-    head.add(winHeader);
-    head.add(drawHeader);
-    head.add(loseHeader);
-    head.add(gotGoalHeader);
-    head.add(lostGoalHeader);
-    head.add(diffGoalHeader);
-    self.add(head);
+    headerView.add(rankHeader);
+    headerView.add(teamHeader);
+    headerView.add(pointHeader);
+    headerView.add(winHeader);
+    headerView.add(drawHeader);
+    headerView.add(loseHeader);
+    headerView.add(gotGoalHeader);
+    headerView.add(lostGoalHeader);
+    headerView.add(diffGoalHeader);
+    self.add(headerView);
 
     // ボーダー
-    var border = Ti.UI.createLabel({
-        width: Ti.UI.FILL,
-        height: 1,
-        top: 34
-        ,borderWidth: 1
-        ,borderColor: '#999'
-    });
+    var border = Ti.UI.createLabel(style.standings.border);
     self.add(border);
     
     // インジケータ
@@ -59,20 +56,13 @@ function StandingsWindow(tabGroup) {
     
     var platformHeight = Ti.Platform.displayCaps.platformHeight;
     Ti.API.debug('platformHeight=' + platformHeight);
-    // 順位表ボディ部
-    // var body = Ti.UI.createScrollView({
-       // contentWidth: 'auto',
-        // contentHeight: 'auto',
-        // showVerticalScrollIndicator: true,
-      // // top: 50,
-      // height: platformHeight-37,
-      // width: Ti.UI.FILL
-    // });
-    // Create a TableView.
-    var table = Ti.UI.createTableView({
-        top: 37
-        ,allowsSelection: false
-        ,separatorColor: '#666'
+    var table = Ti.UI.createTableView(style.standings.table);
+
+    // リロードボタン
+    refreshButton.addEventListener('click', function(e){
+        self.remove(table);
+        indicator.show();
+        loadStandings();
     });
 
 	/**
@@ -114,15 +104,10 @@ function StandingsWindow(tabGroup) {
      * ヘッダーラベルを生成して返す
      */
     function createHeaderLabel(name, left) {
-        var headerStyle = {
-            text: name,
-            height: 33,
-            top : 1,
-            left : left,
-            backgroundColor: 'black',
-            color: 'white'
-        };
-        return Ti.UI.createLabel(headerStyle);
+        var label = Ti.UI.createLabel(style.standings.headerLabel);
+        label.text = name;
+        label.left = left;
+        return label;
     }
     
     /**
@@ -138,11 +123,7 @@ function StandingsWindow(tabGroup) {
      * @param {Object} diff
      */
     function createRow(rank, team, point, win, draw, lose, gotGoal, lostGoal, diffGoal) {
-        var row = Ti.UI.createTableViewRow({
-            height: 28
-            ,color: 'white'
-            ,backgroundColor: 'black'
-        });
+        var row = Ti.UI.createTableViewRow(style.standings.tableViewRow);
         // 順位
         var rankLabel = createRowLabel(rank, 5, 20, 'center');
         row.add(rankLabel);
@@ -176,7 +157,6 @@ function StandingsWindow(tabGroup) {
         if('浦和' == team) {
             row.backgroundColor = 'red';
         }
-        
         return row;
     }
     

@@ -20,6 +20,9 @@ function Results(resultsWindow) {
 	 * 浦和公式サイトの試合日程htmlを読み込む
 	 */
 	function load(callback) {
+        Ti.API.info('---------------------------------------------------------------------');
+        Ti.API.info(util.formatDatetime() + '  日程・結果読み込み');
+        Ti.API.info('---------------------------------------------------------------------');
         // オンラインチェック
         if(!Ti.Network.online) {
             callback.fail(style.common.offlineMsg);
@@ -28,7 +31,7 @@ function Results(resultsWindow) {
         Ti.App.Analytics.trackPageview('/results');
 		var before = new Date();
 		var currentSeason = util.getCurrentSeason();
-		Ti.API.info("シーズン＝" + currentSeason);
+		Ti.API.debug("シーズン＝" + currentSeason);
 			
 		Ti.API.info("★★★YQL " + resultsQuery);
 		Ti.Yahoo.yql(resultsQuery, function(e) {
@@ -38,7 +41,7 @@ function Results(resultsWindow) {
 					callback.fail(style.common.loadingFailMsg);
 					return;
 				}
-	//			Ti.API.info("e.data.tr■" + e.data.tr);
+	//			Ti.API.debug("e.data.tr■" + e.data.tr);
 				var rowsData = e.data.tr.map(
 					function(item) {
 						var row = createRow(item, currentSeason);
@@ -47,7 +50,7 @@ function Results(resultsWindow) {
 						}
 					}
 				);
-				Ti.API.info('---------rowsData=' + rowsData.length);
+				//Ti.API.debug('---------rowsData=' + rowsData.length);
 				callback.success(rowsData);
 			} catch(ex) {
 				Ti.API.info('エラー：' + ex);
@@ -69,12 +72,12 @@ function Results(resultsWindow) {
 		if("大会/節" == compe) {
 			return null;
 		}
-	//Ti.API.info('compe=' + compe);
+	//Ti.API.debug('compe=' + compe);
 		var date = tdList[1].p;
 		if(date.content) {
 		    date = util.removeLineBreak(util.replaceAll(date.content, "<br/>", ""));
 		}
-		Ti.API.info('■' + date);
+		Ti.API.debug('■' + date);
 		var time = tdList[2].p;
 		var team = tdList[3].p;
 		if(team == "") {
@@ -107,8 +110,8 @@ function Results(resultsWindow) {
 			}
 		}
 		var hasDetailResult = detailUrl != "";
-		Ti.API.info(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
-		// Ti.API.info("hasDetailResult=" + hasDetailResult);
+		Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
+		// Ti.API.debug("hasDetailResult=" + hasDetailResult);
 		var row = Ti.UI.createTableViewRow(style.results.tableViewRow);
 		row.detailUrl = detailUrl;
 		// 日付ラベル
@@ -158,7 +161,7 @@ function Results(resultsWindow) {
         movieButton.setEnabled(hasDetailResult);
 		// 試合動画ウィンドウを開くイベント
 		movieButton.addEventListener('click', function() {
-		    Ti.API.info('>>>>>>>>>>> date=' + date);
+		    Ti.API.debug('>>>>>>>>>>> date=' + date);
 		    var idx = date.indexOf(' ');
 		    if(idx == -1) {
 		        idx = date.indexOf('(');
@@ -178,7 +181,7 @@ function Results(resultsWindow) {
 			var teamEncoded = encodeURIComponent(team);
 			var keyword1 = currentSeason + "." + month + "." + day + '+' + urawaEncoded + '+' + teamEncoded /*+ encodeURIComponent("戦")*/;
 			var keyword2 = dateYYYYMMDD + '+' + urawaEncoded + '+' + teamEncoded + '+' + digestEncoded;
-			Ti.API.info("キーワード：" + keyword1 + "  :  " + keyword2);
+			Ti.API.debug("キーワード：" + keyword1 + "  :  " + keyword2);
 			// ResultsWindow側の処理を呼び出す
 			resultsWindow.searchMovie({
 				title: compe + "(" + date + ") " + team,
@@ -187,7 +190,7 @@ function Results(resultsWindow) {
 			});
 		});
 		row.add(movieButton);
-		//Ti.API.info('row====' + row);
+		//Ti.API.debug('row====' + row);
 		return row;
 	}
 	return self;	
