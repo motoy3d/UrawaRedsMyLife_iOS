@@ -20,74 +20,36 @@ function NewsWindow(tabGroup) {
 	});
 	// テーブル
 	var table = Ti.UI.createTableView(style.news.table);
-	
+	table.allowsSelectionDuringEditing = false;
+
 	// インジケータ
 	var indicator = Ti.UI.createActivityIndicator();
 	self.add(indicator);
 	indicator.show();
     
     // ボーダー
-    var border = Ti.UI.createView({
-        backgroundColor:"#576c89",
-        height:2,
-        bottom:0
-    });
+    var border = Ti.UI.createView(style.news.tableBorder);
     // テーブルヘッダ
-    var tableHeader = Ti.UI.createView({
-        backgroundColor: "black",
-        width:320,
-        height:60
-    });
+    var tableHeader = Ti.UI.createView(style.news.tableHeader);
     // fake it til ya make it..  create a 2 pixel
     // bottom border
     tableHeader.add(border);
     // 矢印
-    var arrow = Ti.UI.createView({
-        backgroundImage:"/images/whiteArrow.png",
-        width:23,
-        height:60,
-        bottom:10,
-        left:20
-    });
+    var arrow = Ti.UI.createView(style.news.arrow);
     // ステータスラベル
-    var statusLabel = Ti.UI.createLabel({
-        text:"ひっぱって更新",
-        left:55,
-        width:200,
-        bottom:30,
-        height: Ti.UI.FILL,
-        color:"#576c89",
-        textAlign:"center",
-        font:{fontSize:13,fontWeight:"bold"},
-        shadowColor:"#999",
-        shadowOffset:{x:0,y:1}
-    });
+    var statusLabel = Ti.UI.createLabel(style.news.statusLabel);
     // 最終更新日時ラベル
-    var lastUpdatedLabel = Ti.UI.createLabel({
-        text: "最終更新: "+util.formatDatetime(),
-        left: 55,
-        width:200,
-        bottom:15,
-        height:"auto",
-        color:"#576c89",
-        textAlign:"center",
-        font:{fontSize:12},
-        shadowColor:"#999",
-        shadowOffset:{x:0,y:1}
-    });
+    var lastUpdatedLabel = Ti.UI.createLabel(style.news.lastUpdatedLabel);
+    lastUpdatedLabel.text = "最終更新: "+util.formatDatetime();
+
     // インジケータ
-    var actInd = Titanium.UI.createActivityIndicator({
-        left:20,
-        bottom:13,
-        width:30,
-        height:30
-    });
+    var refreshActInd = Titanium.UI.createActivityIndicator(style.news.refreshActIndicator);
     // テーブルヘッダに矢印、ステータス、最終更新日時、インジケータを追加し、
     // テーブルにヘッダをセット
     tableHeader.add(arrow);
     tableHeader.add(statusLabel);
     tableHeader.add(lastUpdatedLabel);
-    tableHeader.add(actInd);
+    tableHeader.add(refreshActInd);
     table.headerPullView = tableHeader;
     // フラグ
     var pulling = false;
@@ -109,6 +71,7 @@ function NewsWindow(tabGroup) {
 	var visitedUrls = new Array();
 	// ニュース選択時のアクション
 	table.addEventListener("click", function(e) {
+        table.allowsSelection = false;
 		Ti.API.debug("  サイト名＝＝＝＝＝＝＝＝＝" + e.rowData.siteName);
 		visitedUrls.push(e.rowData.link);
 		e.row.backgroundColor = style.news.visitedBgColor;
@@ -124,6 +87,7 @@ function NewsWindow(tabGroup) {
 		// navGroup.open(webWindow, {animated: true});
 		tabGroup.activeTab.open(webWindow, {animated: true});
         Ti.App.Analytics.trackPageview('/newsDetail');
+        table.allowsSelection = true;
 	});
 
 	/**
@@ -157,11 +121,11 @@ function NewsWindow(tabGroup) {
     function endLoadingNewer() {
         Ti.API.debug('====== endLoadingNewer =======');
         // when you're done, just reset
-        table.setContentInsets({top:0},{animated:true});
+        table.setContentInsets({top: 0},{animated: false});
         reloading = false;
         lastUpdatedLabel.text = "最終更新: "+ util.formatDatetime();
         statusLabel.text = "ひっぱって更新...";
-        actInd.hide();
+        refreshActInd.hide();
         arrow.show();
     }
     	
@@ -211,7 +175,7 @@ function NewsWindow(tabGroup) {
             reloading = true;
             pulling = false;
             arrow.hide();
-            actInd.show();
+            refreshActInd.show();
             statusLabel.text = "読み込み中...";
             table.setContentInsets({top:60},{animated:true});
             arrow.transform=Ti.UI.create2DMatrix();
@@ -267,11 +231,16 @@ function NewsWindow(tabGroup) {
                         else if("newerEntries" == kind) {
                             if(rowsData) {
                                 Ti.API.debug('最新データ読み込み  件数＝' + rowsData.length);
+                                table.startLayout();
                                 for(i=0; i<rowsData.length; i++) {
-                                    //Ti.API.info("appendRow. " + i + "  " + rowsData[i].children[0].text);
-                                    table.insertRowBefore(0, rowsData[i]);
+                                    Ti.API.info("insertRowBefore. " + i + "  " + rowsData[i].pubDate + "  " 
+                                        + rowsData[i].pageTitle);
+                                    table.insertRowBefore(i, rowsData[i]);
                                 }
-                                news.newest_item_timestamp = rowsData[0].newest_item_timestamp;
+                                table.finishLayout();
+                                if(news.newest_item_timestamp < newest_item_timestamp) {
+                                    news.newest_item_timestamp = newest_item_timestamp;
+                                }
                                 Ti.API.debug('■newest_item_timestamp = ' + news.newest_item_timestamp);
                             }
                             endLoadingNewer();
@@ -299,6 +268,14 @@ function NewsWindow(tabGroup) {
             news.getContinuation(news.continuation, {
                 success: function(continuation) {
                     news.continuation = continuation;
+                },
+                fail: function(message) {
+                    Ti.API.error('NewsWindow.js  continuation取得失敗 [' + message + ']');
+                    var dialog = Ti.UI.createAlertDialog({
+                        message: message,
+                        buttonNames: ['OK']
+                    });
+                    dialog.show();
                 }
             });
 		}

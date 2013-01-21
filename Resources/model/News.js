@@ -72,6 +72,7 @@ function loadNewsFeed(kind, continuation, newest_item_timestamp, callback) {
 	Ti.Yahoo.yql(selectFeedQuery, function(e) {
         if(e.data == null) {
             Ti.API.info('e.data = null');
+            callback.success(null, null);
             return;
         }
 		try {
@@ -119,11 +120,16 @@ function getContinuation(continuation, callback) {
 	Ti.API.info("★YQL " + selectContinuationQuery);
 	Ti.Yahoo.yql(selectContinuationQuery, function(e) {
 	    Ti.API.info('e=' + e);
-	    Ti.API.info('e.data=' + e.data);
-	    Ti.API.info('e.data.feed=' + e.data.feed);
-		continuation = e.data.feed.continuation;
-		Ti.API.info("continuation=== " + continuation);
-		callback.success(continuation);
+        if(e.data) {
+    	    Ti.API.info('e.data=' + e.data);
+    	    Ti.API.info('e.data.feed=' + e.data.feed);
+    		continuation = e.data.feed.continuation;
+    		Ti.API.info("continuation=== " + continuation);
+    		callback.success(continuation);
+        } else {
+            Ti.API.error('News.js#getContinuation() e.data is null');
+            callback.fail(style.common.loadingFailMsg);
+    	}
 	});
 }
 
@@ -218,6 +224,7 @@ function createNewsRow(item) {
 		link = item.link.href;
 //		Ti.API.info("リンク3====" + link);
 	}
+	
 	// 既読確認
 	if(util.contains(visitedUrlList, link)) {
         row.backgroundColor = style.news.visitedBgColor;
@@ -245,7 +252,7 @@ function createNewsRow(item) {
 	row.content = content;
 	row.pubDate = pubDateText;
 	// ミリ秒から秒に変換
-	row.newest_item_timestamp = Math.round(item['crawl-timestamp-msec'] / 1000);
+	row.newest_item_timestamp = Math.round(item['crawl-timestamp-msec'] / 1000) + 10;
 	//Ti.API.info('★★row.newest_item_timestamp = ' + row.newest_item_timestamp + " / " + itemTitle);
     return row;
 }

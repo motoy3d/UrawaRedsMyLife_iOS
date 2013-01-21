@@ -51,11 +51,11 @@ function YoutubeWindow(youtubeData) {
 		}
         Ti.App.Analytics.trackPageview('/movieList');
 		var replaceKey = '#キーワード#';
-		var searchUrlBase = 'http://gdata.youtube.com/feeds/api/videos?alt=rss&q='
-			+ replaceKey
-			+ '&max-results=' + maxResults + '&start-index=' + startIndex
-			+ '&orderby=published'	//relevance（関連度が高い順）、published（公開日順）、viewCount（再生回数順）、rating（評価が高い順） 
-			+ '&v=2';
+        var searchUrlBase = 'http://gdata.youtube.com/feeds/api/videos?alt=rss&q='
+            + replaceKey
+            + '&max-results=' + maxResults + '&start-index=' + startIndex
+            + '&orderby=published'  //relevance（関連度が高い順）、published（公開日順）、viewCount（再生回数順）、rating（評価が高い順） 
+            + '&v=2';
 	
 		var searchUrl = searchUrlBase.replace(replaceKey, searchTerm1);
 		var searchUrl2 = null;
@@ -64,8 +64,8 @@ function YoutubeWindow(youtubeData) {
 		}
 		indicator.show();
 
-		var youtubeFeedQuery = "SELECT title,pubDate,link FROM feed WHERE " 
-			+ "url='" + searchUrl + "'";
+        var youtubeFeedQuery = "SELECT title,pubDate,link,statistics.viewCount FROM feed WHERE " 
+            + "url='" + searchUrl + "'";
 		if(searchUrl2) {
 			youtubeFeedQuery += " or " + "url='" + searchUrl2 + "'";
 		}
@@ -84,7 +84,7 @@ function YoutubeWindow(youtubeData) {
 					return;
 				}
 				for(var v in e.data.item) {
-					Ti.API.info('$$$$$$$$$$ ' + v + '=' + e.data.item[v]);
+//					Ti.API.info('$$$$$$$$$$ ' + v + '=' + e.data.item[v]);
 				}
 				Ti.API.info('e.data.itemは配列？ ' + (e.data.item instanceof Array));
 				var rowsData;
@@ -133,8 +133,10 @@ function YoutubeWindow(youtubeData) {
 			if(minutes < 10) {
 				minutes = "0" + minutes;
 			}
-			summary = (pubDate.getMonth() + 1) + "/" 
-				+ pubDate.getDate() + " " + pubDate.getHours() + ":" + minutes;
+            summary = item.statistics.viewCount + "回再生    "
+                + (pubDate.getMonth() + 1) + "/" 
+                + pubDate.getDate() + " " + pubDate.getHours() + ":" + minutes
+                ;
 		}
 	
 		var link = item.link;
@@ -145,8 +147,7 @@ function YoutubeWindow(youtubeData) {
 		var thumbnail = "http://i.ytimg.com/vi/" + guid + "/2.jpg";
 	
 		var row = Ti.UI.createTableViewRow({
-			height : 80,	//80
-	//		backgroundSelectedColor : "#f33",
+			height : 90,	
 			type : "CONTENT"
 		});
 	
@@ -155,37 +156,37 @@ function YoutubeWindow(youtubeData) {
 		row.videotitle = title;
 		row.backgroundColor = "#000000";
 		row.color = "#ffffff";
-	
+        //TODO	
 		var labelTitle = Ti.UI.createLabel({
-			text : title,
-			left : 110,	//105
-			right : 10,
-			top : 5,
-			height : 50,//40
-			font : {
-				fontSize : 14
-			},
-			color : "#ffffff"
+            text : title,
+            left : 130,
+            right : 10,
+            top : 5,
+            height : 50,
+            font : {
+                fontSize : 14
+            },
+            color : "#ffffff"
 		});
 		row.add(labelTitle);
 	
 		var labelSummary = Ti.UI.createLabel({
-			text : summary,
-			left : 110,	//105
-			// top : 45,	//45
-			bottom : 9,
-			font : {
-				fontSize : 13
-			},
-			color : "#ffffff"
+            text : summary,
+            left : 130,
+            right : 10,
+            bottom : 9,
+            font : {
+                fontSize : 13
+            },
+            color : "#ffffff"
 		});
 		row.add(labelSummary);
 	
 		var img = Ti.UI.createImageView({
 			image : thumbnail,
 			left : 0,
-			height : 80,	//80
-			width : 100		//100
+			height : 90,
+			width : 120
 		});
 		row.add(img);
 	

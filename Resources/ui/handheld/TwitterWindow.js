@@ -28,6 +28,37 @@ function TwitterWindow(tabGroup) {
     // インジケータ
     var indicator = Ti.UI.createActivityIndicator();
     self.add(indicator);
+
+/*
+    // ボーダー
+    var border = Ti.UI.createView(style.twitter.tableBorder);
+    // テーブルヘッダ
+    var tableHeader = Ti.UI.createView(style.twitter.tableHeader);
+    // fake it til ya make it..  create a 2 pixel
+    // bottom border
+    tableHeader.add(border);
+    // 矢印
+    var arrow = Ti.UI.createView(style.twitter.arrow);
+    // ステータスラベル
+    var statusLabel = Ti.UI.createLabel(style.twitter.statusLabel);
+    // 最終更新日時ラベル
+    var lastUpdatedLabel = Ti.UI.createLabel(style.twitter.lastUpdatedLabel);
+    lastUpdatedLabel.text = "最終更新: "+util.formatDatetime();
+
+    // インジケータ
+    var refreshActInd = Titanium.UI.createActivityIndicator(style.twitter.refreshActIndicator);
+    // テーブルヘッダに矢印、ステータス、最終更新日時、インジケータを追加し、
+    // テーブルにヘッダをセット
+    tableHeader.add(arrow);
+    tableHeader.add(statusLabel);
+    tableHeader.add(lastUpdatedLabel);
+    tableHeader.add(refreshActInd);
+    table.headerPullView = tableHeader;
+    // フラグ
+    var pulling = false;
+    var reloading = false;
+*/
+
     
     //openイベント
     self.addEventListener('open', function(e) {
@@ -35,15 +66,16 @@ function TwitterWindow(tabGroup) {
     });
     //refreshイベント
     refreshButton.addEventListener('click', function(e){
-        if(table.data[0]) {
-            loadTweets("newerTweets");
-        } else {
+        // if(table.data[0]) {
+            // loadTweets("newerTweets");
+        // } else {
             loadTweets("firstTime");
-        }
+        // }
     });
     
     // テーブル
     var table = Ti.UI.createTableView(style.twitter.table);
+    table.allowsSelectionDuringEditing = false;
     var twitter = new Twitter();
 
     /**

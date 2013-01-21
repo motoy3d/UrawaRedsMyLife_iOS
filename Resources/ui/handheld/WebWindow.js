@@ -11,9 +11,7 @@ function WebWindow(webData) {
 		,barColor: 'red'
 	});
 	
-	var webView = Ti.UI.createWebView({
-	    html: webData.content
-	});
+    var webView = Ti.UI.createWebView();
 	
 	//var indWin = customIndicator.create();
 	// Ti.API.info("##### webData.content=[" + webData.content + "]");
@@ -22,7 +20,7 @@ function WebWindow(webData) {
 		 webData.content.indexOf('<img src="http://feeds.feedburner.com') == -1 
 		 )
 	) {
-		// Ti.API.debug("----------- 1");
+		Ti.API.debug("-----------webWindow 1 link = " + webData.link);
 		var content = 
 			"<a href=\"" + webData.link + "\">" + webData.title  + "</a>"
 			+ " " + webData.pubDate + "<br/>"
@@ -32,13 +30,13 @@ function WebWindow(webData) {
 		webView.html = content;
 		self.add(webView);
 	} else {
-		// Ti.API.debug("----------- 2");
+		Ti.API.debug("----------- 2  link = " + webData.link);
         var ind = Ti.UI.createActivityIndicator();
 		ind.show();
 		webView.addEventListener("load", function(e) {
 			ind.hide();
 		});
-		webView.url = webData.link;
+		webView.setUrl(webData.link);
 		self.add(webView);	
 	}
 	return self;

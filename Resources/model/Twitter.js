@@ -33,7 +33,7 @@ function Twitter() {
      */
     function loadTweets(kind, callback) {
         Ti.API.info('---------------------------------------------------------------------');
-        Ti.API.info(util.formatDatetime() + '  twitter読み込み');
+        Ti.API.info(util.formatDatetime() + '  twitter読み込み ' + kind);
         Ti.API.info('---------------------------------------------------------------------');
         // オンラインチェック
         if(!Ti.Network.online) {

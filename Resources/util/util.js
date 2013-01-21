@@ -196,7 +196,8 @@ exports.util = {
         };
         if(endsWith(imgUrl, ".gif") ||
             imgUrl.indexOf("http://hbb.afl.rakuten.co.jp") == 0 ||
-            imgUrl.indexOf("http://counter2.blog.livedoor.com") == 0
+            imgUrl.indexOf("http://counter2.blog.livedoor.com") == 0 ||
+            endsWith(imgUrl, "money_yen.png")   //浦和フットボール通信
         ) {
             return true;
         }

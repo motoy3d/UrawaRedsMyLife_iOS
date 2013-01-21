@@ -44,8 +44,8 @@ exports.style = {
 			right : 4
 		},
         imgView : {
-            width: 64,
-            height: 64,
+            width: 96,
+            height: 96,
             top : 10,
             left : 4
         },
@@ -78,6 +78,48 @@ exports.style = {
 			height: 64,
 			top : 15,
 			left : 10
+		},
+		tableHeader : {
+            backgroundColor: "black",
+            width:320,
+            height:60    
+		},
+		arrow : {
+            backgroundImage:"/images/whiteArrow.png",
+            width:23,
+            height:60,
+            bottom:10,
+            left:20		    
+		},
+		statusLabel : {
+            text:"ひっぱって更新",
+            left:55,
+            width:200,
+            bottom:30,
+            height: Ti.UI.FILL,
+            color: "dddddd",
+            textAlign:"center",
+            font:{fontSize:13,fontWeight:"bold"}
+		},
+		tableBorder : {
+            backgroundColor:"#576c89",
+            height:2,
+            bottom:0
+		},
+		lastUpdatedLabel : {
+            left: 55,
+            width:200,
+            bottom:15,
+            height:"auto",
+            color:"#dddddd",
+            textAlign:"center",
+            font:{fontSize:12}
+		},
+		refreshActIndicator : {
+            left:20,
+            bottom:13,
+            width:30,
+            height:30
 		},
 		visitedBgColor : '#457'
 	},
@@ -246,6 +288,48 @@ exports.style = {
             ,backgroundColor : 'black'
             ,width: Ti.UI.FILL
             ,height: 50
+        },
+        tableHeader : {
+            backgroundColor: "black",
+            width:320,
+            height:60    
+        },
+        arrow : {
+            backgroundImage:"/images/whiteArrow.png",
+            width:23,
+            height:60,
+            bottom:10,
+            left:20         
+        },
+        statusLabel : {
+            text:"ひっぱって更新",
+            left:55,
+            width:200,
+            bottom:30,
+            height: Ti.UI.FILL,
+            color: "dddddd",
+            textAlign:"center",
+            font:{fontSize:13,fontWeight:"bold"}
+        },
+        tableBorder : {
+            backgroundColor:"#576c89",
+            height:2,
+            bottom:0
+        },
+        lastUpdatedLabel : {
+            left: 55,
+            width:200,
+            bottom:15,
+            height:"auto",
+            color:"#dddddd",
+            textAlign:"center",
+            font:{fontSize:12}
+        },
+        refreshActIndicator : {
+            left:20,
+            bottom:13,
+            width:30,
+            height:30
         }
 	}
 }
