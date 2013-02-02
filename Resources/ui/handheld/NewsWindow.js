@@ -81,6 +81,7 @@ function NewsWindow(tabGroup) {
 			siteName : e.rowData.fullSiteName,
 			link : e.rowData.link,
 			content : e.rowData.content,
+			image : e.rowData.image,
 			pubDate : e.rowData.pubDate
 		};
 		var webWindow = new WebWindow(webData);

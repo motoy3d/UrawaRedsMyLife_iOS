@@ -160,12 +160,13 @@ function createNewsRow(item) {
     // 画像
     var hasImage = false;
     var imgTagIdx = content.indexOf("<img");
+    var imgUrl = "";
     if(imgTagIdx != -1) {
         var srcIdx = content.indexOf("src=", imgTagIdx);
         if(srcIdx != -1) {
             var urlStartIdx = srcIdx + 5;
             var urlEndIdx = content.indexOf('"', urlStartIdx);
-            var imgUrl = content.substring(urlStartIdx, urlEndIdx);
+            imgUrl = content.substring(urlStartIdx, urlEndIdx);
             imgUrl = util.replaceAll(imgUrl, "&amp;", "&");
             Ti.API.debug('画像＝＝＝＝＝' + imgUrl + "  >  " + item.title);
             // アイコン等はgifが多いのでスキップ
@@ -174,6 +175,8 @@ function createNewsRow(item) {
                 imgLabel.image = imgUrl;
                 row.add(imgLabel);
                 hasImage = true;
+            } else {
+                imgUrl = "";
             }
         }
     }
@@ -250,6 +253,7 @@ function createNewsRow(item) {
 	row.pageTitle = itemTitle;
 	row.link = link;
 	row.content = content;
+	row.image = imgUrl;
 	row.pubDate = pubDateText;
 	// ミリ秒から秒に変換
 	row.newest_item_timestamp = Math.round(item['crawl-timestamp-msec'] / 1000) + 10;

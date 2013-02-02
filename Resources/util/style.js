@@ -146,7 +146,7 @@ exports.style = {
 		compeLabel : {
 			color : 'lightgray',
 			font : {fontSize : 13},
-			width : 140,
+			width : 160,
 			height : 24,
 			top : 4,
 			left : 155			

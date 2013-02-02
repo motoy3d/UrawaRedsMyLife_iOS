@@ -68,9 +68,16 @@ function Results(resultsWindow) {
 	 */
 	function createRow(item, currentSeason) {
 		var tdList = item["td"];
-		var compe = tdList[0].p;
+		var compe = "未定";
 		if("大会/節" == compe) {
 			return null;
+		}
+		if(tdList[0] && tdList[0].p) {
+		    if(tdList[0].p.content) {
+                compe = util.removeLineBreak(tdList[0].p.content);
+		    } else {
+                compe = util.removeLineBreak(tdList[0].p);
+		    }
 		}
 	//Ti.API.debug('compe=' + compe);
 		var date = tdList[1].p;
@@ -78,12 +85,18 @@ function Results(resultsWindow) {
 		    date = util.removeLineBreak(util.replaceAll(date.content, "<br/>", ""));
 		}
 		Ti.API.debug('■' + date);
-		var time = tdList[2].p;
-		var team = tdList[3].p;
-		if(team == "") {
-			team = "未定";
+		var time = "";
+		var team = "未定";
+        if(tdList[2] && tdList[2].p) {
+            time = tdList[2].p;
+        }
+		if(tdList[3] && tdList[3].p) {
+			team = tdList[3].p;
 		}
-		var stadium = tdList[4].p.content;
+		var stadium = "";
+		if(tdList[4] && tdList[4].p) {
+		    stadium = tdList[4].p.content;
+		}
 		if(stadium) {
 			var idx = stadium.indexOf("\n");
 			if(idx != -1){
