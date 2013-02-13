@@ -13,13 +13,13 @@ function WebWindow(webData) {
 	});
 	
     var webView = Ti.UI.createWebView();
-
-
-	//TODO
-	webData.content = null;
-
-
-	if(webData.content && 
+    var simpleDispModeProp = Ti.App.Properties.getBool("simpleDispMode");
+    if(webData.html) {  //tweet
+        webView.html = webData.html;
+        self.add(webView);
+    }
+	else if(simpleDispModeProp &&
+	    webData.content && 
 		(webData.content != "" && 
 		 webData.content.indexOf('<img src="http://feeds.feedburner.com') == -1 
 		 )
@@ -43,10 +43,6 @@ function WebWindow(webData) {
 		webView.setUrl(webData.link);
 		self.add(webView);	
 	}
-	
-	
-	
-	
 	//ツールバー
     var back = Ti.UI.createButton({
         image: "/images/arrow_left.png"
@@ -64,20 +60,27 @@ function WebWindow(webData) {
     });
     var twitter = Ti.UI.createButton({
         image: "/images/twitter_icon.png"
+        ,enabled: false
     });
     var facebook = Ti.UI.createButton({
         image: "/images/facebook_icon.png"
+        ,enabled: false
     });
-    var image = webData.image;
-    //TODO 画像がFBCDNの場合はfacebookのサイトと判断し、シェアボタンを無効化
-    //http://stackoverflow.com/questions/5878865/iphonegraph-api-getting-fbcdn-image-is-not-allowed-in-stream
-    if(image.indexOf("fbcdn.net") != -1) {
-        facebook.setEnabled(false);
-    }
     // WebViewロード時、戻るボタン、次へボタンの有効化、無効化
-    webView.addEventListener('load', function() {
+    webView.addEventListener('load', function(e) {
+        Ti.API.info('load★  e.url=' + e.url);
+        Ti.API.info('webView.url=' + e.url);
+        title = webView.evalJS("document.title");
+        if(title != "タイムラインの写真") {//FBの写真
+            self.title = title;
+        }
         back.setEnabled(webView.canGoBack());
         forward.setEnabled(webView.canGoForward());
+        if(webData.link.indexOf("facebook.com") == -1 && webView.url.indexOf("facebook.com") == -1) {
+            facebook.setEnabled(true);
+        } else {
+            facebook.setEnabled(false);
+        }
     });
 
     // facebookボタン
@@ -95,7 +98,7 @@ function WebWindow(webData) {
                     Ti.API.info('-----facebookログインキャンセル');
                 }
             });
-            Ti.Facebook.authorize();
+            Ti.Facebook.authorize();    //認証実行
         } else {
             facebookShare();
         }
@@ -103,16 +106,21 @@ function WebWindow(webData) {
     var flexSpace = Ti.UI.createButton({
         systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
     });
-    self.setToolbar([flexSpace, twitter, flexSpace, facebook, flexSpace, back, flexSpace, forward]);
+    self.setToolbar([flexSpace, /*twitter,*/ flexSpace, facebook, flexSpace, back, flexSpace, forward]);
     
     /**
      * facebookでシェアする
      */	
 	function facebookShare() {
-        var image = webData.image;
-        Ti.API.info('画像＝＝＝' + image);
+//        var image = webData.image;
+//        Ti.API.info('画像＝＝＝' + image);
+        var link = webView.url; 
+        if(webView.url.indexOf("app://") == 0) {
+            link = webData.link; //簡易表示の場合はwebData.link
+        }
+        Ti.API.info('facebookシェア link=' + link);
         var data = {
-            link : webView.url
+            link : link
 //                ,name : webData.title
 //                ,message :  "message"
 //                ,caption : content
@@ -120,15 +128,18 @@ function WebWindow(webData) {
             ,locale : "ja_JP"
 //                description : "ユーザの投稿文"
         };
-        Ti.App.Analytics.trackPageview('/facebookShare');
+        Ti.App.Analytics.trackPageview('/fbShareDialog');   //ダイアログを開く
         //投稿ダイアログを表示
         Ti.Facebook.dialog(
             "feed", 
             data, 
-            function(r){}
+            function(r){
+                if(r.success) {
+                    Ti.App.Analytics.trackPageview('/fbShare'); //投稿成功
+                }
+            }
         );
 	}
-	
 	return self;
 };
 

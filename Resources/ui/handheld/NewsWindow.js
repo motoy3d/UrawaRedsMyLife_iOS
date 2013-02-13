@@ -9,14 +9,25 @@
 function NewsWindow(tabGroup) {
 	var News = require("model/News");
 	var WebWindow = require("ui/handheld/WebWindow");
+    var ConfigWindow = require("/ui/handheld/ConfigWindow");
 	var util = require("util/util").util;
 	var style = require("util/style").style;
 	var news = new News();
     
+    // 設定ボタン
+    var configButton = Ti.UI.createButton({
+        image: "/images/gear.png"
+    });
+    configButton.addEventListener('click', function() {
+        var configWindow = new ConfigWindow();
+        configWindow.tabBarHidden = true;
+        tabGroup.activeTab.open(configWindow, {animated: true});
+    });
     // ウィンドウ
 	var self = Ti.UI.createWindow({
 		title: L('news')
 		,barColor: 'red'
+        ,rightNavButton: configButton
 	});
 	// テーブル
 	var table = Ti.UI.createTableView(style.news.table);
@@ -85,6 +96,7 @@ function NewsWindow(tabGroup) {
 			pubDate : e.rowData.pubDate
 		};
 		var webWindow = new WebWindow(webData);
+		webWindow.tabBarHidden = true;
 		// navGroup.open(webWindow, {animated: true});
 		tabGroup.activeTab.open(webWindow, {animated: true});
         Ti.App.Analytics.trackPageview('/newsDetail');
@@ -255,6 +267,11 @@ function NewsWindow(tabGroup) {
     				}
     			},
     			fail: function(message) {
+    			    if("olderEntries" == kind) {
+    			        endLoadingOlder();
+    			    } else if("newerEntries" == kind) {
+    			        endLoadingNewer();
+    			    }
     			    indicator.hide();
     				var dialog = Ti.UI.createAlertDialog({
     					message: message,

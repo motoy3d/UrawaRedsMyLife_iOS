@@ -3,7 +3,7 @@
  */
 function TwitterWindow(tabGroup) {
     var Twitter = require("model/Twitter");
-    
+    var WebWindow = require("ui/handheld/WebWindow");    
     var util = require("util/util").util;
     var style = require("util/style").style;
     var updating = false;
@@ -64,18 +64,20 @@ function TwitterWindow(tabGroup) {
     self.addEventListener('open', function(e) {
         loadTweets("firstTime");
     });
-    //refreshイベント
-    refreshButton.addEventListener('click', function(e){
-        // if(table.data[0]) {
-            // loadTweets("newerTweets");
-        // } else {
-            loadTweets("firstTime");
-        // }
-    });
     
     // テーブル
     var table = Ti.UI.createTableView(style.twitter.table);
     table.allowsSelectionDuringEditing = false;
+
+    //refreshイベント
+    refreshButton.addEventListener('click', function(e){
+        if(table.data[0]) {
+            loadTweets("newerTweets");
+        } else {
+            table.setData(null);            loadTweets("firstTime");
+        }
+    });
+
     var twitter = new Twitter();
 
     /**
@@ -111,7 +113,7 @@ function TwitterWindow(tabGroup) {
                         // table.setData(rows);
                         self.add(table);
                     } else if("newerTweets" == kind) {
-                        table.scrollToIndex(tweetList.length);
+//                        table.scrollToIndex(tweetList.length);
                     } else if("olderTweets" == kind) {
                         if(loadingRowIdx > 0) {
                             // “読み込み中”のローを削除する。
@@ -192,10 +194,12 @@ function TwitterWindow(tabGroup) {
     // テーブルのクリックイベント
     table.addEventListener('click', function(e) {
         var t = e.row.tweet;
-        var tweetWin = Ti.UI.createWindow({
-            navBarHidden: false
-            ,barColor: 'red'
-        });
+        // var tweetWin = Ti.UI.createWindow({
+            // navBarHidden: false
+            // ,tabBarHidden: true
+            // ,barColor: 'red'
+        // });
+
         // HTMLテンプレート
         var templateFile = Ti.Filesystem.getFile(
             Ti.Filesystem.resourcesDirectory, 'tweetTemplate.txt');
@@ -242,8 +246,12 @@ function TwitterWindow(tabGroup) {
             }
         });
 
-
-        tweetWin.add(webView);
+        var webData = {
+            html: html
+        };
+        var tweetWin = new WebWindow(webData);
+        tweetWin.tabBarHidden = true;
+        // tweetWin.add(webView);
         tabGroup.activeTab.open(tweetWin, {animated: true});
     });
 

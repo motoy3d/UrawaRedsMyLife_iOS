@@ -5,11 +5,11 @@ exports.util = {
 	 * 現時点の表示対象シーズン(年)を返す。
 	 */
 	getCurrentSeason : function() {
-		// 3/1～2月末までを1シーズンとする
+		// 2/1～1月末までを1シーズンとする
 		var now = new Date();
 		var year = now.getFullYear();
 		var month = now.getMonth();
-		if(month == 0 || month == 1) {
+		if(month == 0) {
 			year--;
 		}
 		return year;

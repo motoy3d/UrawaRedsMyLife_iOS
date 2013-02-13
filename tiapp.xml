@@ -10,11 +10,11 @@
     <sdk-version>2.1.4.GA</sdk-version>
     <id>urawareds.my.life</id>
     <name>UrawaRedsMyLife</name>
-    <version>1.1.0</version>
+    <version>1.2.1</version>
     <publisher>motoy3d</publisher>
     <url>http://motoy3d.blogspot.com</url>
     <description>Infomation hub for Urawa Reds Supporter</description>
-    <copyright>2012 by motoy3d</copyright>
+    <copyright>2013 by motoy3d</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>

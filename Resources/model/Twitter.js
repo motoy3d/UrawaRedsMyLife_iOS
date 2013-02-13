@@ -61,11 +61,11 @@ function Twitter() {
         Ti.API.info('★★query=' + query);
         Ti.Yahoo.yql(query, function(e) {
             try {
-                if(e.data == null || !e.data.json || !e.data.json.map) {
-                    callback.fail(style.common.loadingFailMsg);
+                if(!e.data || !e.data.json || !e.data.json.map) {
+                    Ti.API.info('e.data = ' + e.data);
+                    callback.success(new Array());
                     return;
                 }
-                Ti.API.info('JSON length = ' + JSON.stringify(e.data.json, null, ' ').length);
                     
                 // 取得したJSONをリスト化する
                 var tweetList = e.data.json.map(
@@ -97,8 +97,8 @@ function Twitter() {
                         return data;
                     }
                 );
+                Ti.API.info('+++++++++++++++++++ YQL終了.  ツイート件数＝' + tweetList.length)
                 callback.success(tweetList);
-                Ti.API.info('+++++++++++++++++++ YQL終了')
             } catch(ex) {
                 Ti.API.error('---------------------\n' + ex);  
                 callback.fail(style.common.loadingFailMsg + " ¥n " + ex);
