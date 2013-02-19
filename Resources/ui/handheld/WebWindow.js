@@ -77,12 +77,12 @@ function WebWindow(webData) {
         back.setEnabled(webView.canGoBack());
         forward.setEnabled(webView.canGoForward());
         if(webData.link.indexOf("facebook.com") == -1 && webView.url.indexOf("facebook.com") == -1) {
+            //facebookのページに対しては外部からシェアできない
             facebook.setEnabled(true);
         } else {
             facebook.setEnabled(false);
         }
     });
-
     // facebookボタン
     facebook.addEventListener("click", function(e){
         if(!Ti.Facebook.loggedIn) {

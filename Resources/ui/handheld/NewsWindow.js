@@ -18,10 +18,17 @@ function NewsWindow(tabGroup) {
     var configButton = Ti.UI.createButton({
         image: "/images/gear.png"
     });
+    var configButtonClicked = false;
     configButton.addEventListener('click', function() {
-        var configWindow = new ConfigWindow();
-        configWindow.tabBarHidden = true;
-        tabGroup.activeTab.open(configWindow, {animated: true});
+        if(configButtonClicked) {return;}
+        try {
+            configButtonClicked = true;
+            var configWindow = new ConfigWindow();
+            configWindow.tabBarHidden = true;
+            tabGroup.activeTab.open(configWindow, {animated: true});
+        } finally{
+            configButtonClicked = false;
+        }
     });
     // ウィンドウ
 	var self = Ti.UI.createWindow({

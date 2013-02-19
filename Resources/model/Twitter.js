@@ -61,10 +61,19 @@ function Twitter() {
         Ti.API.info('★★query=' + query);
         Ti.Yahoo.yql(query, function(e) {
             try {
-                if(!e.data || !e.data.json || !e.data.json.map) {
-                    Ti.API.info('e.data = ' + e.data);
-                    callback.success(new Array());
+                if(e.data == null || !e.data.json) {
+                    callback.fail(style.common.loadingFailMsg);
                     return;
+                }
+                // 結果が０件の場合、refresh_urlのみ格納されたデータが返ってくる
+                if(!e.data.json.map) {
+                    if(!e.data.json.results) {  //結果が０件の場合
+                        refreshUrlParam = e.data.json.refresh_url;
+                        callback.success(new Array());
+                        return;
+                    }
+                    Ti.API.info('e.data.jsonが１件のため配列に変換')
+                    e.data.json = new Array(e.data.json);
                 }
                     
                 // 取得したJSONをリスト化する

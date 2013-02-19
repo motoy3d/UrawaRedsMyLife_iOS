@@ -4,4 +4,5 @@
 	<string name="results">日程・結果</string>
 	<string name="standings">順位表</string>
 	<string name="twitter">twitter</string>
+	<string name="playerTweet">選手tweet</string>
 </resources>
