@@ -45,7 +45,7 @@ function ApplicationTabGroup(Window) {
     // 選手のツイート
     var tab5 = Ti.UI.createTab({
         title: L('playerTweet'),
-        icon: '/images/twitter.png',
+        icon: '/images/playerTweet.png',
         window: win5
     });
     win5.containingTab = tab5;
@@ -54,7 +54,7 @@ function ApplicationTabGroup(Window) {
 	self.addTab(tab2);
 	self.addTab(tab3);
 	self.addTab(tab4);
-	self.addTab(tab5);
+//	self.addTab(tab5);
     
 	return self;
 };

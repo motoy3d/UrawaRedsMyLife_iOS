@@ -71,7 +71,7 @@ function WebWindow(webData) {
         Ti.API.info('load★  e.url=' + e.url);
         Ti.API.info('webView.url=' + e.url);
         title = webView.evalJS("document.title");
-        if(title != "タイムラインの写真") {//FBの写真
+        if(title != "" && title != "タイムラインの写真") {//FBの写真
             self.title = title;
         }
         back.setEnabled(webView.canGoBack());

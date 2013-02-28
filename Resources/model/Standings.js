@@ -33,7 +33,12 @@ function Standings() {
 		Ti.Yahoo.yql(standingsQuery, function(e) {
 			try {
 				if(e.data == null) {
-				    callback.fail(style.common.loadingFailMsg);
+				    var month = new Date().getMonth() + 1;
+				    if(month == 2) {
+                        callback.fail(L('waitNewSeasonMsg'));
+				    } else {
+                        callback.fail(style.common.loadingFailMsg);
+				    }
 					return;
 				}
 				var standingsDataList = new Array();

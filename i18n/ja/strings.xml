@@ -5,4 +5,5 @@
 	<string name="standings">順位表</string>
 	<string name="twitter">twitter</string>
 	<string name="playerTweet">選手tweet</string>
+	<string name="waitNewSeasonMsg">新シーズンの開幕までお待ちください</string>
 </resources>
