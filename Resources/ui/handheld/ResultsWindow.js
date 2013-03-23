@@ -100,11 +100,9 @@ function ResultsWindow(tabGroup) {
 	 * 動画検索結果を表示する (Results.jsから呼ぶ)
 	 */
 	function searchMovie(searchCond) {
-		Ti.API.info("searchMovie----------k1 =  " + searchCond.key1 + "¥n k2 =  " + searchCond.key2);
-		var youtubeWindow = new YoutubeWindow(searchCond);
-		//youtubeWindow.doYoutubeSearch(searchCond.key1, searchCond.key2);
-		youtubeWindow.searchYoutube(searchCond.key1, searchCond.key2);
-		tabGroup.activeTab.open(youtubeWindow, {animated: true});
+        Ti.API.info("searchMovie----------k1 =  " + searchCond.key1 + "¥n k2 =  " + searchCond.key2);
+        var youtubeWindow = new YoutubeWindow(searchCond);
+        tabGroup.activeTab.open(youtubeWindow, {animated: true});
 	}
 	// window openイベント
 	self.addEventListener('open', function(){

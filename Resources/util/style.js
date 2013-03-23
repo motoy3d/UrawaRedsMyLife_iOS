@@ -204,13 +204,26 @@ exports.style = {
 		}
 	},
 	standings : {
-	    table : {
-            top: 37,
-            allowsSelection: false,
-            separatorColor: '#666'	        
+	    standingsView : {
+	        top : 0
+	        ,backgroundColor: "black"
 	    },
+	    table : {
+            top: 37
+            ,allowsSelection: false
+            ,separatorColor: '#666'
+            ,backgroundColor: "black"
+	    },
+        compeView : {
+            backgroundColor: 'black'
+        },
+        jleagueBtn : {
+            text: "J1"
+            ,backgroundColor: "black"
+        },
 	    headerView : {
-	        backgroundColor: 'black'
+	        top: 0
+	        ,backgroundColor: 'black'
 	    },
 	    headerLabel : {
             height: 33,
@@ -233,8 +246,9 @@ exports.style = {
 	},
 	twitter : {
 	    table : {
-	        separatorColor: '#666',
-	        allowsSelection: true
+	        separatorColor: '#666'
+	        ,allowsSelection: true
+	        ,backgroundColor: "black"
 	    },
 		tableViewRow : {
 			height : Ti.UI.SIZE,

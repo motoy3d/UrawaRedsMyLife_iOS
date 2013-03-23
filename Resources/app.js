@@ -36,9 +36,18 @@
 	Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.OPAQUE_BLACK;
 	
 	// 全置換：全ての文字列 org を dest に置き換える  
-	String.prototype.replaceAll = function (org, dest){  
+	String.prototype.replaceAll = function (org, dest) {  
 	  return this.split(org).join(dest);  
-	}      
+	}
+	//バイト数を返す。
+	String.prototype.getBytes = function() {
+        var count = 0;
+        for (i=0; i<this.length; i++) {
+            var n = escape(this.charAt(i));
+            if (n.length < 4) count++; else count+=2;
+        }
+        return count;
+	}
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
 	var tabGroup = new ApplicationTabGroup(Window);
 	// TabGroupをglobalにセット

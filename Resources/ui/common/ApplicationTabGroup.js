@@ -3,7 +3,6 @@ function ApplicationTabGroup(Window) {
 	var ResultsWindow = require('ui/handheld/ResultsWindow');
 	var StandingsWindow = require('ui/handheld/StandingsWindow');
 	var TwitterWindow = require('ui/handheld/TwitterWindow');
-    var PlayerTwitterWindow = require('ui/handheld/TwitterWindow');
 
 	//create module instance
 	var self = Ti.UI.createTabGroup();
@@ -12,8 +11,8 @@ function ApplicationTabGroup(Window) {
 	var win1 = new NewsWindow(self),
 		win2 = new ResultsWindow(self),
 		win3 = new StandingsWindow(self),
-		win4 = new TwitterWindow(self),
-        win5 = new PlayerTwitterWindow(self)
+		win4 = new TwitterWindow(self, "searchTweets"),
+        win5 = new TwitterWindow(self, "playerTweets")
 		;
 	// ニュース
 	var tab1 = Ti.UI.createTab({
@@ -44,7 +43,7 @@ function ApplicationTabGroup(Window) {
 	win4.containingTab = tab4;
     // 選手のツイート
     var tab5 = Ti.UI.createTab({
-        title: L('playerTweet'),
+        title: L('playerTweets'),
         icon: '/images/playerTweet.png',
         window: win5
     });
@@ -54,7 +53,7 @@ function ApplicationTabGroup(Window) {
 	self.addTab(tab2);
 	self.addTab(tab3);
 	self.addTab(tab4);
-//	self.addTab(tab5);
+	self.addTab(tab5);
     
 	return self;
 };

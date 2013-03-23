@@ -1,6 +1,7 @@
 var style = require("util/style").style;
 //var customIndicator = require("CustomIndicator").customIndicator;
 exports.util = {
+    
 	/**
 	 * 現時点の表示対象シーズン(年)を返す。
 	 */
@@ -30,6 +31,23 @@ exports.util = {
 			suffix = suffix.toLowerCase();
 		}
 		return (sub >= 0) && (text.lastIndexOf(suffix) === sub);
+	},
+	/**
+	 * 文字列を指定バイト数以下にカットして返す
+	 */
+	cutToByteLength : function(text, byteLen) {
+	    var count = 0;
+	    var result = "";
+        for (i=0; i<text.length; i++) {
+            var ch = text.charAt(i);
+            var escChar = escape(ch);
+            if (escChar.length < 4) count++; else count+=2;
+            result += ch;
+            if(byteLen < count) {
+                return result;
+            }
+        }
+        return text;
 	},
 	/**
 	 * オフラインメッセージダイアログを表示する
@@ -139,6 +157,22 @@ exports.util = {
         return datestr;
     },  
     /**
+     * 日時分秒ミリ秒をフォーマットする 
+     */
+    formatDatetime2 : function(date) {
+        var zeroPad = function(str, length) {
+            return new Array(length - ('' + str).length + 1).join('0') + str;
+        }
+        if(!date) {
+            date = new Date();
+        }
+        var datestr = '' + (1900 + date.getYear())+'/'+ zeroPad(date.getMonth()+1, 2) 
+            + "/" + zeroPad(date.getDate(), 2)
+            + "  " + zeroPad(date.getHours(), 2) + ":" + zeroPad(date.getMinutes(), 2)
+            + ":" + zeroPad(date.getSeconds(), 2) + "." + date.getMilliseconds();
+        return datestr;
+    },  
+    /**
      *  日付のパースして現在からのどのくらい前かを返す。例：「３分前、５時間前、2日前」
      */
     parseDate2 : function(str) {
@@ -213,6 +247,20 @@ exports.util = {
             }
         }
         return false;
+    },
+    /**
+     * オブジェクトを文字列化して返す 
+     */
+    toString : function(obj) {
+        var s = '';
+        if(obj) {
+            for(v in obj) {
+                s += "   " + v + "=" + obj[v];
+            }
+            return s;
+        } else {
+            return obj;
+        } 
     },
     /**
      * 改行を削除して返す 

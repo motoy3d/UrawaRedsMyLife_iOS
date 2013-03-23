@@ -14,7 +14,7 @@ function Results(resultsWindow) {
 	var resultsQuery = "SELECT * FROM html WHERE url='http://www.urawa-reds.co.jp/game/' "
 		+ "and xpath=\"//div[@class='mainContentColumn']/table/tr\"";
 	var urawaEncoded = encodeURIComponent('浦和');
-	var digestEncoded = encodeURIComponent('ダイジェスト');
+    var highlightEncoded = encodeURIComponent('ハイライト');
 
 	/**
 	 * 浦和公式サイトの試合日程htmlを読み込む
@@ -106,22 +106,19 @@ function Results(resultsWindow) {
 		var score = "";
 		var resultImage = "";
 		var detailUrl = "";
-		// var resultColor = "black";
 		if(tdList[5].a) {
-			score = tdList[5].a.content;
+		    result = tdList[5].a.content.substring(0, 1);
+			score = tdList[5].a.content.substring(1);
 			detailUrl = tdList[5].a.href;
+            if("◯" == result) {
+                resultImage = "images/win.png";
+            } else if("●" == result) {
+                resultImage = "images/lose.png";
+            } else {
+                resultImage = "images/draw.png";
+            }
 		}
-		if(tdList[5].font) {
-			result = tdList[5].font.content;
-			resultImage = "images/lose.png";
-			if("#ffffff" == tdList[5].font.color) {
-				if("●" == result) {
-					resultImage = "images/win.png";
-				} else {
-					resultImage = "images/draw.png";
-				}
-			}
-		}
+
 		var hasDetailResult = detailUrl != "";
 		Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
 		// Ti.API.debug("hasDetailResult=" + hasDetailResult);
@@ -147,19 +144,17 @@ function Results(resultsWindow) {
 		}
 		teamLabel.text = teamName;
 		row.add(teamLabel);
-		// 結果ラベル
-		var resultLabel = Ti.UI.createImageView(style.results.resultLabel);
-		if(resultImage != "") {
-			resultLabel.image = resultImage;
-		}
-	
-		row.add(resultLabel);
-		// スコアラベル
-		var scoreLabel = Ti.UI.createLabel(style.results.scoreLabel);
-		if(score != "") {
-		    scoreLabel.text = score;
-		}
-		row.add(scoreLabel);
+		
+        // 結果イメージラベル、スコアラベル
+        if(score != "") {
+            var scoreLabel = Ti.UI.createLabel(style.results.scoreLabel);
+            var resultLabel = Ti.UI.createImageView(style.results.resultLabel);
+            scoreLabel.text = score;
+            resultLabel.image = resultImage;
+            Ti.API.info('-------' + teamName + ": " + score + " : " + resultImage);
+            row.add(scoreLabel);
+            row.add(resultLabel);
+        }
 	
 		// 詳細リンクボタン
 		var detailButton = Ti.UI.createButton(style.results.detailButton);
@@ -189,18 +184,24 @@ function Results(resultsWindow) {
 				day = '0' + day;
 			}
 			// 動画検索キーワード作成
-			var dateYYMMDD = String(currentSeason).substring(2) + month + day;
-			var dateYYYYMMDD = encodeURIComponent(currentSeason + "年" + month + "月" + day + "日");
-			var teamEncoded = encodeURIComponent(team);
-			var keyword1 = currentSeason + "." + month + "." + day + '+' + urawaEncoded + '+' + teamEncoded /*+ encodeURIComponent("戦")*/;
-			var keyword2 = dateYYYYMMDD + '+' + urawaEncoded + '+' + teamEncoded + '+' + digestEncoded;
-			Ti.API.debug("キーワード：" + keyword1 + "  :  " + keyword2);
-			// ResultsWindow側の処理を呼び出す
-			resultsWindow.searchMovie({
-				title: compe + "(" + date + ") " + team,
-				key1: keyword1,
-				key2: keyword2
-			});
+            var dateYYMMDD = String(currentSeason).substring(2) + month + day;
+            var dateYYYYMMDD1 = currentSeason + "." + month + "." + day;
+            var dateYYYYMMDD2 = currentSeason + "/" + monthDate[0] + "/" + day;
+//            var dateYYYYMMDD = encodeURIComponent(currentSeason + "年" + month + "月" + day + "日");
+            var teamEncoded = encodeURIComponent(team);
+            var keyword1 = dateYYMMDD + '+' + teamEncoded + "+" + highlightEncoded;
+            var keyword2 = dateYYYYMMDD1 + '+' + urawaEncoded + '+' + teamEncoded /*+ encodeURIComponent("戦")*/;
+            var keyword3 = dateYYYYMMDD2 + '+' + urawaEncoded + '+' + teamEncoded;
+            Ti.API.info("キーワード：" + keyword1 + "  :  " + keyword2 + " : " + keyword3);
+            // ResultsWindow側の処理を呼び出す
+            resultsWindow.searchMovie({
+                title: compe + "(" + date + ") vs " + team
+                ,key1: keyword1
+                ,key2: keyword2
+                ,key3: keyword3
+                ,team: team
+                ,date: dateYYYYMMDD1
+            });
 		});
 		row.add(movieButton);
 		//Ti.API.debug('row====' + row);

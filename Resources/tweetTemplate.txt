@@ -7,9 +7,14 @@
 body {
 	margin:8px; color:white; background-color: black;
 	font-family: Helvetica, Arial, 'Hiragino Kaku Gothic ProN';
+	font-size: 120%;
+	line-height: 130%;
 }
 #tweet {
 	width: 100%;
+}
+.grey {
+	color: grey;
 }
 .separator {
 	color: grey;
@@ -17,17 +22,17 @@ body {
 .time {
 	color: "#d87";
 }
-a:link { color: #ffffff; }
-a:visited { color: #777777; }
-a:hover { color: #ff0000; }
-a:active { color: #ff0000; }
+a:link { font-size: larger; color: #ffffff; }
+a:visited { font-size: larger; color: #777777; }
+a:hover { font-size: larger; color: #ff0000; }
+a:active { font-size: larger; color: #ff0000; }
 </style>
 </head>
 <body>
 <table id="tweet">
 	<tr>
-		<td width="70" height="54"><img src="{profileImageUrl}"></td>
-		<td>{userName}</td>
+		<td width="64" height="54"><img src="{profileImageUrl}"></td>
+		<td>{userName}<br/><span class="grey">{userScreenName}</span></td>
 	</tr>
 	<tr><td colspan="2"><hr size="1" class="separator"/></td></tr>
 	<tr>
@@ -37,7 +42,7 @@ a:active { color: #ff0000; }
 		<td colspan="2" height="10">&nbsp;</td>
 	</tr>
 	<tr>
-		<td colspan="2" align="right"><span class="time">{timeText}</span></td>
+		<td colspan="2" align="left"><span class="time">{timeText}</span></td>
 	</tr>
 </table>
 </body></html>

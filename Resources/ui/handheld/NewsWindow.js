@@ -95,12 +95,13 @@ function NewsWindow(tabGroup) {
 		e.row.backgroundColor = style.news.visitedBgColor;
 		news.saveVisitedUrl(e.rowData.link);
 		var webData = {
-			title : e.rowData.pageTitle,
-			siteName : e.rowData.fullSiteName,
-			link : e.rowData.link,
-			content : e.rowData.content,
-			image : e.rowData.image,
-			pubDate : e.rowData.pubDate
+			title : e.rowData.pageTitle
+			,siteName : e.rowData.fullSiteName
+			,link : e.rowData.link
+			,content : e.rowData.content
+			,image : e.rowData.image
+			,pubDate : e.rowData.pubDate
+            ,toolbarVisible : true
 		};
 		var webWindow = new WebWindow(webData);
 		webWindow.tabBarHidden = true;
