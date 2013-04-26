@@ -96,6 +96,7 @@ function NewsWindow(tabGroup) {
 		news.saveVisitedUrl(e.rowData.link);
 		var webData = {
 			title : e.rowData.pageTitle
+            ,titleFull : e.rowData.pageTitleFull
 			,siteName : e.rowData.fullSiteName
 			,link : e.rowData.link
 			,content : e.rowData.content

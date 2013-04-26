@@ -11,7 +11,7 @@ function Twitter(target) {
     var tweetsPerPage = 50;
     var queryBase = 
         "select * from json"
-        + " where url='http://133.242.145.233:8080/redsmylife/" + target + ".json"
+        + " where url='http://153.122.4.181/redsmylife/" + target + ".json"
         + "?count=" + tweetsPerPage;
     var oldestId;      //最も古いツイートID。古いデータ読み込み時に使用
     var newestId;    //最も新しいツイートID。新しいデータ読み込み時に使用

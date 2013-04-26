@@ -72,6 +72,7 @@ function Results(resultsWindow) {
 		if("大会/節" == compe) {
 			return null;
 		}
+        var isHome = item.class? item.class.indexOf("home") == 0 : false;
 		if(tdList[0] && tdList[0].p) {
 		    if(tdList[0].p.content) {
                 compe = util.removeLineBreak(tdList[0].p.content);
@@ -107,18 +108,30 @@ function Results(resultsWindow) {
 		var resultImage = "";
 		var detailUrl = "";
 		if(tdList[5].a) {
-		    result = tdList[5].a.content.substring(0, 1);
-			score = tdList[5].a.content.substring(1);
+		    if(tdList[5].a.span) {
+                result = tdList[5].a.span.content;
+                score = tdList[5].a.content;
+		    } else {
+                result = tdList[5].a.content.substring(0, 1);
+                score = tdList[5].a.content.substring(1);
+		    }
 			detailUrl = tdList[5].a.href;
             if("◯" == result) {
-                resultImage = "images/win.png";
+                resultImage = "/images/win.png";
             } else if("●" == result) {
-                resultImage = "images/lose.png";
+                // if(isHome) {
+                    // if(tdList[5].a.span) {
+                        // resultImage = "/images/lose.png";
+                    // } else {
+                        // resultImage = "/images/win.png";
+                    // }
+                // } else {
+                    // resultImage = "/images/lose.png";
+                // }                resultImage = "/images/lose.png";
             } else {
-                resultImage = "images/draw.png";
+                resultImage = "/images/draw.png";
             }
 		}
-
 		var hasDetailResult = detailUrl != "";
 		Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
 		// Ti.API.debug("hasDetailResult=" + hasDetailResult);

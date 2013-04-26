@@ -182,11 +182,12 @@ function createNewsRow(item) {
     }
 	// タイトルラベル
 	var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
-	var itemTitle = util.deleteUnnecessaryText(item.title);
+	var itemTitleFull = util.deleteUnnecessaryText(item.title);
 //	Ti.API.info('itemTitle=' + itemTitle);
-    itemTitle = unescape(itemTitle);
-    if(itemTitle.length > 50) {
-        itemTitle = itemTitle.substring(0, 50) + "...";
+    itemTitleFull = unescape(itemTitleFull);
+    var itemTitle = itemTitleFull;
+    if(itemTitleFull.length > 50) {
+        itemTitle = itemTitleFull.substring(0, 50) + "...";
     }
 	titleLabel.text = itemTitle;
 	row.add(titleLabel);
@@ -251,6 +252,7 @@ function createNewsRow(item) {
 	row.fullSiteName = fullSiteName;
 	row.siteName = siteName;
 	row.pageTitle = itemTitle;
+    row.pageTitleFull = itemTitleFull;
 	row.link = link;
 	row.content = content;
 	row.image = imgUrl;

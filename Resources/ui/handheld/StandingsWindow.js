@@ -6,6 +6,7 @@ function StandingsWindow(tabGroup) {
     var ACLStandings = require("/model/ACLStandings");
 	// var util = require("util/util").util;
 	var style = require("/util/style").style;
+	var isLoading = false;
     // 更新ボタン
     var refreshButton = Ti.UI.createButton({
         systemButton: Ti.UI.iPhone.SystemButton.REFRESH
@@ -23,7 +24,6 @@ function StandingsWindow(tabGroup) {
 	});
     //大会
     var currentCompeIdx = 0;    //0:J1、1:ACL、2:ナビスコ
-    var compeView = Ti.UI.createView(style.standings.compeView);
     var flexSpace = Ti.UI.createButton({
        systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
     });
@@ -35,6 +35,9 @@ function StandingsWindow(tabGroup) {
         ,width: 200
     });
     compeButtonBar.addEventListener("click", function(e){
+        if(isLoading) {
+            return;
+        }
         if(currentCompeIdx != e.index) {
             currentCompeIdx = e.index;
             if(e.index == 0) {
@@ -50,9 +53,9 @@ function StandingsWindow(tabGroup) {
 //    self.setRightNavButton(compeButtonBar);
     self.setToolbar([flexSpace, compeButtonBar, flexSpace]);
     
-    //J1ビュー
-    var j1View = Ti.UI.createView(style.standings.standingsView);
-    self.add(j1View);
+    //親ビュー
+    var containerView = Ti.UI.createView(style.standings.standingsView);
+    self.add(containerView);
     //ACLビュー
     var aclView;
     // ヘッダー
@@ -67,8 +70,10 @@ function StandingsWindow(tabGroup) {
 
     // リロードボタン
     refreshButton.addEventListener('click', function(e){
+        if(isLoading) {
+            return;
+        }
         self.remove(table);
-        indicator.show();
         if(currentCompeIdx == 0) {
             loadJ1Standings();
         } else if(currentCompeIdx == 1){
@@ -112,18 +117,22 @@ function StandingsWindow(tabGroup) {
 	 * Yahooスポーツサイトのhtmlを読み込んで表示する
 	 */
 	function loadJ1Standings() {
+        if(isLoading) {
+            return;
+        }
+        isLoading = true;
         indicator.show();
         self.title = "J1順位表";
         compeButtonBar.setLabels([{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}]);
 		//ヘッダー
 		if(aclHeaderView) {
-		    j1View.remove(aclHeaderView);
+		    containerView.remove(aclHeaderView);
 		}
         j1HeaderView = createHeaderView(false);
-        j1View.add(j1HeaderView);
+        containerView.add(j1HeaderView);
         // ボーダー
         var border = Ti.UI.createLabel(style.standings.border);
-        j1View.add(border);
+        containerView.add(border);
         
 		var standings = new Standings();
 		standings.load({
@@ -139,15 +148,17 @@ function StandingsWindow(tabGroup) {
 				    }
                     table = Ti.UI.createTableView(style.standings.table);
 				    table.setData(rows);
-				    j1View.add(table);
+				    containerView.add(table);
 				} catch(e) {
 					Ti.API.error(e);
 				} finally {
 					indicator.hide();
+					isLoading = false;
 				}
 			},
 			fail: function(message) {
 				indicator.hide();
+				isLoading = false;
 				var dialog = Ti.UI.createAlertDialog({
 					message: message,
 					buttonNames: ['OK']
@@ -160,18 +171,22 @@ function StandingsWindow(tabGroup) {
      * YahooスポーツサイトのACLのhtmlを読み込んで表示する
      */
     function loadACLStandings() {
+        if(isLoading) {
+            return;
+        }
+        isLoading = true;
         indicator.show();
         self.title = "ACL順位表";
         compeButtonBar.setLabels([{title: 'J1', enabled: true}, {title: 'ACL', enabled: false}]);
         // ヘッダー
         if(j1HeaderView) {
-            j1View.remove(j1HeaderView);
+            containerView.remove(j1HeaderView);
         }
         var aclHeaderView = createHeaderView(true);
-        j1View.add(aclHeaderView);
+        containerView.add(aclHeaderView);
         // ボーダー
         var border = Ti.UI.createLabel(style.standings.border);
-        j1View.add(border);
+        containerView.add(border);
 
         var standings = new ACLStandings();
         standings.load({
@@ -188,15 +203,17 @@ function StandingsWindow(tabGroup) {
                     table = Ti.UI.createTableView(style.standings.table);
                     table.height = 120;
                     table.setData(rows);
-                    j1View.add(table);
+                    containerView.add(table);
                 } catch(e) {
                     Ti.API.error(e);
                 } finally {
                     indicator.hide();
+                    isLoading = false;
                 }
             },
             fail: function(message) {
                 indicator.hide();
+                isLoading = false;
                 var dialog = Ti.UI.createAlertDialog({
                     message: message,
                     buttonNames: ['OK']
@@ -227,6 +244,7 @@ function StandingsWindow(tabGroup) {
      * @param {Object} gotGoal
      * @param {Object} lostGoal
      * @param {Object} diff
+     * @param {Object} aclFlg
      */
     function createRow(rank, team, point, win, draw, lose, gotGoal, lostGoal, diffGoal, aclFlg) {
         var row = Ti.UI.createTableViewRow(style.standings.tableViewRow);

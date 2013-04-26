@@ -214,13 +214,6 @@ exports.style = {
             ,separatorColor: '#666'
             ,backgroundColor: "black"
 	    },
-        compeView : {
-            backgroundColor: 'black'
-        },
-        jleagueBtn : {
-            text: "J1"
-            ,backgroundColor: "black"
-        },
 	    headerView : {
 	        top: 0
 	        ,backgroundColor: 'black'

@@ -6,6 +6,7 @@ function WebWindow(webData) {
 	var style = require("util/style").style;
     var util = require("util/util").util;
 	var newsSource = require("model/newsSource");
+    var social = require('de.marcelpociot.social');
 	//TODO style.js
 	var self = Ti.UI.createWindow({
 		title: webData.title
@@ -14,10 +15,14 @@ function WebWindow(webData) {
 	});
 	
     var webView = Ti.UI.createWebView();
+    var flexSpace = Ti.UI.createButton({
+        systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
+    });
     var back;
     var forward;
     var facebook;
     var twitter;
+    var line;
     if(webData.toolbarVisible) { //twitter画面以外から遷移した場合
         createToolbar();
     }
@@ -45,12 +50,6 @@ function WebWindow(webData) {
 	//URL直接表示モード
 	else {
 		Ti.API.debug("----------- 2  link = " + webData.link);
-		//TODO 別メソッド
-        // var ind = Ti.UI.createActivityIndicator();
-		// ind.show();
-		// webView.addEventListener("load", function(e) {
-			// ind.hide();
-		// });
         webView.scalesPageToFit = true;
 		webView.setUrl(webData.link);
 		self.add(webView);
@@ -96,16 +95,19 @@ function WebWindow(webData) {
             //ツールバーボタン制御
             if(webData.toolbarVisible) {
                 var title = webView.evalJS("document.title");
-                if(title != "" && title != "タイムラインの写真") {//FBの写真
+                //FBの写真、レッズプレスの場合は上書きしない
+                if(title != "" && title != "タイムラインの写真" && webData.link.indexOf("redspress") == -1) {
                     self.title = title;
                 }
                 back.setEnabled(webView.canGoBack());
                 forward.setEnabled(webView.canGoForward());
+                twitter.setEnabled(true);
                 if(webData.link.indexOf("facebook.com") == -1 && webView.url.indexOf("facebook.com") == -1) {
                     //facebookのページに対しては外部からシェアできない
                     facebook.setEnabled(true);
                 } else {
-                    facebook.setEnabled(false);
+                    //TODO test
+                    facebook.setEnabled(true);
                 }
             }
         });
@@ -130,61 +132,57 @@ function WebWindow(webData) {
         forward.addEventListener("click", function(e){
             webView.goForward();
         });
-        twitter = Ti.UI.createButton({
-            image: "/images/twitter_icon.png"
-            ,enabled: false
+        // LINE
+        line = Ti.UI.createButton({
+            image: "/images/line_logo.png"
+            ,enabled: true
         });
+        
+               
+        // twitterはiOS5で統合されたが、titanium-social-modulは
+        // FB(iOS6から)が含まれているためiOS5でエラーになる。
+        if(Ti.Platform.version > "6.0") {
+            twitter = Ti.UI.createButton({
+                image: "/images/twitter_icon.png"
+                ,enabled: false
+            });
+        } else {
+            twitter = flexSpace;
+        }
         facebook = Ti.UI.createButton({
             image: "/images/facebook_icon.png"
             ,enabled: false
         });
-        // WebViewロード時、戻るボタン、次へボタンの有効化、無効化
-/*        webView.addEventListener('load', function(e) {
-                Ti.API.info('load2 ####################');
-                Ti.API.info(util.toString(e));
-            // Ti.API.info('loadEvent2 e.navigationType=' + e.navigationType);
-            // if(e.navigationType != 5) {
-                Ti.API.info('load★  e.url=' + e.url);
-                Ti.API.info('webView.url=' + e.url);
-                title = webView.evalJS("document.title");
-                if(title != "" && title != "タイムラインの写真") {//FBの写真
-                    self.title = title;
-                }
-                back.setEnabled(webView.canGoBack());
-                forward.setEnabled(webView.canGoForward());
-                if(webData.link.indexOf("facebook.com") == -1 && webView.url.indexOf("facebook.com") == -1) {
-                    //facebookのページに対しては外部からシェアできない
-                    facebook.setEnabled(true);
-                } else {
-                    facebook.setEnabled(false);
-                }
-                Ti.API.info('load2 end-------------------------------- ');
-            // }
-        });*/
+        // lineで送るボタン
+        line.addEventListener("click", lineSend);
+        // twitterボタン
+        twitter.addEventListener("click", tweet);
         // facebookボタン
         facebook.addEventListener("click", function(e){
-            if(!Ti.Facebook.loggedIn) {
-                // ログイン済みでない場合はログインする
-                Ti.Facebook.appid = '130375583795842';
-                Ti.Facebook.permissions = ['publish_stream', 'read_stream']; // facebook開発者ページで設定
-                Ti.Facebook.addEventListener('login', function(e) {
-                    if (e.success) {
-                        facebookShare();    //ログイン成功後シェア
-                    } else if (e.error) {
-                        Ti.API.error('-----facebookログインエラー');
-                    } else if (e.cancelled) {
-                        Ti.API.info('-----facebookログインキャンセル');
-                    }
-                });
-                Ti.Facebook.authorize();    //認証実行
+            Ti.App.Analytics.trackPageview('/fbShareDialog');   //ダイアログを開く
+            if(Ti.Platform.version > "6.0") {
+                facebookShareBySocialModule();
             } else {
-                facebookShare();
+                if(!Ti.Facebook.loggedIn) {
+                    // ログイン済みでない場合はログインする
+                    Ti.Facebook.appid = '130375583795842';
+                    Ti.Facebook.permissions = ['publish_stream', 'read_stream']; // facebook開発者ページで設定
+                    Ti.Facebook.addEventListener('login', function(e) {
+                        if (e.success) {
+                            facebookShareByWebView();    //ログイン成功後シェア
+                        } else if (e.error) {
+                            Ti.API.error('-----facebookログインエラー');
+                        } else if (e.cancelled) {
+                            Ti.API.info('-----facebookログインキャンセル');
+                        }
+                    });
+                    Ti.Facebook.authorize();    //認証実行
+                } else {
+                    facebookShareByWebView();
+                }
             }
         });
-        var flexSpace = Ti.UI.createButton({
-            systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
-        });
-        self.setToolbar([flexSpace, /*twitter,*/ flexSpace, facebook, flexSpace, back, flexSpace, forward]);
+        self.setToolbar([line, flexSpace, twitter, flexSpace, facebook, flexSpace, flexSpace, back, flexSpace, forward]);
     }
     
     /**
@@ -197,11 +195,83 @@ function WebWindow(webData) {
             + webData.content + "<br/><br/>" 
             + "<a href=\"" + webData.link + "\">サイトを開く</a><br/><br/>";      
     }
-
+    /**
+     * LINEに投稿する。(iOS5)
+     */
+    function lineSend(e) {
+        Ti.App.Analytics.trackPageview('/lineDialog');   //ダイアログを開く
+        var link = webView.url; 
+        if(webView.url.indexOf("app://") == 0) {
+            link = webData.link; //簡易表示の場合はwebData.link
+        }
+        var title = webView.evalJS("document.title");
+        if(!title || link.indexOf("redspress") != -1) {
+            //レッズプレスはjquery mobileを使用しており、titleタグが上書きされてしまうため
+            title = webData.titleFull;
+        }
+        var msg = encodeURIComponent(title + "  ") + link;
+        Ti.API.info("LINEへのパラメータ=" + msg);
+        Ti.Platform.openURL("line://msg/text/" + msg);
+    }
+    /**
+     * twitterに投稿する。(iOS5)
+     */
+    function tweet(e) {
+        Ti.App.Analytics.trackPageview('/tweetDialog');   //ダイアログを開く
+        var link = webView.url; 
+        if(webView.url.indexOf("app://") == 0) {
+            link = webData.link; //簡易表示の場合はwebData.link
+        }
+        var title = webView.evalJS("document.title");
+        if(!title || link.indexOf("redspress") != -1) {
+            //レッズプレスはjquery mobileを使用しており、titleタグが上書きされてしまうため
+            title = webData.titleFull;
+        }
+        social.showSheet({
+            service:  'twitter',
+            message:  title,
+            urls:       [link],
+            success:  function(){
+                Ti.API.info('ツイート成功');
+                Ti.App.Analytics.trackPageview('/tweet');
+            },
+            error: function(){
+                alert("ツイートに失敗しました");
+            }
+        });
+    }
+    /**
+     * facebookでシェアする(titanium-social-modul使用。iOS6から可)
+     */ 
+    function facebookShareBySocialModule() {
+        var link = webView.url; 
+        if(webView.url.indexOf("app://") == 0) {
+            link = webData.link; //簡易表示の場合はwebData.link
+        }
+        var title = webView.evalJS("document.title");
+        Ti.API.info('title 1 >>>>>>>>>>>>>>>>>>>>>>>>> ' + title);
+        if(!title || link.indexOf("redspress") != -1) {
+            //レッズプレスはjquery mobileを使用しており、titleタグが上書きされてしまうため
+            title = webData.titleFull;
+        Ti.API.info('title 2 >>>>>>>>>>>>>>>>>>>>>>>>> ' + title);
+        }
+        social.showSheet({
+            service:  'facebook',
+            message:  title,
+            urls:       [link],
+            success:  function(){
+                Ti.API.info('FBシェア成功');
+                Ti.App.Analytics.trackPageview('/fbShare');
+            },
+            error: function(){
+                alert("FBシェアに失敗しました");
+            }
+        });
+    }
     /**
      * facebookでシェアする
      */	
-	function facebookShare() {
+	function facebookShareByWebView() {
 //        var image = webData.image;
 //        Ti.API.info('画像＝＝＝' + image);
         var link = webView.url; 

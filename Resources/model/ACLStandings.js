@@ -26,7 +26,7 @@ function Standings() {
             callback.fail(style.common.offlineMsg);
             return;
 		}
-		Ti.App.Analytics.trackPageview('/standings');
+		Ti.App.Analytics.trackPageview('/standingsACL');
 		var before = new Date();
 		var standingBody = "";
 		Ti.API.info('★★順位表YQL ' + standingsQuery);
