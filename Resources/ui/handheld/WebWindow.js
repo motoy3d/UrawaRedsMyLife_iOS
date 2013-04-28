@@ -101,6 +101,7 @@ function WebWindow(webData) {
                 }
                 back.setEnabled(webView.canGoBack());
                 forward.setEnabled(webView.canGoForward());
+                line.setEnabled(true);
                 twitter.setEnabled(true);
                 if(webData.link.indexOf("facebook.com") == -1 && webView.url.indexOf("facebook.com") == -1) {
                     //facebookのページに対しては外部からシェアできない
@@ -135,20 +136,16 @@ function WebWindow(webData) {
         // LINE
         line = Ti.UI.createButton({
             image: "/images/line_logo.png"
-            ,enabled: true
+            ,enabled: false
         });
         
                
         // twitterはiOS5で統合されたが、titanium-social-modulは
         // FB(iOS6から)が含まれているためiOS5でエラーになる。
-        if(Ti.Platform.version > "6.0") {
-            twitter = Ti.UI.createButton({
-                image: "/images/twitter_icon.png"
-                ,enabled: false
-            });
-        } else {
-            twitter = flexSpace;
-        }
+        twitter = Ti.UI.createButton({
+            image: "/images/twitter_icon.png"
+            ,enabled: false
+        });
         facebook = Ti.UI.createButton({
             image: "/images/facebook_icon.png"
             ,enabled: false
@@ -227,18 +224,24 @@ function WebWindow(webData) {
             //レッズプレスはjquery mobileを使用しており、titleタグが上書きされてしまうため
             title = webData.titleFull;
         }
-        social.showSheet({
-            service:  'twitter',
-            message:  title,
-            urls:       [link],
-            success:  function(){
-                Ti.API.info('ツイート成功');
-                Ti.App.Analytics.trackPageview('/tweet');
-            },
-            error: function(){
-                alert("ツイートに失敗しました");
-            }
-        });
+        if(Ti.Platform.version < "6.0") {
+            var msg = encodeURIComponent(title + "  ") + link;
+            Ti.API.info("Twitterへのパラメータ=" + msg);
+            Ti.Platform.openURL("twitter://post?message=" + msg);
+        } else {
+            social.showSheet({
+                service:  'twitter',
+                message:  title,
+                urls:       [link],
+                success:  function(){
+                    Ti.API.info('ツイート成功');
+                    Ti.App.Analytics.trackPageview('/tweet');
+                },
+                error: function(){
+                    alert("ツイートに失敗しました");
+                }
+            });
+        }
     }
     /**
      * facebookでシェアする(titanium-social-modul使用。iOS6から可)

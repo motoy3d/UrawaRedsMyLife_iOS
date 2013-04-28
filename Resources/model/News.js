@@ -149,6 +149,7 @@ function createNewsRow(item) {
 //	Ti.API.info("id.original-id---------" + idobj[oid]);
 	
 	var row = Ti.UI.createTableViewRow(style.news.tableViewRow);
+	var rowView = Ti.UI.createView(style.news.rowView);
     // 本文
     var content = "";
     if(item.content) {
@@ -173,7 +174,7 @@ function createNewsRow(item) {
             if(!util.isUnnecessaryImage(imgUrl)) {
                 var imgLabel = Ti.UI.createImageView(style.news.imgView);
                 imgLabel.image = imgUrl;
-                row.add(imgLabel);
+                rowView.add(imgLabel);
                 hasImage = true;
             } else {
                 imgUrl = "";
@@ -190,7 +191,7 @@ function createNewsRow(item) {
         itemTitle = itemTitleFull.substring(0, 50) + "...";
     }
 	titleLabel.text = itemTitle;
-	row.add(titleLabel);
+	rowView.add(titleLabel);
 //	Ti.API.info("最適化後：itemTitle====" + itemTitle);
 	// 更新日時
 	var pubDate = parseDate(item.published);
@@ -248,7 +249,8 @@ function createNewsRow(item) {
 	var siteNameLabel = Ti.UI.createLabel(style.news.siteNameLabel);
 	siteNameLabel.text = siteName + "   " + pubDateText;
 	// row情報セット
-	row.add(siteNameLabel);
+	rowView.add(siteNameLabel);
+	row.add(rowView);
 	row.fullSiteName = fullSiteName;
 	row.siteName = siteName;
 	row.pageTitle = itemTitle;

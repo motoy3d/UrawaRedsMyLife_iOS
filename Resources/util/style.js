@@ -18,8 +18,8 @@ exports.style = {
 	},
 	news : {
 	    table : {
-	        backgroundColor: 'black',
-            separatorColor: '#666'
+	        backgroundColor: 'black'
+            ,separatorColor: '#666'
 	    },
 		tableViewRow : {
 			layout : 'horizontal',
@@ -27,11 +27,13 @@ exports.style = {
 			height : Ti.UI.SIZE,
 			hasDetail : true,
 			backgroundSelectedColor : "#f66",
+            className : 'newsTableRowContent',
 			type: 'CONTENT'
 		},
 		rowView : {
 			width : Ti.UI.FILL,
 			height : Ti.UI.SIZE
+            ,layout : 'horizontal'
 		},
 		titleLabel : {
 			color : "white",
@@ -234,7 +236,8 @@ exports.style = {
 	    tableViewRow : {
             height: 28
             ,color: 'white'
-            ,backgroundColor: 'black'	        
+            ,backgroundColor: 'black'
+            ,className: "standingsTableRow"
 	    }
 	},
 	twitter : {
@@ -244,10 +247,11 @@ exports.style = {
 	        ,backgroundColor: "black"
 	    },
 		tableViewRow : {
-			height : Ti.UI.SIZE,
-			backgroundColor : "black",
-			backgroundSelectedColor : "red",
-			type: 'CONTENT'			
+			height : Ti.UI.SIZE
+			,backgroundColor : "black"
+			,backgroundSelectedColor : "red"
+            ,className: "twitterTableRow"
+			,type: 'CONTENT'			
 		},
 		profileImg : {
 			backgroundColor: 'white',
