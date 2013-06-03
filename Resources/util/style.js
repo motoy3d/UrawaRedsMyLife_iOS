@@ -42,14 +42,22 @@ exports.style = {
 			height : Ti.UI.SIZE,
 			top : 10,
 			bottom : 0,
-			left : 4,
+			left : 7,
 			right : 4
 		},
         imgView : {
+            width: Ti.UI.SIZE,
+            // height: 96,
+            // top : 10,
+            // left : 4,
+            hires: true
+        },
+        imgViewContainer : {
             width: 96,
             height: 96,
             top : 10,
-            left : 4
+            left : 4,
+            hires: true
         },
 		siteNameLabel : {
 			color : "lightgray",

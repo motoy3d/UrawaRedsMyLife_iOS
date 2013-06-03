@@ -76,14 +76,14 @@ function NewsWindow(tabGroup) {
     
 	// 読み込み中Row+indicator
 	var updating = false;
-	var loadingRow = Ti.UI.createTableViewRow();
-	var loadingInd = Ti.UI.createActivityIndicator({
-		color: 'white'
-		,message: style.common.loadingMsg
-		,width: Ti.UI.FILL
-		,height: 50
-	});
-	loadingRow.add(loadingInd);
+//	var loadingRow = Ti.UI.createTableViewRow();
+	// var loadingInd = Ti.UI.createActivityIndicator({
+		// color: 'white'
+		// ,message: style.common.loadingMsg
+		// ,width: Ti.UI.FILL
+		// ,height: 50
+	// });
+    var loadingInd;
 	
 	var lastRow = news.loadFeedSize;
 	var visitedUrls = new Array();
@@ -125,7 +125,16 @@ function NewsWindow(tabGroup) {
 		Ti.API.info("===== beginLoadingOlder =====");
 		updating = true;
 		// 読み込み中Row
+        var loadingRow = Ti.UI.createTableViewRow();
+        loadingInd = Ti.UI.createActivityIndicator({
+            color: 'white'
+            ,message: style.common.loadingMsg
+            ,width: Ti.UI.FILL
+            ,height: 50
+        });
+        loadingRow.add(loadingInd);
 		table.appendRow(loadingRow);
+Ti.API.info('-------------------loadingInd.show()');
 		loadingInd.show();
 		loadFeed(news, 'olderEntries');
 	}	
@@ -171,7 +180,7 @@ function NewsWindow(tabGroup) {
 		// the values will be negative so we do the opposite
 		if (distance < lastDistance) {
 			// adjust the % of rows scrolled before we decide to start fetching
-			var nearEnd = theEnd * .90;
+			var nearEnd = theEnd * .97;
 			if (!updating && (total >= nearEnd)) {
 				beginLoadingOlder();
 			}
@@ -220,36 +229,44 @@ function NewsWindow(tabGroup) {
 		//alert('loadFeed : ' + news + ", kind=" + kind);
         //alert(news.loadNewsFeed);
 		news.loadNewsFeed(
-		    kind, news.continuation, news.newest_item_timestamp,  
+		    kind, news.newest_item_timestamp, news.oldest_item_timestamp,
 		    { //callback
-    			success: function(rowsData, newest_item_timestamp) {
+    			success: function(rowsData, newest_item_timestamp, oldest_item_timestamp) {
     				try {
+                        Ti.API.debug('■■■kind = ' + kind);
+                        Ti.API.debug('■■■newest_item_timestamp = ' + newest_item_timestamp);
+                        Ti.API.debug('■■■oldest_item_timestamp = ' + oldest_item_timestamp);
+    				    
     					// 読み込み中Row削除
-    					loadingInd.hide();
-    					
     					Ti.API.debug("rowsData■" + rowsData);
                         // 初回ロード時
     					if("firstTime" == kind) {
                             self.add(table);
                             if(rowsData) {
+                                table.startLayout();
                                 table.setData(rowsData);
+                                table.finishLayout();
                                 news.newest_item_timestamp = newest_item_timestamp;
+                                news.oldest_item_timestamp = oldest_item_timestamp;
                             }
                             indicator.hide();
-                            Ti.API.debug('■■■newest_item_timestamp = ' + news.newest_item_timestamp);
     					}
     					// 2回目以降の追加ロード時
     					else if("olderEntries" == kind) {
                             lastRow = table.data[0].rows.length - 1;
     						var scrollToIdx = table.data[0].rows.length;
     						if(rowsData) {
-                                for(i=0; i<rowsData.length; i++) {
+    						    table.startLayout();
+    						    var len = rowsData.length;
+                                for(i=0; i<len; i++) {
                                     if(i == 0) {
                                         //indWin.close();
                                     }
-                                    Ti.API.debug("appendRow. " + i + "  " + rowsData[i].children[0].text);
+                                    //Ti.API.debug("appendRow. " + i + "  " + rowsData[i].children[0].text);
                                     table.appendRow(rowsData[i]);
                                 }
+                                news.oldest_item_timestamp = oldest_item_timestamp;
+                                table.finishLayout();
     						}
     						Ti.API.debug("読み込み中Row削除：" + lastRow);
     						table.deleteRow(lastRow);
@@ -260,7 +277,8 @@ function NewsWindow(tabGroup) {
                             if(rowsData) {
                                 Ti.API.debug('最新データ読み込み  件数＝' + rowsData.length);
                                 table.startLayout();
-                                for(i=0; i<rowsData.length; i++) {
+                                var len = rowsData.length;
+                                for(i=0; i<len; i++) {
                                     Ti.API.info("insertRowBefore. " + i + "  " + rowsData[i].pubDate + "  " 
                                         + rowsData[i].pageTitle);
                                     table.insertRowBefore(i, rowsData[i]);
@@ -269,7 +287,7 @@ function NewsWindow(tabGroup) {
                                 if(news.newest_item_timestamp < newest_item_timestamp) {
                                     news.newest_item_timestamp = newest_item_timestamp;
                                 }
-                                Ti.API.debug('■newest_item_timestamp = ' + news.newest_item_timestamp);
+                                //Ti.API.debug('■newest_item_timestamp = ' + news.newest_item_timestamp);
                             }
                             endLoadingNewer();
     					}
@@ -296,22 +314,22 @@ function NewsWindow(tabGroup) {
     			}
     		}
 		);
-		if('firstTime' == kind || 'olderEntries' == kind) {
-            // continuation取得
-            news.getContinuation(news.continuation, {
-                success: function(continuation) {
-                    news.continuation = continuation;
-                },
-                fail: function(message) {
-                    Ti.API.error('NewsWindow.js  continuation取得失敗 [' + message + ']');
-                    var dialog = Ti.UI.createAlertDialog({
-                        message: message,
-                        buttonNames: ['OK']
-                    });
-                    dialog.show();
-                }
-            });
-		}
+		// if('firstTime' == kind || 'olderEntries' == kind) {
+            // // continuation取得
+            // news.getContinuation(news.continuation, {
+                // success: function(continuation) {
+                    // news.continuation = continuation;
+                // },
+                // fail: function(message) {
+                    // Ti.API.error('NewsWindow.js  continuation取得失敗 [' + message + ']');
+                    // var dialog = Ti.UI.createAlertDialog({
+                        // message: message,
+                        // buttonNames: ['OK']
+                    // });
+                    // dialog.show();
+                // }
+            // });
+		// }
 	}
 	loadFeed(news, 'firstTime');	
 	return self;

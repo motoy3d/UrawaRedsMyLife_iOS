@@ -9,10 +9,10 @@ function TwitterWindow(tabGroup, target) {
     var util = require("/util/util").util;
     var style = require("/util/style").style;
     var updating = false;
-    var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
-    var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
-    loadingInd.message = style.common.loadingMsg;
-    loadingRow.add(loadingInd);
+    // var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
+    // var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
+    // loadingInd.message = style.common.loadingMsg;
+    // loadingRow.add(loadingInd);
 
     // 更新ボタン
     var refreshButton = Ti.UI.createButton({
@@ -257,6 +257,10 @@ function TwitterWindow(tabGroup, target) {
         Ti.API.info("===== beginUpdate =====");
         updating = true;
         // 読み込み中Row
+        var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
+        var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
+        loadingInd.message = style.common.loadingMsg;
+        loadingRow.add(loadingInd);
         table.appendRow(loadingRow);
         loadingInd.show();      
         loadTweets("olderTweets");

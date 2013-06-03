@@ -81,7 +81,7 @@ function Twitter(target) {
                         }
                         var timeText = (creDate.getMonth() + 1) + "/" + creDate.getDate() 
                             + " " + creDate.getHours() + ":" + minutes;
-                        Ti.API.info('★timeText=' + timeText);
+ //                       Ti.API.info('★timeText=' + timeText);
                         var data = {
                             id: item.tweet_id
                             ,text: util.deleteUnnecessaryText(item.tweet)
