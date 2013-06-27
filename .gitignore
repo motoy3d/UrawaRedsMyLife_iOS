@@ -1,3 +1,7 @@
 build/
 *.m
-*.h
+*.hbuild/iphone
+build/.DS_Store
+.DS_Store
+Resources/.DS_Store
+Resources/android/.DS_Store
