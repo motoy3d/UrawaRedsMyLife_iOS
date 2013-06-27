@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2012 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -60,7 +60,7 @@ extern "C" {
 	#define KMETHOD_DEBUG MEMORY_DEBUG
 #endif
 
-// in simulator we redefine to format for UrawaRedsMyLife_iOS Developer console
+// in simulator we redefine to format for UrawaRedsMyLife Developer console
 
 
 #define TI_INLINE static __inline__
@@ -81,7 +81,20 @@ NSMutableDictionary* TiCreateNonRetainingDictionary();
 
 CGPoint midpointBetweenPoints(CGPoint a, CGPoint b);
 void TiLogMessage(NSString* str, ...);
-    
+
+/**
+ * Protocol for classes to provide their JavaScript details (class name, in particular).
+ */
+@protocol JavascriptClass <NSObject>
+@required
++ (NSString *)javascriptClassName;
+@end
+
+NSString *JavascriptNameForClass(Class c);
+
+#define CLASS2JS(x)		JavascriptNameForClass(x)
+#define OBJTYPE2JS(x)	JavascriptNameForClass([x class])
+
 #define degreesToRadians(x) (M_PI * x / 180.0)
 #define radiansToDegrees(x) (x * (180.0 / M_PI))
 
@@ -91,7 +104,7 @@ void TiLogMessage(NSString* str, ...);
 #define RELEASE_TO_NIL_AUTORELEASE(x) { if (x!=nil) { [x autorelease]; x = nil; } }
 #define RELEASE_AND_REPLACE(x,y) { [x release]; x = [y retain]; }
 
-#define CODELOCATION	[NSString stringWithFormat:@" in %s (%@:%d)",__FUNCTION__,[[NSString stringWithFormat:@"%s",__FILE__] lastPathComponent],__LINE__]
+#define CODELOCATION	[NSString stringWithFormat:@"%s (%@:%d)",__FUNCTION__,[[NSString stringWithFormat:@"%s",__FILE__] lastPathComponent],__LINE__]
 
 #define NULL_IF_NIL(x)	({ id xx = (x); (xx==nil)?[NSNull null]:xx; })
 
@@ -118,7 +131,7 @@ x = (t*)[x objectAtIndex:0]; \
 } \
 if (![x isKindOfClass:[t class]]) \
 {\
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",[t class],[x class]] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",CLASS2JS([t class]),OBJTYPE2JS(x)] location:CODELOCATION]; \
 }\
 
 #define ENSURE_SINGLE_ARG_OR_NIL(x,t) \
@@ -130,7 +143,7 @@ x = (t*)[x objectAtIndex:0]; \
 } \
 if (![x isKindOfClass:[t class]]) \
 {\
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",[t class],[x class]] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",CLASS2JS([t class]),OBJTYPE2JS(x)] location:CODELOCATION]; \
 }\
 }\
 
@@ -141,7 +154,7 @@ out = (type*)[args objectAtIndex:index]; \
 } \
 if (![out isKindOfClass:[type class]]) \
 { \
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",[type class],[out class]] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",CLASS2JS([type class]),OBJTYPE2JS(out)] location:CODELOCATION]; \
 } \
 
 
@@ -158,13 +171,13 @@ else { \
 out = nil; \
 } \
 if (out && ![out isKindOfClass:[type class]]) { \
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",[type class],[out class]] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",CLASS2JS([type class]),OBJTYPE2JS(out)] location:CODELOCATION]; \
 } \
 } \
 
 #define COERCE_TO_INT(out,in) \
 if (![in respondsToSelector:@selector(intValue)]) {\
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"cannot coerce type %@ to int",[in class]] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"cannot coerce type %@ to int",OBJTYPE2JS(in)] location:CODELOCATION]; \
 }\
 out = [in intValue]; \
 
@@ -223,7 +236,7 @@ COERCE_TO_INT(out,tmp);\
 #define ENSURE_CLASS(x,t) \
 if (![x isKindOfClass:t]) \
 { \
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",t,[x class]] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@, was: %@",CLASS2JS(t),OBJTYPE2JS(x)] location:CODELOCATION]; \
 }\
 
 #define ENSURE_TYPE(x,t) ENSURE_CLASS(x,[t class])
@@ -232,7 +245,7 @@ if (![x isKindOfClass:t]) \
 #define ENSURE_METHOD(x,t) \
 if (![x respondsToSelector:@selector(t)]) \
 { \
-[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"%@ doesn't respond to method: %@",[x class],@#t] location:CODELOCATION]; \
+[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"%@ doesn't respond to method: %@",OBJTYPE2JS(x),@#t] location:CODELOCATION]; \
 }\
 
 #define IS_NULL_OR_NIL(x)	((x==nil) || ((id)x==[NSNull null]))
@@ -244,7 +257,7 @@ if (IS_NULL_OR_NIL(x))	\
 }	\
 else if (![x isKindOfClass:t])	\
 { \
-	[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@ or nil, was: %@",t, [x class]] location:CODELOCATION]; \
+	[self throwException:TiExceptionInvalidType subreason:[NSString stringWithFormat:@"expected: %@ or nil, was: %@",CLASS2JS(t), OBJTYPE2JS(x)] location:CODELOCATION]; \
 }\
 
 #define ENSURE_TYPE_OR_NIL(x,t) ENSURE_CLASS_OR_NIL(x,[t class])
@@ -291,21 +304,19 @@ if ((__x<__minX) || (__x>__maxX)) \
 #define ENSURE_ARRAY(x) ENSURE_TYPE(x,NSArray)
 #define ENSURE_STRING(x) ENSURE_TYPE(x,NSString)
 
-void TiExceptionThrowWithNameAndReason(NSString * exceptionName, NSString * message);
+void TiExceptionThrowWithNameAndReason(NSString *exceptionName, NSString *reason, NSString *subreason, NSString *location);
 	
 #define DEFINE_EXCEPTIONS \
 - (void) throwException:(NSString *) reason subreason:(NSString*)subreason location:(NSString *)location\
 {\
-	NSString * exceptionName = [@"org.urawaredsmylife_ios." stringByAppendingString:NSStringFromClass([self class])];\
-	NSString * message = [NSString stringWithFormat:@"%@. %@ %@",reason,(subreason!=nil?subreason:@""),(location!=nil?location:@"")];\
-	TiExceptionThrowWithNameAndReason(exceptionName,message);\
+	NSString * exceptionName = [@"org.urawaredsmylife." stringByAppendingString:NSStringFromClass([self class])];\
+	TiExceptionThrowWithNameAndReason(exceptionName,reason,subreason,location);\
 }\
 \
 + (void) throwException:(NSString *) reason subreason:(NSString*)subreason location:(NSString *)location\
 {\
-	NSString * exceptionName = @"org.urawaredsmylife_ios";\
-	NSString * message = [NSString stringWithFormat:@"%@. %@ %@",reason,(subreason!=nil?subreason:@""),(location!=nil?location:@"")];\
-	TiExceptionThrowWithNameAndReason(exceptionName,message);\
+	NSString * exceptionName = @"org.urawaredsmylife";\
+	TiExceptionThrowWithNameAndReason(exceptionName,reason,subreason,location);\
 }\
 
 
@@ -404,28 +415,28 @@ DebugLog(@"[WARN] Ti%@.%@ DEPRECATED in %@, in favor of %@.",@"tanium",api,in,ne
 
  //MUST BE NEGATIVE, as it inhabits the same space as UIBarButtonSystemItem
 enum {
-	UIUrawaRedsMyLife_iOSNativeItemNone = -1, 
-	UIUrawaRedsMyLife_iOSNativeItemSpinner = -2,
-	UIUrawaRedsMyLife_iOSNativeItemProgressBar = -3,
+	UIUrawaRedsMyLifeNativeItemNone = -1, 
+	UIUrawaRedsMyLifeNativeItemSpinner = -2,
+	UIUrawaRedsMyLifeNativeItemProgressBar = -3,
 	
-	UIUrawaRedsMyLife_iOSNativeItemSlider = -4,
-	UIUrawaRedsMyLife_iOSNativeItemSwitch = -5,
-	UIUrawaRedsMyLife_iOSNativeItemMultiButton = -6,
-	UIUrawaRedsMyLife_iOSNativeItemSegmented = -7,
+	UIUrawaRedsMyLifeNativeItemSlider = -4,
+	UIUrawaRedsMyLifeNativeItemSwitch = -5,
+	UIUrawaRedsMyLifeNativeItemMultiButton = -6,
+	UIUrawaRedsMyLifeNativeItemSegmented = -7,
 	
-	UIUrawaRedsMyLife_iOSNativeItemTextView = -8,
-	UIUrawaRedsMyLife_iOSNativeItemTextField = -9,
-	UIUrawaRedsMyLife_iOSNativeItemSearchBar = -10,
+	UIUrawaRedsMyLifeNativeItemTextView = -8,
+	UIUrawaRedsMyLifeNativeItemTextField = -9,
+	UIUrawaRedsMyLifeNativeItemSearchBar = -10,
 	
-	UIUrawaRedsMyLife_iOSNativeItemPicker = -11,
-	UIUrawaRedsMyLife_iOSNativeItemDatePicker = -12,
+	UIUrawaRedsMyLifeNativeItemPicker = -11,
+	UIUrawaRedsMyLifeNativeItemDatePicker = -12,
 	
-	UIUrawaRedsMyLife_iOSNativeItemInfoLight = -13,
-	UIUrawaRedsMyLife_iOSNativeItemInfoDark = -14,
+	UIUrawaRedsMyLifeNativeItemInfoLight = -13,
+	UIUrawaRedsMyLifeNativeItemInfoDark = -14,
 	
-	UIUrawaRedsMyLife_iOSNativeItemDisclosure = -15,
+	UIUrawaRedsMyLifeNativeItemDisclosure = -15,
 	
-	UIUrawaRedsMyLife_iOSNativeItemContactAdd = -16
+	UIUrawaRedsMyLifeNativeItemContactAdd = -16
 };
 
 
@@ -572,7 +583,9 @@ extern NSString* const kTiUnitDip;
 extern NSString* const kTiUnitDipAlternate;
 extern NSString* const kTiUnitSystem;
 extern NSString* const kTiUnitPercent;
-    
+
+extern NSString* const kTiExceptionSubreason;
+extern NSString* const kTiExceptionLocation;
 
 
 #ifndef ASI_AUTOUPDATE_NETWORK_INDICATOR
@@ -592,7 +605,7 @@ void incrementKrollCounter();
 void decrementKrollCounter();
     
 /**
- *	TiThreadPerformOnMainThread should replace all UrawaRedsMyLife_iOS instances of
+ *	TiThreadPerformOnMainThread should replace all UrawaRedsMyLife instances of
  *	performSelectorOnMainThread, ESPECIALLY if wait is to be yes. That way,
  *	exceptional-case main thread activities can process them outside of the
  *	standard event loop.

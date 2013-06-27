@@ -1,14 +1,28 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2012 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
  * WARNING: This is generated code. Modify at your own risk and without support.
  */
 
-#import "TiColor.h"
 #import "TiDimension.h"
+
+@class TiProxy;
+@class TiColor;
+@class TiFile;
+@class TiBuffer;
+@class WebFont;
+@class TiScriptError;
+
+/*	NOTE TO MODULE DEVELOPERS:
+ *	The following 4 imports will be going away as it's better to simply
+ *	forward-declare the classes in headers. If you've been relying on TiUtils
+ *	to do the including of TiProxy for you, please fix this. However, to
+ *	avoid breaking modules 
+ */
+#import "TiColor.h"
 #import "WebFont.h"
 #import "TiFile.h"
 #import "TiBuffer.h"
@@ -401,9 +415,9 @@ typedef enum {
 
 +(WebFont*)fontValue:(id)value;
 
-+(UITextAlignment)textAlignmentValue:(id)alignment;
++(TiScriptError*) scriptErrorValue:(id)value;
 
-+(NSString*)exceptionMessage:(id)arg;
++(UITextAlignment)textAlignmentValue:(id)alignment;
 
 /**
  Whether or not the current device orientation is portrait.
@@ -488,6 +502,12 @@ typedef enum {
  */
 +(BOOL)isRetinaDisplay;
 
+/**
+ Whether or not the current device has a 4 inch retina display (iPhone5).
+ @return _YES_ if the current device has a 4 inch retina display, _NO_ otherwise.
+ */
++(BOOL)isRetinaFourInch;
+
 +(int)dpi;
 
 +(NSStringEncoding)charsetToEncoding:(NSString*)charset;
@@ -520,4 +540,21 @@ typedef enum {
 +(NSString*)getResponseHeader:(NSString*)header fromHeaders:(NSDictionary*)responseHeaders;
 
 +(UIImage*)loadBackgroundImage:(id)image forProxy:(TiProxy*)proxy;
+
+/**
+ Convenience method to extract a useful error message from NSError, or nil if none exist.
+ @param error The NSError
+ @return error's localizedDescription and userDescription concatenated
+ */
++ (NSString*)messageFromError:(NSError *)error;
+
+/**
+ Convenience method to create a mutable dictionary prepopulated with success, code, and error values.
+ This is for use with callbacks that are not events. While it is possible to use this in events,
+ the built-in event error reporting functionality is faster.
+ @param code The integer representing an error. Use 0 for a success, and -1 for an unknown error.
+ @param message The optional string describing the error.
+ */
++ (NSMutableDictionary *)dictionaryWithCode:(int)code message:(NSString *)message;
+
 @end

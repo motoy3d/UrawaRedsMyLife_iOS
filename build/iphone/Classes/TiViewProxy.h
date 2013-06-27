@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2012 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -9,6 +9,7 @@
 #import "TiProxy.h"
 #import "TiUIView.h"
 #import "TiRect.h"
+#import "TiViewTemplate.h"
 #import <pthread.h>
 
 /**
@@ -16,7 +17,7 @@
  */
 @protocol TiKeyboardFocusableView
 
-#pragma mark Public UrawaRedsMyLife_iOS APIs.
+#pragma mark Public UrawaRedsMyLife APIs.
 
 /**
  Tells the view to focus.
@@ -64,6 +65,11 @@
 
 @end
 
+@protocol TiViewEventOverrideDelegate <NSObject>
+@required
+- (NSDictionary *)overrideEventObject:(NSDictionary *)eventObject forEvent:(NSString *)eventType fromViewProxy:(TiViewProxy *)viewProxy;
+
+@end
 
 #pragma mark dirtyflags used by TiViewProxy
 #define NEEDS_LAYOUT_CHILDREN	1
@@ -144,6 +150,7 @@ enum
     NSMutableDictionary *layoutPropDictionary;
     
     id observer;
+	id<TiViewEventOverrideDelegate> eventOverrideDelegate;
 }
 
 #pragma mark public API
@@ -164,9 +171,9 @@ enum
  */
 @property(nonatomic,readonly) NSArray *children;
 
--(void)startLayout:(id)arg;
--(void)finishLayout:(id)arg;
--(void)updateLayout:(id)arg;
+-(void)startLayout:(id)arg;//Deprecated since 3.0.0
+-(void)finishLayout:(id)arg;//Deprecated since 3.0.0
+-(void)updateLayout:(id)arg;//Deprecated since 3.0.0
 -(void)setTempProperty:(id)propVal forKey:(id)propName;
 -(void)processTempProperties:(NSDictionary*)arg;
 
@@ -251,6 +258,8 @@ enum
 
 //NOTE: DO NOT SET VIEW UNLESS IN A TABLE VIEW, AND EVEN THEN.
 @property(nonatomic,readwrite,retain)TiUIView * view;
+
+@property (nonatomic,readwrite,assign) id<TiViewEventOverrideDelegate> eventOverrideDelegate;
 
 /**
  Returns language conversion table.
@@ -373,26 +382,6 @@ enum
  @see viewWillDetach
  */
 -(void)viewDidDetach;
-/**
- Tells the view proxy that parent will appear 
- @see UIViewController viewWillAppear.
- */
--(void)parentWillAppear:(id)args;
-/**
- Tells the view proxy that parent did appear 
- @see UIViewController viewDidAppear.
- */
--(void)parentDidAppear:(id)args;
-/**
- Tells the view proxy that parent will disappear 
- @see UIViewController viewWillDisappear.
- */
--(void)parentWillDisappear:(id)args;
-/**
- Tells the view proxy that parent did appear 
- @see UIViewController viewDidDisappear.
- */
--(void)parentDidDisappear:(id)args;
 
 #pragma mark Housecleaning state accessors
 //TODO: Sounds like the redundancy department of redundancy was here.
@@ -581,11 +570,20 @@ enum
 
 -(BOOL)willBeRelaying;	//Todo: Replace
 
+-(BOOL) widthIsAutoFill;
+-(BOOL) widthIsAutoSize;
+-(BOOL) heightIsAutoFill;
+-(BOOL) heightIsAutoSize;
+-(BOOL) belongsToContext:(id<TiEvaluator>) context;
+
 /**
  Tells the view that its child view size will change.
  @param child The child view
  */
 -(void)childWillResize:(TiViewProxy *)child;	//Todo: Replace
+
+- (void)unarchiveFromTemplate:(id)viewTemplate;
++ (TiViewProxy *)unarchiveFromTemplate:(id)viewTemplate inContext:(id<TiEvaluator>)context;
 
 @end
 

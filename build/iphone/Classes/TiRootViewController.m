@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2012 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -105,7 +105,7 @@
 	*imageIdiom = UIUserInterfaceIdiomPhone;
 	// Default
     image = nil;
-    if ([[UIScreen mainScreen] bounds].size.height == 568) {
+    if ([TiUtils isRetinaFourInch]) {
         image = [UIImage imageNamed:@"Default-568h.png"];
         if (image!=nil) {
             return image;
@@ -526,6 +526,12 @@
 
     [self updateOrientationHistory:newOrientation];
     
+	UIInterfaceOrientation latestOrientation = [self lastValidOrientation];
+	if ((latestOrientation == oldOrientation) && (latestOrientation == windowOrientation))
+	{
+		return;
+	}
+    
     // We appear to do this in order to synchronize rotation animations with the keyboard.
     // But there is an interesting edge case where the status bar sometimes updates its orientation,
     // but does not animate, before we trigger the refresh. This means that the keyboard refuses to
@@ -645,6 +651,7 @@
         if ([modalvc isKindOfClass:[UINavigationController class]] && 
             ![modalvc isKindOfClass:[MFMailComposeViewController class]] &&
             ![modalvc isKindOfClass:[ABPeoplePickerNavigationController class]] &&
+            ![modalvc isKindOfClass:[UIImagePickerController class]] &&
             modalFlag == YES )
         {
             //Since this is a window opened from inside a modalviewcontroller we need
@@ -1351,7 +1358,7 @@
 {
 	WARN_IF_BACKGROUND_THREAD_OBJ
 
-	if (visibleProxy == keyboardFocusedProxy)
+	if ( (visibleProxy == keyboardFocusedProxy) && (leavingAccessoryView == nil) )
 	{
 		DeveloperLog(@"[WARN] Focused for %@<%X>, despite it already being the focus.",keyboardFocusedProxy,keyboardFocusedProxy);
 		return;
