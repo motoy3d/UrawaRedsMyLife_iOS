@@ -4,12 +4,8 @@
 function ConfigWindow(webData) {
 	var util = require("/util/util").util;
     var style = require("/util/style").style;
-	var self = Ti.UI.createWindow({
-		title: "浦和レッズ My Life 設定"
-		,navBarHidden: false
-		,backgroundColor: "black"
-		,barColor: 'red'
-	});
+	var self = Ti.UI.createWindow(style.config.window)
+	self.barColor = style.common.barColor;
     var table = Ti.UI.createTableView({
         backgroundColor: "black"
         ,separatorColor: 'black'
@@ -35,7 +31,7 @@ function ConfigWindow(webData) {
         var simpleDispModeProp = Ti.App.Properties.getBool("simpleDispMode");
         Ti.API.info('dispModeProp=========' + simpleDispModeProp);
         if(simpleDispModeProp == null || simpleDispModeProp == undefined) {
-            simpleDispModeProp = false;
+            simpleDispModeProp = true;
         }
         var simpleDispModeSwitch = Ti.UI.createSwitch({
             value: simpleDispModeProp

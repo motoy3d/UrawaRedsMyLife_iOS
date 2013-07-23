@@ -11,7 +11,7 @@ function WebWindow(webData) {
 	var self = Ti.UI.createWindow({
 		title: webData.title
 		,backgroundColor: 'black'
-		,barColor: 'red'
+		,barColor: style.common.barColor
 	});
 	
     var webView = Ti.UI.createWebView();
@@ -28,6 +28,9 @@ function WebWindow(webData) {
     }
     addWebViewEventListener();
     var simpleDispModeProp = Ti.App.Properties.getBool("simpleDispMode");
+    if(simpleDispModeProp == null || simpleDispModeProp == undefined) {
+        simpleDispModeProp = true;
+    }
     //tweetから来た場合
     if(webData.html) {
         webView.html = webData.html;

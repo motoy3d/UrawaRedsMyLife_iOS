@@ -23,7 +23,7 @@ function TwitterWindow(tabGroup, target) {
         title: L('twitter')
         ,navBarHidden: false
         ,backgroundColor: 'black'
-        ,barColor: 'red'
+        ,barColor: style.common.barColor
         ,rightNavButton: refreshButton
     });
     

@@ -12,12 +12,12 @@ function Twitter(target) {
     var queryBase = 
         "select * from json"
         + " where url='http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
-        + "?teamId=reds&count=" + tweetsPerPage;
+        + "?teamId=" + util.getTeamId() + "&count=" + tweetsPerPage;
     var oldestId;      //最も古いツイートID。古いデータ読み込み時に使用
     var newestId;    //最も新しいツイートID。新しいデータ読み込み時に使用
     
     /**
-     * twitter apiを使用して#urawaredsのツイート一覧を取得
+     * チームハッシュタグのツイート一覧を取得
      * @param kind ("firstTime" or "olderTweets" or "newerTweets")
      * @param callback (TwitterWindow.js)
      */

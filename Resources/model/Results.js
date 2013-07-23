@@ -13,7 +13,7 @@ function Results(resultsWindow) {
 	// YQLクエリ(浦和公式サイトから取得)
 	var resultsQuery = "SELECT * FROM html WHERE url='http://www.urawa-reds.co.jp/game/' "
 		+ "and xpath=\"//div[@class='mainContentColumn']/table/tr\"";
-	var urawaEncoded = encodeURIComponent('浦和');
+	var urawaEncoded = encodeURIComponent(util.getTeamName());
     var highlightEncoded = encodeURIComponent('ハイライト');
 
 	/**

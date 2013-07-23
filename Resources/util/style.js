@@ -1,5 +1,6 @@
 exports.style = {
 	common : {
+	    barColor : 'red',
 		loadingMsg : '読み込み中...',
 		offlineMsg : 'ネットワークに接続できません。\n接続後に再度お試しください。',
 		loadingFailMsg : '読み込みに失敗しました',
@@ -133,6 +134,13 @@ exports.style = {
 		},
 		visitedBgColor : '#457'
 	},
+    config : {
+        window : {
+            title: "浦和レッズ My Life 設定"
+            ,navBarHidden: false
+            ,backgroundColor: "black"
+        }
+    },
 	results : {
 	    table : {
 	        backgroundColor: 'black',
@@ -214,6 +222,7 @@ exports.style = {
 		}
 	},
 	standings : {
+	    backgroundColor : "red",
 	    standingsView : {
 	        top : 0
 	        ,backgroundColor: "black"

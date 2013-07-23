@@ -34,7 +34,7 @@ function NewsWindow(tabGroup) {
     // ウィンドウ
 	var self = Ti.UI.createWindow({
 		title: L('news')
-		,barColor: 'red'
+		,barColor: style.common.barColor
         ,rightNavButton: configButton
 	});
 	// テーブル

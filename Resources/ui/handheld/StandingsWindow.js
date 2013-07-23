@@ -4,9 +4,13 @@
 function StandingsWindow(tabGroup) {
 	var Standings = require("/model/Standings");
     var ACLStandings = require("/model/ACLStandings");
-	// var util = require("util/util").util;
+	var util = require("util/util").util;
 	var style = require("/util/style").style;
 	var isLoading = false;
+    // ソートボタン
+    var sortButton = Ti.UI.createButton({
+        title: "ソート"
+    });
     // 更新ボタン
     var refreshButton = Ti.UI.createButton({
         systemButton: Ti.UI.iPhone.SystemButton.REFRESH
@@ -14,8 +18,9 @@ function StandingsWindow(tabGroup) {
 	var self = Ti.UI.createWindow({
 		title: L('standings'),
 		backgroundColor: 'black'
-		,barColor: 'red'
+		,barColor: style.common.barColor
         ,rightNavButton: refreshButton
+        ,leftNavButton: sortButton
 	});
 		
 	//openイベント
@@ -80,6 +85,37 @@ function StandingsWindow(tabGroup) {
             loadACLStandings();
         }
     });
+    // ソートボタン
+    sortButton.addEventListener('click', function(e){
+        if(isLoading) {
+            return;
+        }
+        
+        var optionsArray = new Array("得点数でソート", "失点数でソート", "得失点差でソート", 
+            "勝利数でソート", "敗北数でソート", "引き分け数でソート", "順位でソート", "キャンセル");
+        var sortDialog = Ti.UI.createOptionDialog({options: optionsArray});
+        sortDialog.addEventListener("click", function(e){
+            if(7 == e.index) {
+                return;
+            }
+            if(0 == e.index) {
+                loadJ1Standings("gotGoal");
+            } else if(1 == e.index) {
+                loadJ1Standings("lostGoal");
+            } else if(2 == e.index) {
+                loadJ1Standings("diff");
+            } else if(3 == e.index) {
+                loadJ1Standings("win");
+            } else if(4 == e.index) {
+                loadJ1Standings("lost");
+            } else if(5 == e.index) {
+                loadJ1Standings("draw");
+            } else if(6 == e.index) {
+                loadJ1Standings();
+            }
+        });
+        sortDialog.show();
+    });
 
     /**
      * ヘッダービューを生成する 
@@ -114,12 +150,13 @@ function StandingsWindow(tabGroup) {
     }
     
 	/**
-	 * Yahooスポーツサイトのhtmlを読み込んで表示する
+	 * J1順位表を読み込んで表示する
 	 */
-	function loadJ1Standings() {
+	function loadJ1Standings(sort) {
         if(isLoading) {
             return;
         }
+        sortButton.enabled = true;
         isLoading = true;
         indicator.show();
         self.title = "J1順位表";
@@ -135,7 +172,7 @@ function StandingsWindow(tabGroup) {
         containerView.add(border);
         
 		var standings = new Standings();
-		standings.load({
+		standings.load(sort, {
 			success: function(standingsDataList) {
 				try {
 				    var rows = new Array();
@@ -174,6 +211,7 @@ function StandingsWindow(tabGroup) {
         if(isLoading) {
             return;
         }
+        sortButton.enabled = false;
         isLoading = true;
         indicator.show();
         self.title = "ACL順位表";
@@ -290,8 +328,8 @@ function StandingsWindow(tabGroup) {
         var diffGoalLabel = createRowLabel(diffGoal, leftPos+(w*6), w2);
         row.add(diffGoalLabel);
         // 浦和背景色
-        if('浦和' == team) {
-            row.backgroundColor = 'red';
+        if(util.getTeamName() == team) {
+            row.backgroundColor = style.standings.backgroundColor;
         }
         return row;
     }

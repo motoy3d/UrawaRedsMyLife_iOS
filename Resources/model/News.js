@@ -2,9 +2,9 @@ var util = require("util/util").util;
 var style = require("util/style").style;
 var newsSource = require("model/newsSource");
 
-var LOAD_FEED_SIZE = 25;
+var LOAD_FEED_SIZE = 30;
 var feedUrlBase = "http://sub0000499082.hmk-temp.com/redsmylife/news.json"
-    + "?teamId=reds&count=" + LOAD_FEED_SIZE;
+    + "?teamId=" + util.getTeamId() + "&count=" + LOAD_FEED_SIZE;
 var visitedUrlList = new Array();
 
 /**

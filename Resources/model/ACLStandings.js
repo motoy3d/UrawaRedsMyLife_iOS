@@ -2,7 +2,7 @@
  * ACL順位表取得サービス
  * Yahoo スポーツから読み込み
  */
-function Standings() {
+function ACLStandings() {
 	var util = require("util/util").util;
     var style = require("util/style").style;
 
@@ -94,4 +94,4 @@ function Standings() {
 	}
 	return self;
 }
-module.exports = Standings;
+module.exports = ACLStandings;

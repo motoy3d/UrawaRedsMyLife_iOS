@@ -1,7 +1,18 @@
 var style = require("util/style").style;
 //var customIndicator = require("CustomIndicator").customIndicator;
 exports.util = {
-    
+    /**
+     * チームIDを返す 
+     */
+    getTeamId : function() {
+        return "reds";
+    },
+    /**
+     * チーム名を返す 
+     */
+    getTeamName : function() {
+        return "浦和";
+    },
 	/**
 	 * 現時点の表示対象シーズン(年)を返す。
 	 */
@@ -79,7 +90,7 @@ exports.util = {
 	/**
 	 * チーム名を正式名から簡略形式で返す。
 	 */
-	getTeamName : function(teamName) {
+	getSimpleTeamName : function(teamName) {
 		if(teamName == 'ベガルタ仙台') return '仙台';	
 		else if(teamName == 'サンフレッチェ広島') return '広島';	
 		else if(teamName == 'ジュビロ磐田') return '磐田';	

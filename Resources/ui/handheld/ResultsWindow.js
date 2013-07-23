@@ -15,7 +15,7 @@ function ResultsWindow(tabGroup) {
 	var self = Ti.UI.createWindow({
 		title: L('results'),
 		backgroundColor:'black'
-		,barColor: 'red'
+		,barColor: style.common.barColor
         ,rightNavButton: refreshButton
 	});
 	self.loadDetailHtml = loadDetailHtml;	//function

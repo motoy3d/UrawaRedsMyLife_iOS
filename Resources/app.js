@@ -97,8 +97,9 @@ function initDB() {
  */
 function startAnalytics() {
 	var analytics = new Analytics('UA-30928840-1');
+    var util = require("util/util").util;
 	Titanium.App.addEventListener('analytics_trackPageview', function(e){
-	    var path = "/app/" + Ti.Platform.name;
+	    var path = "/app/" + util.getTeamId() + "/" + Ti.Platform.name;
 	    analytics.trackPageview(path + e.pageUrl);
 	});
 	Ti.App.addEventListener('analytics_trackEvent', function(e){

@@ -9,7 +9,7 @@ function YoutubeWindow(searchCond) {
     var self = Ti.UI.createWindow({
         title: searchCond.title
         ,backgroundColor: 'white'
-        ,barColor: 'red'
+        ,barColor: style.common.barColor
 //        navBarHidden: true
     });
     // function
@@ -140,10 +140,10 @@ Ti.API.info('ind.hide() 1');
         // try {
             Ti.API.info('###### createYoutubeRow() title=' + item.title);
             var title = item.title;
-            if(title.indexOf("浦和") == -1 && title.indexOf(vsTeam) == -1
+            if(title.indexOf(util.getTeamName()) == -1 && title.indexOf(vsTeam) == -1
                && title.indexOf(searchCond.date) == -1) { 
                 //タイトルに「浦和」、対戦相手チーム名がないのは削除
-                Ti.API.info('タイトルに「浦和」、対戦相手チーム名(' + vsTeam + ')、日付がないのは削除 [' + title + ']');
+                Ti.API.info('タイトルに「' + util.getTeamName() + '」、対戦相手チーム名(' + vsTeam + ')、日付がないのは削除 [' + title + ']');
                 return null;
             }
             var summary = "";
@@ -229,7 +229,7 @@ Ti.API.info('ind.hide() 1');
             url : movieUrl
         });
         var videoWin = Ti.UI.createWindow({
-            barColor: 'red'
+            barColor: style.common.barColor
         });
         videoWin.add(videoView);
         Ti.App.tabGroup.activeTab.open(videoWin, {
