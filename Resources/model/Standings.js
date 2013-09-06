@@ -12,7 +12,7 @@ function Standings() {
 
     var standingsUrl = "http://sub0000499082.hmk-temp.com/redsmylife/standings.json?season=" + util.getCurrentSeason();
 	/**
-	 * Yahooスポーツサイトのhtmlを読み込んで表示する
+	 * 自前サーバからJSONを読み込んで表示する
 	 */
 	function load(sort, callback) {
 	    Ti.API.info('---------------------------------------------------------------------');
@@ -24,7 +24,11 @@ function Standings() {
             //callback.fail(style.common.offlineMsg);
             //TODO return;
 		}
-        Ti.App.Analytics.trackPageview('/standings');
+        if(sort) {
+            Ti.App.Analytics.trackPageview('/standings?sort=' + sort);
+        } else {
+            Ti.App.Analytics.trackPageview('/standings');
+        }
 
         var xhr = new XHR();
         // Normal plain old request with a 5mins caching

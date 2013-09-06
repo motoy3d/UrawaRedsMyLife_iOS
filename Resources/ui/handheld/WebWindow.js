@@ -201,7 +201,7 @@ function WebWindow(webData) {
     function lineSend(e) {
         Ti.App.Analytics.trackPageview('/lineDialog');   //ダイアログを開く
         var link = webView.url; 
-        if(webView.url.indexOf("app://") == 0) {
+        if(webView.url.indexOf("http") != 0) {
             link = webData.link; //簡易表示の場合はwebData.link
         }
         var title = webView.evalJS("document.title");
@@ -219,7 +219,7 @@ function WebWindow(webData) {
     function tweet(e) {
         Ti.App.Analytics.trackPageview('/tweetDialog');   //ダイアログを開く
         var link = webView.url; 
-        if(webView.url.indexOf("app://") == 0) {
+        if(webView.url.indexOf("http") != 0) {
             link = webData.link; //簡易表示の場合はwebData.link
         }
         var title = webView.evalJS("document.title");
@@ -251,7 +251,7 @@ function WebWindow(webData) {
      */ 
     function facebookShareBySocialModule() {
         var link = webView.url; 
-        if(webView.url.indexOf("app://") == 0) {
+        if(webView.url.indexOf("http") != 0) {
             link = webData.link; //簡易表示の場合はwebData.link
         }
         var title = webView.evalJS("document.title");
@@ -281,7 +281,7 @@ function WebWindow(webData) {
 //        var image = webData.image;
 //        Ti.API.info('画像＝＝＝' + image);
         var link = webView.url; 
-        if(webView.url.indexOf("app://") == 0) {
+        if(webView.url.indexOf("http") != 0) {
             link = webData.link; //簡易表示の場合はwebData.link
         }
         Ti.API.info('facebookシェア link=' + link);

@@ -255,6 +255,11 @@ exports.style = {
             ,color: 'white'
             ,backgroundColor: 'black'
             ,className: "standingsTableRow"
+	    },
+	    compeButtonBar : {
+	        style: Ti.UI.iPhone.SystemButtonStyle.BAR
+	        ,backgroundColor: 'red'
+            ,width: 200
 	    }
 	},
 	twitter : {

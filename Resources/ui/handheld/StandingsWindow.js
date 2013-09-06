@@ -33,12 +33,9 @@ function StandingsWindow(tabGroup) {
        systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
     });
     //ツールバー
-    var compeButtonBar = Ti.UI.createButtonBar({
-        style: Ti.UI.iPhone.SystemButtonStyle.BAR
-        ,labels: [{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}]
-        ,backgroundColor: 'red'
-        ,width: 200
-    });
+/*
+    var compeButtonBar = Ti.UI.createButtonBar(style.standings.compeButtonBar);
+    compeButtonBar.labels = [{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}];
     compeButtonBar.addEventListener("click", function(e){
         if(isLoading) {
             return;
@@ -57,7 +54,7 @@ function StandingsWindow(tabGroup) {
     });
 //    self.setRightNavButton(compeButtonBar);
     self.setToolbar([flexSpace, compeButtonBar, flexSpace]);
-    
+*/    
     //親ビュー
     var containerView = Ti.UI.createView(style.standings.standingsView);
     self.add(containerView);
@@ -160,7 +157,7 @@ function StandingsWindow(tabGroup) {
         isLoading = true;
         indicator.show();
         self.title = "J1順位表";
-        compeButtonBar.setLabels([{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}]);
+//        compeButtonBar.setLabels([{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}]);
 		//ヘッダー
 		if(aclHeaderView) {
 		    containerView.remove(aclHeaderView);
@@ -215,7 +212,7 @@ function StandingsWindow(tabGroup) {
         isLoading = true;
         indicator.show();
         self.title = "ACL順位表";
-        compeButtonBar.setLabels([{title: 'J1', enabled: true}, {title: 'ACL', enabled: false}]);
+//        compeButtonBar.setLabels([{title: 'J1', enabled: true}, {title: 'ACL', enabled: false}]);
         // ヘッダー
         if(j1HeaderView) {
             containerView.remove(j1HeaderView);

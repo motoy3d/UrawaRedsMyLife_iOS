@@ -67,7 +67,7 @@ function Results(resultsWindow) {
 	 * TableViewRowを生成する
 	 */
 	function createRow(item, currentSeason) {
-		var tdList = item["td"];
+	    var tdList = item["td"];
 		var compe = "未定";
 		if("大会/節" == compe) {
 			return null;
@@ -85,7 +85,7 @@ function Results(resultsWindow) {
 		if(date.content) {
 		    date = util.removeLineBreak(util.replaceAll(date.content, "<br/>", ""));
 		}
-		Ti.API.debug('■' + date);
+//		Ti.API.debug('■' + date);
 		var time = "";
 		var team = "未定";
         if(tdList[2] && tdList[2].p) {
@@ -116,22 +116,19 @@ function Results(resultsWindow) {
                 score = tdList[5].a.content.substring(1);
 		    }
 			detailUrl = tdList[5].a.href;
-            if("◯" == result) {
+			var divIdx = score.indexOf("-");
+			var score1 = Number(score.substring(0, divIdx));
+			var score2 = Number(score.substring(divIdx+1));
+//			Ti.API.info(team + ' スコア ' + score1 + "-" + score2);
+            if(score2 < score1) {
                 resultImage = "/images/win.png";
-            } else if("●" == result) {
-                // if(isHome) {
-                    // if(tdList[5].a.span) {
-                        // resultImage = "/images/lose.png";
-                    // } else {
-                        // resultImage = "/images/win.png";
-                    // }
-                // } else {
-                    // resultImage = "/images/lose.png";
-                // }                resultImage = "/images/lose.png";
-            } else {
+            } else if(score1 == score2) {
                 resultImage = "/images/draw.png";
+            } else {
+                resultImage = "/images/lose.png";
             }
 		}
+//		Ti.API.info('★' + isHome + " : " + team + " : " + score);
 		var hasDetailResult = detailUrl != "";
 		Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
 		// Ti.API.debug("hasDetailResult=" + hasDetailResult);
