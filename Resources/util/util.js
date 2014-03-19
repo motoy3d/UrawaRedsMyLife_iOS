@@ -144,7 +144,7 @@ exports.util = {
     formatDate : function(date) {
         var zeroPad = function(str, length) {
             return new Array(length - ('' + str).length + 1).join('0') + str;
-        }
+        };
         if(!date) {
             date = new Date();
         }
@@ -158,7 +158,7 @@ exports.util = {
     formatDatetime : function(date) {
         var zeroPad = function(str, length) {
             return new Array(length - ('' + str).length + 1).join('0') + str;
-        }
+        };
         if(!date) {
             date = new Date();
         }
@@ -173,7 +173,7 @@ exports.util = {
     formatDatetime2 : function(date) {
         var zeroPad = function(str, length) {
             return new Array(length - ('' + str).length + 1).join('0') + str;
-        }
+        };
         if(!date) {
             date = new Date();
         }
@@ -281,6 +281,8 @@ exports.util = {
     removeLineBreak : function(text) {
         text = text.replace((new RegExp("\r\n","g")),"");
         text = text.replace((new RegExp("\n","g")),"");
+        text = text.replace((new RegExp("<br>","g")),"");
+        text = text.replace((new RegExp("<br/>","g")),"");
         return text;
     },
     /**
@@ -319,5 +321,4 @@ exports.util = {
     
         return text;
     }
-
-}
+};

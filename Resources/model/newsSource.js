@@ -1,5 +1,5 @@
 var util = require("util/util").util;
-var siteNameMaxByteLength = 26;
+var siteNameMaxByteLength = 24;
 var sites = new Array();
 var idx = 0;
 //sites[idx++] = new Array("浦和レッズオフィシャル","http://www.urawa-reds.co.jp");

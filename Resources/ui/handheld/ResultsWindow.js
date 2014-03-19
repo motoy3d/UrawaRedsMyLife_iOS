@@ -7,6 +7,7 @@ function ResultsWindow(tabGroup) {
 	var YoutubeWindow = require("ui/handheld/YoutubeWindow");
 	var util = require("util/util").util;
 	var style = require("util/style").style;
+	var initLoaded = false;
 
     // 更新ボタン
     var refreshButton = Ti.UI.createButton({
@@ -16,6 +17,7 @@ function ResultsWindow(tabGroup) {
 		title: L('results'),
 		backgroundColor:'black'
 		,barColor: style.common.barColor
+        ,navTintColor: style.common.navTintColor
         ,rightNavButton: refreshButton
 	});
 	self.loadDetailHtml = loadDetailHtml;	//function
@@ -51,9 +53,9 @@ function ResultsWindow(tabGroup) {
 			success: function(rowsData) {
 				try {
 				    var rowIdx = 0;
-				    for(i=1; i<rowsData.length; i++) {
+				    for(i=2; i<rowsData.length; i++) {
 				        if(rowsData[i].detailUrl) {
-				            rowIdx = i-1;   //最初の１行目は除くため-1
+				            rowIdx = i;   //最初の１行目は除くため-1
 				        } else {
 				            break;
 				        }
@@ -104,10 +106,22 @@ function ResultsWindow(tabGroup) {
         var youtubeWindow = new YoutubeWindow(searchCond);
         tabGroup.activeTab.open(youtubeWindow, {animated: true});
 	}
-	// window openイベント
-	self.addEventListener('open', function(){
-		loadResults();
-	});
+    if(Ti.Platform.version >= "7.0") {
+        // iOS7で、全てのタブのwindow openイベントがアプリ起動時に発火してしまうのでfocusイベントに変更。
+        self.addEventListener('focus', function(){
+            if(!initLoaded) {
+                Ti.API.info('-----------------------ResultsWindow init focus event');
+                loadResults();
+                initLoaded = true;
+            }
+        });
+    } else {
+        self.addEventListener('open', function(){
+            Ti.API.info('-----------------------ResultsWindow init open event');
+            loadResults();
+        });
+    }
+
 	return self;
 }
 module.exports = ResultsWindow;

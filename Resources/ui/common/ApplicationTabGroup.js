@@ -1,4 +1,4 @@
-function ApplicationTabGroup(Window) {
+function ApplicationTabGroup() {
 	var NewsWindow = require('ui/handheld/NewsWindow');
 	var ResultsWindow = require('ui/handheld/ResultsWindow');
 	var StandingsWindow = require('ui/handheld/StandingsWindow');

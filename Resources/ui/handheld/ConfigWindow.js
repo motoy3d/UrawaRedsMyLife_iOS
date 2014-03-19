@@ -4,7 +4,7 @@
 function ConfigWindow(webData) {
 	var util = require("/util/util").util;
     var style = require("/util/style").style;
-	var self = Ti.UI.createWindow(style.config.window)
+	var self = Ti.UI.createWindow(style.config.window);
 	self.barColor = style.common.barColor;
     var table = Ti.UI.createTableView({
         backgroundColor: "black"

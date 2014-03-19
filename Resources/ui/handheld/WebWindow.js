@@ -12,6 +12,7 @@ function WebWindow(webData) {
 		title: webData.title
 		,backgroundColor: 'black'
 		,barColor: style.common.barColor
+        ,navTintColor: style.common.navTintColor
 	});
 	
     var webView = Ti.UI.createWebView();
@@ -110,8 +111,7 @@ function WebWindow(webData) {
                     //facebookのページに対しては外部からシェアできない
                     facebook.setEnabled(true);
                 } else {
-                    //TODO test
-                    facebook.setEnabled(true);
+                    facebook.setEnabled(false);
                 }
             }
         });
@@ -160,7 +160,7 @@ function WebWindow(webData) {
         // facebookボタン
         facebook.addEventListener("click", function(e){
             Ti.App.Analytics.trackPageview('/fbShareDialog');   //ダイアログを開く
-            if(Ti.Platform.version > "6.0") {
+            if(Ti.Platform.version >= "6.0") {
                 facebookShareBySocialModule();
             } else {
                 if(!Ti.Facebook.loggedIn) {
@@ -182,7 +182,16 @@ function WebWindow(webData) {
                 }
             }
         });
-        self.setToolbar([line, flexSpace, twitter, flexSpace, facebook, flexSpace, flexSpace, back, flexSpace, forward]);
+        //TODO テスト
+//        self.includeOpaqueBars = true;
+        self.setToolbar([line, flexSpace, twitter, flexSpace, facebook, flexSpace, flexSpace, back, flexSpace, forward],
+            {
+                animated: false, // true by default
+                translucent: false, // true for iOS 7+, false otherwise
+                barColor: 'red',
+                tintColor: 'white' // iOS 7+ only
+            }            
+        );
     }
     
     /**
@@ -241,7 +250,7 @@ function WebWindow(webData) {
                     Ti.App.Analytics.trackPageview('/tweet');
                 },
                 error: function(){
-                    alert("ツイートに失敗しました");
+                    alert("iPhoneの設定でTwitterアカウントを登録してください。");
                 }
             });
         }
@@ -270,7 +279,7 @@ function WebWindow(webData) {
                 Ti.App.Analytics.trackPageview('/fbShare');
             },
             error: function(){
-                alert("FBシェアに失敗しました");
+                alert("iPhoneの設定でFacebookアカウントを登録してください。");
             }
         });
     }

@@ -4,8 +4,6 @@
 function Results(resultsWindow) {
 	var util = require("util/util").util;
 	var style = require("util/style").style;
-//	alert("resultsWindow=" + resultsWindow);
-	// var ResultsWindow = require("ui/handheld/ResultsWindow");
 	var self = {};
 	self.load = load;
 //	self.createRow = createRow;
@@ -72,6 +70,9 @@ function Results(resultsWindow) {
 		if("大会/節" == compe) {
 			return null;
 		}
+		if(!tdList[1]) {  //日付が空。無観客試合特例
+		    return null;
+		}
         var isHome = item.class? item.class.indexOf("home") == 0 : false;
 		if(tdList[0] && tdList[0].p) {
 		    if(tdList[0].p.content) {
@@ -82,10 +83,10 @@ function Results(resultsWindow) {
 		}
 	//Ti.API.debug('compe=' + compe);
 		var date = tdList[1].p;
-		if(date.content) {
-		    date = util.removeLineBreak(util.replaceAll(date.content, "<br/>", ""));
-		}
-//		Ti.API.debug('■' + date);
+        if(date.content) {
+            date = util.removeLineBreak(util.replaceAll(date.content, "<br/>", ""));
+        }
+		Ti.API.info('■date=' + date);
 		var time = "";
 		var team = "未定";
         if(tdList[2] && tdList[2].p) {
@@ -107,7 +108,7 @@ function Results(resultsWindow) {
 		var score = "";
 		var resultImage = "";
 		var detailUrl = "";
-		if(tdList[5].a) {
+		if(tdList[5] && tdList[5].a) {
 		    if(tdList[5].a.span) {
                 result = tdList[5].a.span.content;
                 score = tdList[5].a.content;
@@ -128,7 +129,7 @@ function Results(resultsWindow) {
                 resultImage = "/images/lose.png";
             }
 		}
-//		Ti.API.info('★' + isHome + " : " + team + " : " + score);
+		Ti.API.info('★' + isHome + " : " + team + " : " + score);
 		var hasDetailResult = detailUrl != "";
 		Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
 		// Ti.API.debug("hasDetailResult=" + hasDetailResult);

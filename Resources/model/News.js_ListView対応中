@@ -2,7 +2,7 @@ var util = require("util/util").util;
 var style = require("util/style").style;
 var newsSource = require("model/newsSource");
 
-var LOAD_FEED_SIZE = 40;
+var LOAD_FEED_SIZE = 30;
 var feedUrlBase = "http://sub0000499082.hmk-temp.com/redsmylife/news.json"
     + "?teamId=" + util.getTeamId() + "&count=" + LOAD_FEED_SIZE;
 var visitedUrlList = new Array();
@@ -79,7 +79,7 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
 			if(e.data.json.map) {
                 rowsData = e.data.json.map(
                     function(item) {
-                        var row = createNewsRow(item.json);
+                        var row = createRow(item.json);
     //                  Ti.API.info("row=====" + row);
                         var pubDateNum = item.json.published_date_num;
                         if(newest_item_timestamp < pubDateNum) {
@@ -108,6 +108,129 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
 			//indWin.close();
 		}
 	});
+}
+
+/**
+ * rowを生成する
+ */
+function createRow(item) {
+    // 記事タイトル
+    var itemTitleFull = util.deleteUnnecessaryText(item.entry_title);
+    var itemTitle = itemTitleFull;
+    itemTitle = util.removeLineBreak(itemTitle);
+    if(itemTitleFull.length > 48) {
+        itemTitle = itemTitleFull.substring(0, 48) + "...";
+    }
+    var height = 0;
+    if(itemTitle.getBytes() / 50 == 0) {
+        height = 45;
+    } else {
+        height = (Math.ceil(itemTitle.getBytes() / 50) + 1) * 30;
+    }
+Ti.API.info("height=" + height + ",bytes=" + itemTitle.getBytes() + ",title=" + itemTitle);
+    
+    // 更新日時
+    var pubDate = parseDate(item.published_date);
+    //Ti.API.info("pubDate=====" + pubDate);
+    var minutes = pubDate.getMinutes();
+    if(minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    var pubDateText = (pubDate.getMonth() + 1) + "/" + pubDate.getDate() 
+        + " " + pubDate.getHours() + ":" + minutes;
+    
+    var link = "";
+    //Ti.API.info("★" + idobj[oid].toString());
+    link = item.entry_url;
+
+    // サイト名
+    var fullSiteName = item.site_name;
+    if(fullSiteName.toString().indexOf("Google") == 0) {
+        fullSiteName = "";
+    }
+    var siteName = newsSource.optimizeSiteName(item.site_name);
+    if('UrawaReds' == siteName) {
+        siteName = newsSource.getSiteName(link);
+        fullSiteName = siteName;
+    }
+    siteName += "   " + pubDateText;
+    
+    // 本文
+    var content = "";
+    if(item.content) {
+        content = item.content;
+    }
+    else if(item.summary) {
+        content = item.summary;
+    }
+
+    // 画像
+    var hasImage = false;
+    var imgTagIdx = content.indexOf("<img");
+    var imgUrl = "";
+    var imgOrgHeight = "";
+    var imgOrgWidth = "";
+    if(imgTagIdx != -1) {
+        var srcIdx = content.indexOf("src=", imgTagIdx);
+        if(srcIdx != -1) {
+            var urlStartIdx = srcIdx + 5;
+            var urlEndIdx = content.indexOf('"', urlStartIdx);
+            imgUrl = content.substring(urlStartIdx, urlEndIdx);
+            imgUrl = util.replaceAll(imgUrl, "&amp;", "&");
+//            Ti.API.debug('画像＝＝＝＝＝' + imgUrl + "  >  " + item.entry_title);
+            // アイコン等はgifが多いのでスキップ
+            if(!util.isUnnecessaryImage(imgUrl)) {
+                hasImage = true;
+                var heightIdx = content.indexOf("height=", imgTagIdx);
+                var widthIdx = content.indexOf("width=", imgTagIdx);
+                if(heightIdx != -1) {
+                    var heightStartIdx = heightIdx + 8;
+                    var heghtEndIdx = content.indexOf('"', heightStartIdx);
+                    imgOrgHeight = content.substring(heightStartIdx, heghtEndIdx);
+Ti.API.info(' $$$$ imgOrgHeight=' + imgOrgHeight);
+                }
+                if(widthIdx != -1) {
+                    var widthStartIdx = widthIdx + 7;
+                    var widthEndIdx = content.indexOf('"', widthStartIdx);
+                    imgOrgWidth = content.substring(widthStartIdx, widthEndIdx);
+Ti.API.info(' $$$$ imgOrgWidth=' + imgOrgWidth);
+                }
+            } else {
+                imgUrl = "";
+            }
+        }
+    }
+    var template = "plain";
+    if(imgUrl) {
+        template = "withImage";
+        var imgHeight = 0;
+        if(imgOrgWidth) {
+            100 / imgOrgWidth * imgOrgHeight;
+        }
+        if(height <= 100) {
+            height = 150;
+        } else {
+            height += 70;
+        }
+Ti.API.info("### with Image. height=" + height);
+    }
+    // ListItem
+    var row = {
+        title: {text: itemTitle}
+        ,subtitle : {text: siteName}
+        ,img: {image: imgUrl}
+        ,template: template
+        ,properties: {height: height, backgroundColor: "black"}
+        ,fullSiteName : fullSiteName
+        ,siteName : siteName
+        ,pageTitle : itemTitle
+        ,pageTitleFull : itemTitleFull
+        ,link : link
+        ,content : content
+        ,pubDate : pubDateText
+    };
+    Ti.API.info('>>>>>>>>>> img=' + imgUrl);
+    return row;
 }
 
 /**

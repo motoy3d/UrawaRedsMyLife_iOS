@@ -1,6 +1,7 @@
 exports.style = {
 	common : {
 	    barColor : 'red',
+        navTintColor : 'white',
 		loadingMsg : '読み込み中...',
 		offlineMsg : 'ネットワークに接続できません。\n接続後に再度お試しください。',
 		loadingFailMsg : '読み込みに失敗しました',
@@ -26,7 +27,7 @@ exports.style = {
 			layout : 'horizontal',
 			width : Ti.UI.FILL,
 			height : Ti.UI.SIZE,
-			hasDetail : true,
+//			hasDetail : true,
 			backgroundSelectedColor : "#f66",
             className : 'newsTableRowContent',
 			type: 'CONTENT'
@@ -139,6 +140,7 @@ exports.style = {
             title: "浦和レッズ My Life 設定"
             ,navBarHidden: false
             ,backgroundColor: "black"
+            ,navTintColor: "white"
         }
     },
 	results : {
@@ -365,4 +367,4 @@ exports.style = {
             height:30
         }
 	}
-}
+};

@@ -22,7 +22,7 @@
 		model = Ti.Platform.model,
 		name = Ti.Platform.name,
 		height = Ti.Platform.displayCaps.platformHeight,
-		width = Ti.Platform.displayCaps.platformWidth
+		width = Ti.Platform.displayCaps.platformWidth,
 		density = Ti.Platform.displayCaps.density,
 		dpi = Ti.Platform.displayCaps.dpi;
 	Ti.API.info('★★osname=' + osname);
@@ -35,20 +35,12 @@
     Ti.App.Analytics.trackPageview("/startApp?m=" + model + "&v=" + version/* + "&wh=" + width + "x" + height*/);
 	
 	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
-	
-	var Window;
-	if (isTablet) {
-		Window = require('ui/tablet/ApplicationWindow');
-	}
-	else {
-		Window = require('ui/handheld/ApplicationWindow');
-	}
 	Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.OPAQUE_BLACK;
 	
 	// 全置換：全ての文字列 org を dest に置き換える  
 	String.prototype.replaceAll = function (org, dest) {  
 	  return this.split(org).join(dest);  
-	}
+	};
 	//バイト数を返す。
 	String.prototype.getBytes = function() {
         var count = 0;
@@ -57,9 +49,9 @@
             if (n.length < 4) count++; else count+=2;
         }
         return count;
-	}
+	};
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	var tabGroup = new ApplicationTabGroup(Window);
+	var tabGroup = new ApplicationTabGroup();
 	// TabGroupをglobalにセット
 	Ti.App.tabGroup = tabGroup;
 	// スプラッシュイメージを一定時間表示
@@ -112,6 +104,6 @@ function startAnalytics() {
 	    trackEvent:function(category, action, label, value){
 	        Ti.App.fireEvent('analytics_trackEvent', {category:category, action:action, label:label, value:value});
 	    }
-	}
+	};
 	analytics.start(10);	//10秒に1回データ送信
 }

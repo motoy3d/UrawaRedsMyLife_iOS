@@ -5,13 +5,17 @@
 function Twitter(target) {
     var util = require("/util/util").util;
     var style = require("/util/style").style;
-
+    var XHR = require("util/xhr");
+    
     var self = {};
     self.loadTweets = loadTweets;
     var tweetsPerPage = 50;
-    var queryBase = 
-        "select * from json"
-        + " where url='http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
+    // var queryBase = 
+        // "select * from json"
+        // + " where url='http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
+        // + "?teamId=" + util.getTeamId() + "&count=" + tweetsPerPage;
+    var urlBase = 
+        "http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
         + "?teamId=" + util.getTeamId() + "&count=" + tweetsPerPage;
     var oldestId;      //最も古いツイートID。古いデータ読み込み時に使用
     var newestId;    //最も新しいツイートID。新しいデータ読み込み時に使用
@@ -35,32 +39,40 @@ function Twitter(target) {
         
         // YQL実行
         var before = new Date();
-        var query = queryBase;
+        // var query = queryBase;
+        var url = urlBase;
         if("newerTweets" == kind) {
-            query += "&since_id=" + newestId;
+            //query += "&since_id=" + newestId;
+            Ti.API.info('#####newestId = ' + newestId);
+            url += "&since_id=" + (Number(newestId)+100);   //なぜか最後の１件が再表示されてしまうので、100ずらす
         } else if("olderTweets" == kind){
-            query += "&max_id=" + oldestId;
+            // query += "&max_id=" + oldestId;
+            url += "&max_id=" + oldestId;
         }
-        query += "'";
-        Ti.API.info('★★query=' + query);
-        Ti.Yahoo.yql(query, function(e) {
+        // query += "'";
+        var xhr = new XHR();
+//        Ti.API.info('★★query=' + query);
+//        Ti.Yahoo.yql(query, function(e) {
+        Ti.API.info(new Date() + ': URL=' + url);
+        xhr.get(url, onSuccessCallback, onErrorCallback, { ttl: 5 });
+        function onSuccessCallback(e) {
+            Ti.API.info(new Date() + ': xhr success');
             try {
-                if(e.data == null || !e.data.json) {
+                if(e.data == null) {
                     callback.fail(style.common.loadingFailMsg);
                     return;
                 }
-                if(e.data.json.json == "no data") {
+                // if(e.data.json.json == "no data") {
+                    // callback.success(new Array());
+                    // return;
+                // }
+                var resultArray = JSON.parse(e.data);
+                if(resultArray[0].json && "no data" == resultArray[0].json) {
                     callback.success(new Array());
                     return;
                 }
-                var resultArray = null;
-                if(!e.data.json.json) {
-                    Ti.API.info('e.data.jsonが１件のため配列に変換')
-                    resultArray = new Array(e.data.json);
-                } else {
-                    resultArray = e.data.json.json;
-                }
-                    
+//                Ti.API.info('■■resultArray = ' + resultArray);
+                
                 // 取得したJSONをリスト化する
                 var idx = 0;
                 var tweetList = resultArray.map(
@@ -94,7 +106,7 @@ function Twitter(target) {
                         return data;
                     }
                 );
-                Ti.API.info('+++++++++++++++++++ YQL終了.  ツイート件数＝' + tweetList.length)
+                Ti.API.info(new Date() + '+++++++++++++++++++ 読み込み終了.  ツイート件数＝' + tweetList.length);
                 callback.success(tweetList);
             } catch(ex) {
                 Ti.API.error('---------------------\n' + ex);  
@@ -104,7 +116,10 @@ function Twitter(target) {
             var after = new Date();
             Ti.API.info("Twitter.js#loadTweets() 処理時間★" 
                 + (after.getTime()-before.getTime())/1000.0 + "秒");
-        });
+        };
+        function onErrorCallback(e) {
+            Ti.API.error(e);
+        }
     }
     
     /**

@@ -8,6 +8,7 @@ function TwitterWindow(tabGroup, target) {
     var WebWindow = require("/ui/handheld/WebWindow");    
     var util = require("/util/util").util;
     var style = require("/util/style").style;
+    var initLoaded = false;
     var updating = false;
     // var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
     // var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
@@ -24,6 +25,7 @@ function TwitterWindow(tabGroup, target) {
         ,navBarHidden: false
         ,backgroundColor: 'black'
         ,barColor: style.common.barColor
+        ,navTintColor: style.common.navTintColor
         ,rightNavButton: refreshButton
     });
     
@@ -60,12 +62,21 @@ function TwitterWindow(tabGroup, target) {
     var pulling = false;
     var reloading = false;
 */
-
-    
-    //openイベント
-    self.addEventListener('open', function(e) {
-        loadTweets("firstTime");
-    });
+    if(Ti.Platform.version >= "7.0") {
+        // iOS7で、全てのタブのwindow openイベントがアプリ起動時に発火してしまうのでfocusイベントに変更。
+        self.addEventListener('focus', function(){
+            if(!initLoaded) {
+                Ti.API.info('-----------------------TwitterWindow focus event');
+                loadTweets("firstTime");
+                initLoaded = true;
+            }
+        });
+    } else {
+        self.addEventListener('open', function(){
+            Ti.API.info('-----------------------TwitterWindow open event');
+            loadTweets("firstTime");
+        });        
+    }
     
     // テーブル
     var table = Ti.UI.createTableView(style.twitter.table);
@@ -97,7 +108,7 @@ function TwitterWindow(tabGroup, target) {
             success: function(tweetList) {
                 try {
                     var rows = new Array();
-                    table.startLayout();
+                    var rowsData = new Array();
                     for(i=0; i<tweetList.length; i++) {
                         var tweet = tweetList[i];
                         // rows.push(createRow(tweet));
@@ -105,15 +116,17 @@ function TwitterWindow(tabGroup, target) {
                             //TableViewAnimationProperties ap = {animated: false};
                             table.insertRowBefore(i, createRow(tweet), {animated: false});
                         } else {
-                            table.appendRow(createRow(tweet));
+//                            table.appendRow(createRow(tweet));
+                            rowsData.push(createRow(tweet));
                         }
                     }
                     if("firstTime" == kind) {
-                        // table.setData(rows);
+                        table.appendRow(rowsData);
                         self.add(table);
                     } else if("newerTweets" == kind) {
 //                        table.scrollToIndex(tweetList.length);
                     } else if("olderTweets" == kind) {
+                        table.appendRow(rowsData);
                         if(loadingRowIdx > 0) {
                             // “読み込み中”のローを削除する。
                             Ti.API.info("読み込み中ロー削除：" + loadingRowIdx);
@@ -123,7 +136,6 @@ function TwitterWindow(tabGroup, target) {
                 } catch(e) {
                     Ti.API.error(e);
                 } finally {
-                    table.finishLayout();
                     indicator.hide();
                     updating = false;
                 }

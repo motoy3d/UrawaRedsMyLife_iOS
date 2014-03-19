@@ -8,14 +8,14 @@
         <target device="android">false</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.1.2.GA</sdk-version>
+    <sdk-version>3.2.2.GA</sdk-version>
     <id>urawareds.my.life</id>
     <name>UrawaRedsMyLife</name>
-    <version>1.2.8</version>
+    <version>1.3.1</version>
     <publisher>motoy3d</publisher>
     <url>http://motoy3d.blogspot.com</url>
     <description>Infomation hub for Urawa Reds Supporter</description>
-    <copyright>2013 by motoy3d</copyright>
+    <copyright>2014 by motoy3d</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
@@ -27,7 +27,7 @@
     <guid>e1d254b0-6409-4ca9-8a7f-31ffff8acd33</guid>
     <property name="ti.ui.defaultunit">system</property>
     <ios>
-        <min-ios-ver>5.0</min-ios-ver>
+        <min-ios-ver>6.0</min-ios-ver>
     </ios>
     <iphone>
         <orientations device="iphone">
@@ -51,6 +51,6 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="iphone" version="1.0.1">de.marcelpociot.social</module>
+        <module platform="iphone">de.marcelpociot.social</module>
     </modules>
 </ti:app>

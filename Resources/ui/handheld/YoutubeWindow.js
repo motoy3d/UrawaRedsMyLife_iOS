@@ -10,6 +10,7 @@ function YoutubeWindow(searchCond) {
         title: searchCond.title
         ,backgroundColor: 'white'
         ,barColor: style.common.barColor
+        ,navTintColor: style.common.navTintColor
 //        navBarHidden: true
     });
     // function

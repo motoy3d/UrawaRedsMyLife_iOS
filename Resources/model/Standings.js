@@ -6,7 +6,6 @@ function Standings() {
 	var util = require("util/util").util;
     var style = require("util/style").style;
     var XHR = require("util/xhr");
-
 	var self = {};
 	self.load = load;
 
@@ -15,6 +14,7 @@ function Standings() {
 	 * 自前サーバからJSONを読み込んで表示する
 	 */
 	function load(sort, callback) {
+        var before = new Date();
 	    Ti.API.info('---------------------------------------------------------------------');
 	    Ti.API.info(util.formatDatetime() + '  順位表読み込み');
         Ti.API.info('---------------------------------------------------------------------');
@@ -87,6 +87,9 @@ function Standings() {
                 Ti.API.error('---------------------\n' + ex);   
                 callback.fail(style.common.loadingFailMsg);
             } finally {
+                var after = new Date();
+                Ti.API.info("Standings.js#load() 処理時間★" 
+                    + (after.getTime()-before.getTime())/1000.0 + "秒");
             }
         };
         function onErrorCallback(e) {

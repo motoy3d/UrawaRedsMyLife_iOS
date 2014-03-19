@@ -1,4 +1,11 @@
 eclipse.preferences.version=1
+iosLaunchConfigurationAttributes/ATTR_MINIFY=true
+iosLaunchConfigurationAttributes/ATTR_PROJECT_NAME=UrawaRedsMyLife
+iosLaunchConfigurationAttributes/appid=urawareds.my.life
+iosLaunchConfigurationAttributes/certificate=Motoi Kataoka (23Q2N723L7)
+iosLaunchConfigurationAttributes/keychain=
+iosLaunchConfigurationAttributes/sdk_version=7.1
+iosLaunchConfigurationAttributes/uuid=93AC5DCF-B9EC-46F9-954C-18894528E97F
 provisioning_profiles/development/8C629B25-FF57-4B1A-BBC3-921AD11C39C8/appid=*
 provisioning_profiles/development/8C629B25-FF57-4B1A-BBC3-921AD11C39C8/name=Motoi Wildcard Profile
 provisioning_profiles/development/8C629B25-FF57-4B1A-BBC3-921AD11C39C8/uuid=8C629B25-FF57-4B1A-BBC3-921AD11C39C8

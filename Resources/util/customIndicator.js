@@ -46,5 +46,4 @@ exports.customIndicator = {
         
         return indWin;
     }
-}
- 
+};

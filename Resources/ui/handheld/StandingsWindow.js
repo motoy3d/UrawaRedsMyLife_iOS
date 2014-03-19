@@ -6,6 +6,7 @@ function StandingsWindow(tabGroup) {
     var ACLStandings = require("/model/ACLStandings");
 	var util = require("util/util").util;
 	var style = require("/util/style").style;
+    var initLoaded = false;
 	var isLoading = false;
     // ソートボタン
     var sortButton = Ti.UI.createButton({
@@ -19,14 +20,26 @@ function StandingsWindow(tabGroup) {
 		title: L('standings'),
 		backgroundColor: 'black'
 		,barColor: style.common.barColor
+        ,navTintColor: style.common.navTintColor
         ,rightNavButton: refreshButton
         ,leftNavButton: sortButton
 	});
 		
-	//openイベント
-	self.addEventListener('open', function(e) {
-		loadJ1Standings();
-	});
+    if(Ti.Platform.version >= "7.0") {
+        // iOS7で、全てのタブのwindow openイベントがアプリ起動時に発火してしまうのでfocusイベントに変更。
+        self.addEventListener('focus', function(){
+            if(!initLoaded) {
+                Ti.API.info('-----------------------StandingsWindow focus event');
+        		loadJ1Standings();
+                initLoaded = true;
+        	}
+    	});
+    } else {
+        self.addEventListener('open', function(){
+            Ti.API.info('-----------------------StandingsWindow open event');
+            loadJ1Standings();
+        });
+    }
     //大会
     var currentCompeIdx = 0;    //0:J1、1:ACL、2:ナビスコ
     var flexSpace = Ti.UI.createButton({

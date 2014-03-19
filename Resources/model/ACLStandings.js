@@ -81,7 +81,7 @@ function ACLStandings() {
 					standingsDataList.push(standingsData);
 				}
 				callback.success(standingsDataList);
-				Ti.API.info('+++++++++++++++++++ YQL終了')
+				Ti.API.info('+++++++++++++++++++ YQL終了');
 			} catch(ex) {
 				Ti.API.error('---------------------\n' + ex);	
                 callback.fail(style.common.loadingFailMsg);
