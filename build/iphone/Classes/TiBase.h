@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2014 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -516,7 +516,7 @@ return value;\
     
 #define VAL_OR_NSNULL(foo)	(((foo) != nil)?((id)foo):[NSNull null])
 
-
+#define FunctionName(formatString, ...) NSLog((@"%s " formatString), __PRETTY_FUNCTION__, ##__VA_ARGS__);
 
 NSData * dataWithHexString (NSString * hexString);
 NSString * hexString (NSData * thedata);
@@ -569,8 +569,17 @@ extern NSString * const kTiAnalyticsNotification;
 extern NSString * const kTiRemoteDeviceUUIDNotification;
 extern NSString * const kTiGestureShakeNotification;
 extern NSString * const kTiRemoteControlNotification;
-
+extern NSString * const kTiBackgroundFetchNotification;
+extern NSString * const kTiSilentPushNotification;
+extern NSString * const kTiBackgroundTransfer;
+extern NSString * const kTiFrameAdjustNotification;
 extern NSString * const kTiLocalNotification;
+extern NSString * const kTiBackgroundTransfer;
+extern NSString * const kTiURLDownloadFinished;
+extern NSString * const kTiURLSessionCompleted;
+extern NSString * const kTiURLSessionEventsCompleted;
+extern NSString * const kTiURLDowloadProgress;
+extern NSString * const kTiURLUploadProgress;
     
 extern NSString* const kTiBehaviorSize;
 extern NSString* const kTiBehaviorFill;

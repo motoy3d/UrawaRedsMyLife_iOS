@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2014 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -39,7 +39,7 @@
 /**
  Tells if this proxy is currently focused
  */
-- (BOOL)focused;
+- (BOOL)focused:(id)unused;
 
 #pragma mark Private internal APIs.
 
@@ -176,7 +176,7 @@ enum
 -(void)updateLayout:(id)arg;//Deprecated since 3.0.0
 -(void)setTempProperty:(id)propVal forKey:(id)propName;
 -(void)processTempProperties:(NSDictionary*)arg;
-
+-(BOOL)_hasListeners:(NSString *)type checkParent:(BOOL)check;
 -(void)setProxyObserver:(id)arg;
 
 /**
@@ -190,6 +190,12 @@ enum
  @param arg A single proxy to remove.
  */
 -(void)remove:(id)arg;
+
+/**
+ Tells the view proxy to remove all child proxies.
+ @param arg Ignored.
+ */
+-(void)removeAllChildren:(id)arg;
 
 /**
  Tells the view proxy to set visibility on a child proxy to _YES_.
@@ -567,8 +573,10 @@ enum
 -(void)relayout;
 
 -(void)reposition;	//Todo: Replace
-
--(BOOL)willBeRelaying;	//Todo: Replace
+/**
+ Tells if the view is enqueued in the LayoutQueue
+ */
+-(BOOL)willBeRelaying;
 
 -(BOOL) widthIsAutoFill;
 -(BOOL) widthIsAutoSize;

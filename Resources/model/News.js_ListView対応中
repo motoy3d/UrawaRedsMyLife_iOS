@@ -1,8 +1,9 @@
+
 var util = require("util/util").util;
 var style = require("util/style").style;
 var newsSource = require("model/newsSource");
 
-var LOAD_FEED_SIZE = 30;
+var LOAD_FEED_SIZE = 40;
 var feedUrlBase = "http://sub0000499082.hmk-temp.com/redsmylife/news.json"
     + "?teamId=" + util.getTeamId() + "&count=" + LOAD_FEED_SIZE;
 var visitedUrlList = new Array();
@@ -11,21 +12,21 @@ var visitedUrlList = new Array();
  * ニュース情報
  */
 function News() {
-	var self = {};
+    var self = {};
     self.newest_item_timestamp = 0; // 最新データを読み込む場合のパラメータ（最新フィードのタイムスタンプ）
     self.oldest_item_timestamp = 0; // 古いデータを読み込む場合のパラメータ（最古フィードのタイムスタンプ）
-	self.updating = false;	// スクロール時のテーブルビュー更新
-	self.visitedUrls = new Array();
-	self.loadFeedSize = LOAD_FEED_SIZE;
-	
-	self.loadNewsFeed = loadNewsFeed;	//function
-	self.saveVisitedUrl = saveVisitedUrl;  //function
-	
-	visitedUrlList = getVisitedUrlList();
-//	Ti.API.info('visitedUrlList読み込み：' + visitedUrlList);
+    self.updating = false;  // スクロール時のテーブルビュー更新
+    self.visitedUrls = new Array();
+    self.loadFeedSize = LOAD_FEED_SIZE;
+    
+    self.loadNewsFeed = loadNewsFeed;   //function
+    self.saveVisitedUrl = saveVisitedUrl;  //function
+    
+    visitedUrlList = getVisitedUrlList();
+//  Ti.API.info('visitedUrlList読み込み：' + visitedUrlList);
 //    Ti.API.info('visitedUrlList数：' + visitedUrlList.length);
-	self.visitedUrlList = visitedUrlList;
-	return self;
+    self.visitedUrlList = visitedUrlList;
+    return self;
 };
 
 /**
@@ -39,44 +40,44 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
     Ti.API.info('---------------------------------------------------------------------');
     Ti.API.info(util.formatDatetime() + '  ニュース読み込み kind=' + kind);
     Ti.API.info('---------------------------------------------------------------------');
-	// オンラインチェック
-	if(!Ti.Network.online) {
-		callback.fail(style.common.offlineMsg);
-		return;
-	}
+    // オンラインチェック
+    if(!Ti.Network.online) {
+        callback.fail(style.common.offlineMsg);
+        return;
+    }
     Ti.App.Analytics.trackPageview('/newsList');
 
-	// 古いデータ・最新データの読み込み条件
-	var condition = "";
-	if('olderEntries' == kind) {
+    // 古いデータ・最新データの読み込み条件
+    var condition = "";
+    if('olderEntries' == kind) {
         condition = "&max=" + maxItemDatetime;
     } else if('newerEntries' == kind) {
         condition = "&min=" + minItemDatetime;
     }
     var feedUrl = feedUrlBase + condition;
-	// フィードを取得
-	var selectFeedQuery = "SELECT "
-		//+ "id.original-id, link.href, title.content, source.title.content,"
-		//+ "published, content.content, summary.content"
-		//+ ", crawl-timestamp-msec"//最新データ取得時に使用
-		+ "json.entry_title, json.entry_url"
-		+ ", json.published_date, json.published_date_num"
-		+ ", json.content, json.site_name"
-		+ " FROM json WHERE url='" + feedUrl + "'" 
-		;
-	Ti.API.info("★★★YQL " + selectFeedQuery);
-	Ti.Yahoo.yql(selectFeedQuery, function(e) {
+    // フィードを取得
+    var selectFeedQuery = "SELECT "
+        //+ "id.original-id, link.href, title.content, source.title.content,"
+        //+ "published, content.content, summary.content"
+        //+ ", crawl-timestamp-msec"//最新データ取得時に使用
+        + "json.entry_title, json.entry_url"
+        + ", json.published_date, json.published_date_num"
+        + ", json.content, json.site_name"
+        + " FROM json WHERE url='" + feedUrl + "'" 
+        ;
+    Ti.API.info("★★★YQL " + selectFeedQuery);
+    Ti.Yahoo.yql(selectFeedQuery, function(e) {
         if(e.data == null) {
             Ti.API.info('e.data = null');
             callback.success(null, null, null);
             return;
         }
-		try {
-			Ti.API.info("e.data.json■" + e.data.json);
-			var rowsData = null;
+        try {
+            Ti.API.info("e.data.json■" + e.data.json);
+            var rowsData = null;
             var newest_item_timestamp = 0;
             var oldest_item_timestamp = 0;
-			if(e.data.json.map) {
+            if(e.data.json.map) {
                 rowsData = e.data.json.map(
                     function(item) {
                         var row = createRow(item.json);
@@ -97,17 +98,17 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
                 // if("firstTime" == kind || "olderEntries" == kind) {
                     // oldest_item_timestamp = min;
                 // }
-			}
-			Ti.API.info('---------------newest_item_timestamp=' + newest_item_timestamp);
+            }
+            Ti.API.info('---------------newest_item_timestamp=' + newest_item_timestamp);
             Ti.API.info('---------------oldest_item_timestamp==' + oldest_item_timestamp);
-			Ti.API.info("読み込み終了");
-			callback.success(rowsData, newest_item_timestamp, oldest_item_timestamp);
-		} catch(ex) {
-			Ti.API.error("loadNewsFeedエラー：" + ex);
-			callback.fail('読み込みに失敗しました');
-			//indWin.close();
-		}
-	});
+            Ti.API.info("読み込み終了");
+            callback.success(rowsData, newest_item_timestamp, oldest_item_timestamp);
+        } catch(ex) {
+            Ti.API.error("loadNewsFeedエラー：" + ex);
+            callback.fail('読み込みに失敗しました');
+            //indWin.close();
+        }
+    });
 }
 
 /**
@@ -237,13 +238,13 @@ Ti.API.info("### with Image. height=" + height);
  * rowを生成する
  */
 function createNewsRow(item) {
-	// Ti.API.info("アイテム=" + item);
-	// for(var v in item) {
-		// Ti.API.info("\t" + v + ":" + item[v]);
-	// }
-	
-	var row = Ti.UI.createTableViewRow(style.news.tableViewRow);
-	var rowView = Ti.UI.createView(style.news.rowView);
+    // Ti.API.info("アイテム=" + item);
+    // for(var v in item) {
+        // Ti.API.info("\t" + v + ":" + item[v]);
+    // }
+    
+    var row = Ti.UI.createTableViewRow(style.news.tableViewRow);
+    var rowView = Ti.UI.createView(style.news.rowView);
     // 本文
     var content = "";
     if(item.content) {
@@ -277,61 +278,61 @@ function createNewsRow(item) {
             }
         }
     }
-	// タイトルラベル
-	var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
-	var itemTitleFull = util.deleteUnnecessaryText(item.entry_title);
-//	Ti.API.info('itemTitle=' + itemTitle);
+    // タイトルラベル
+    var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
+    var itemTitleFull = util.deleteUnnecessaryText(item.entry_title);
+//  Ti.API.info('itemTitle=' + itemTitle);
     var itemTitle = itemTitleFull;
     if(itemTitleFull.length > 50) {
         itemTitle = itemTitleFull.substring(0, 50) + "...";
     }
-	titleLabel.text = itemTitle;
-	rowView.add(titleLabel);
-//	Ti.API.info("最適化後：itemTitle====" + itemTitle);
-	// 更新日時
-	var pubDate = parseDate(item.published_date);
-	//Ti.API.info("pubDate=====" + pubDate);
-	var minutes = pubDate.getMinutes();
-	if(minutes < 10) {
-		minutes = "0" + minutes;
-	}
-	var pubDateText = (pubDate.getMonth() + 1) + "/" + pubDate.getDate() 
-		+ " " + pubDate.getHours() + ":" + minutes;
-	
-	// サイト名+更新日時ラベル
-	var link = "";
-	//Ti.API.info("★" + idobj[oid].toString());
-	link = item.entry_url;
-	
-	// 既読確認
-	if(util.contains(visitedUrlList, link)) {
+    titleLabel.text = itemTitle;
+    rowView.add(titleLabel);
+//  Ti.API.info("最適化後：itemTitle====" + itemTitle);
+    // 更新日時
+    var pubDate = parseDate(item.published_date);
+    //Ti.API.info("pubDate=====" + pubDate);
+    var minutes = pubDate.getMinutes();
+    if(minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    var pubDateText = (pubDate.getMonth() + 1) + "/" + pubDate.getDate() 
+        + " " + pubDate.getHours() + ":" + minutes;
+    
+    // サイト名+更新日時ラベル
+    var link = "";
+    //Ti.API.info("★" + idobj[oid].toString());
+    link = item.entry_url;
+    
+    // 既読確認
+    if(util.contains(visitedUrlList, link)) {
         row.backgroundColor = style.news.visitedBgColor;
-	}
+    }
     // サイト名
-	var fullSiteName = item.site_name;
-	if(fullSiteName.toString().indexOf("Google") == 0) {
-		fullSiteName = "";
-	}
-	var siteName = newsSource.optimizeSiteName(item.site_name);
-	Ti.API.debug("siteName1====" + siteName + ", link=" + link);
-	if('UrawaReds' == siteName) {
-		siteName = newsSource.getSiteName(link);
-		fullSiteName = siteName;
-		Ti.API.info("   UrawaReds. siteName====" + siteName + ", link=" + link);
-	}
-	var siteNameLabel = Ti.UI.createLabel(style.news.siteNameLabel);
-	siteNameLabel.text = siteName + "   " + pubDateText;
-	// row情報セット
-	rowView.add(siteNameLabel);
-	row.add(rowView);
-	row.fullSiteName = fullSiteName;
-	row.siteName = siteName;
-	row.pageTitle = itemTitle;
+    var fullSiteName = item.site_name;
+    if(fullSiteName.toString().indexOf("Google") == 0) {
+        fullSiteName = "";
+    }
+    var siteName = newsSource.optimizeSiteName(item.site_name);
+    Ti.API.debug("siteName1====" + siteName + ", link=" + link);
+    if('UrawaReds' == siteName) {
+        siteName = newsSource.getSiteName(link);
+        fullSiteName = siteName;
+        Ti.API.info("   UrawaReds. siteName====" + siteName + ", link=" + link);
+    }
+    var siteNameLabel = Ti.UI.createLabel(style.news.siteNameLabel);
+    siteNameLabel.text = siteName + "   " + pubDateText;
+    // row情報セット
+    rowView.add(siteNameLabel);
+    row.add(rowView);
+    row.fullSiteName = fullSiteName;
+    row.siteName = siteName;
+    row.pageTitle = itemTitle;
     row.pageTitleFull = itemTitleFull;
-	row.link = link;
-	row.content = content;
-	row.image = imgUrl;
-	row.pubDate = pubDateText;
+    row.link = link;
+    row.content = content;
+    row.image = imgUrl;
+    row.pubDate = pubDateText;
     return row;
 }
 

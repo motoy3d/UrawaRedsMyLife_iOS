@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2014 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -21,17 +21,17 @@
 
 -(id)version
 {
-	return @"3.1.0";
+	return @"3.2.2";
 }
 
 -(id)buildDate
 {
-	return @"04/15/13 18:45";
+	return @"03/05/14 12:21";
 }
 
 -(id)buildHash
 {
-	return @"57634ef";
+	return @"96e9a07";
 }
 
 +(BOOL)shouldRegisterOnInit
@@ -42,6 +42,11 @@
 -(id)userAgent
 {
 	return [[TiApp app] userAgent];
+}
+
+-(NSString*)apiName
+{
+    return @"Ti";
 }
 
 -(void)include:(NSArray*)jsfiles

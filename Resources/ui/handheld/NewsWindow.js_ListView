@@ -7,13 +7,13 @@
  * endLoadingNewer 最新ロード終了時処理
  */
 function NewsWindow(tabGroup) {
-	var News = require("model/News");
-	var WebWindow = require("ui/handheld/WebWindow");
+    var News = require("model/News");
+    var WebWindow = require("ui/handheld/WebWindow");
     var ConfigWindow = require("/ui/handheld/ConfigWindow");
-	var util = require("util/util").util;
-	var style = require("util/style").style;
-	var news = new News();
-	var isOpeningNews = false;
+    var util = require("util/util").util;
+    var style = require("util/style").style;
+    var news = new News();
+    var isOpeningNews = false;
  
      // 設定ボタン
     var configButton = Ti.UI.createButton({
@@ -36,15 +36,15 @@ function NewsWindow(tabGroup) {
         }
     });
     // ウィンドウ
-	var self = Ti.UI.createWindow({
-		title: L('news')
-		,barColor: style.common.barColor
-		,navTintColor: style.common.navTintColor
+    var self = Ti.UI.createWindow({
+        title: L('news')
+        ,barColor: style.common.barColor
+        ,navTintColor: style.common.navTintColor
         ,rightNavButton: configButton
-	});
-	// テーブル
-	// var table = Ti.UI.createTableView(style.news.table);
-	// table.allowsSelectionDuringEditing = false;
+    });
+    // テーブル
+    // var table = Ti.UI.createTableView(style.news.table);
+    // table.allowsSelectionDuringEditing = false;
     // ListView
     var template = {
        childTemplates: [
@@ -115,11 +115,11 @@ function NewsWindow(tabGroup) {
         ,layout: "vertical"
         ,backgroundColor: "black"
     });
-	
-	// インジケータ
-	var indicator = Ti.UI.createActivityIndicator();
-	self.add(indicator);
-	indicator.show();
+    
+    // インジケータ
+    var indicator = Ti.UI.createActivityIndicator();
+    self.add(indicator);
+    indicator.show();
     
     // ボーダー
     var border = Ti.UI.createView(style.news.tableBorder);
@@ -151,24 +151,24 @@ function NewsWindow(tabGroup) {
     var pulling = false;
     var reloading = false;
     
-	// 読み込み中Row+indicator
-	var updating = false;
-//	var loadingRow = Ti.UI.createTableViewRow();
-	// var loadingInd = Ti.UI.createActivityIndicator({
-		// color: 'white'
-		// ,message: style.common.loadingMsg
-		// ,width: Ti.UI.FILL
-		// ,height: 50
-	// });
+    // 読み込み中Row+indicator
+    var updating = false;
+//  var loadingRow = Ti.UI.createTableViewRow();
+    // var loadingInd = Ti.UI.createActivityIndicator({
+        // color: 'white'
+        // ,message: style.common.loadingMsg
+        // ,width: Ti.UI.FILL
+        // ,height: 50
+    // });
     var loadingInd;
-	
-	var lastRow = news.loadFeedSize;
-	var visitedUrls = new Array();
-	var lastSelectedRow = null;
-	// ニュース選択時のアクション
+    
+    var lastRow = news.loadFeedSize;
+    var visitedUrls = new Array();
+    var lastSelectedRow = null;
+    // ニュース選択時のアクション
 
-	listView.addEventListener("itemclick", function(e) {
-	    try {
+    listView.addEventListener("itemclick", function(e) {
+        try {
             if(isOpeningNews) {
                 Ti.API.info('ニュース詳細画面オープン処理中のためブロック');
                 return;
@@ -201,25 +201,25 @@ function NewsWindow(tabGroup) {
 //            webWindow.open();
             tabGroup.activeTab.open(webWindow, {animated: true});
             Ti.App.Analytics.trackPageview('/newsDetail');
-	    } finally {
-	        isOpeningNews = false;
-	    }
-	});
-	
-	// 記事詳細画面から戻った時に既読の背景色をセットする(Ti3.1.2以降、記事タップ時にセットしても効かないため)
-	self.addEventListener('focus', function(e){
-	    if(lastSelectedRow && lastSelectedRow.backgroundColor != style.news.visitedBgColor) {
-            lastSelectedRow.setBackgroundColor(style.news.visitedBgColor);	        
-	    }
-	});
+        } finally {
+            isOpeningNews = false;
+        }
+    });
+    
+    // 記事詳細画面から戻った時に既読の背景色をセットする(Ti3.1.2以降、記事タップ時にセットしても効かないため)
+    self.addEventListener('focus', function(e){
+        if(lastSelectedRow && lastSelectedRow.backgroundColor != style.news.visitedBgColor) {
+            lastSelectedRow.setBackgroundColor(style.news.visitedBgColor);          
+        }
+    });
 
-	/**
-	 * 追加ロードを開始する(古いデータを読み込む)
-	 */
-	function beginLoadingOlder() {
-		Ti.API.info("===== beginLoadingOlder =====");
-		updating = true;
-		// 読み込み中Row
+    /**
+     * 追加ロードを開始する(古いデータを読み込む)
+     */
+    function beginLoadingOlder() {
+        Ti.API.info("===== beginLoadingOlder =====");
+        updating = true;
+        // 読み込み中Row
         var loadingRow = Ti.UI.createTableViewRow();
         loadingInd = Ti.UI.createActivityIndicator({
             color: 'white'
@@ -228,18 +228,18 @@ function NewsWindow(tabGroup) {
             ,height: 50
         });
         loadingRow.add(loadingInd);
-//		table.appendRow(loadingRow);
+//      table.appendRow(loadingRow);
 Ti.API.info('-------------------loadingInd.show()');
-		loadingInd.show();
-		loadFeed(news, 'olderEntries');
-	}	
-	/**
-	 * 追加ロード終了時処理。ローディングRowの削除、スクロール
-	 */
-	function endLoadingOlder() {
-		updating = false;
-//		Ti.API.info(" endLoadingOlder. lastRow=" + lastRow + ", table.size=" + table.data[0].length);
-	}
+        loadingInd.show();
+        loadFeed(news, 'olderEntries');
+    }   
+    /**
+     * 追加ロード終了時処理。ローディングRowの削除、スクロール
+     */
+    function endLoadingOlder() {
+        updating = false;
+//      Ti.API.info(" endLoadingOlder. lastRow=" + lastRow + ", table.size=" + table.data[0].length);
+    }
     /**
      * 最新ロードを開始する(新しいデータを読み込む)
      */
@@ -260,26 +260,26 @@ Ti.API.info('-------------------loadingInd.show()');
         refreshActInd.hide();
         arrow.show();
     }
-    	
-	var lastDistance = 0; // calculate location to determine direction
-	// テーブルのスクロールイベント
-	listView.addEventListener('scroll',function(e) {
-		var offset = e.contentOffset.y;
-		var height = e.size.height;
-		var total = offset + height;
-		var theEnd = e.contentSize.height;
-		var distance = theEnd - total;
-	
-		// going down is the only time we dynamically load,
-		// going up we can safely ignore -- note here that
-		// the values will be negative so we do the opposite
-		if (distance < lastDistance) {
-			// adjust the % of rows scrolled before we decide to start fetching
-			var nearEnd = theEnd * .97;
-			if (!updating && (total >= nearEnd)) {
-				beginLoadingOlder();
-			}
-		}
+        
+    var lastDistance = 0; // calculate location to determine direction
+    // テーブルのスクロールイベント
+    listView.addEventListener('scroll',function(e) {
+        var offset = e.contentOffset.y;
+        var height = e.size.height;
+        var total = offset + height;
+        var theEnd = e.contentSize.height;
+        var distance = theEnd - total;
+    
+        // going down is the only time we dynamically load,
+        // going up we can safely ignore -- note here that
+        // the values will be negative so we do the opposite
+        if (distance < lastDistance) {
+            // adjust the % of rows scrolled before we decide to start fetching
+            var nearEnd = theEnd * .97;
+            if (!updating && (total >= nearEnd)) {
+                beginLoadingOlder();
+            }
+        }
         // pull to refresh
         else if (offset <= -65.0 && !pulling && !reloading) {
             var t = Ti.UI.create2DMatrix();
@@ -294,8 +294,8 @@ Ti.API.info('-------------------loadingInd.show()');
             arrow.animate({transform:t,duration:180});
             statusLabel.text = "ひっぱって更新...";
         }
-		lastDistance = distance;
-	});
+        lastDistance = distance;
+    });
     
     // ドラッグ終了イベント（pull to refresh）
     var event1 = 'dragEnd';
@@ -315,27 +315,27 @@ Ti.API.info('-------------------loadingInd.show()');
         }
     });
     
-	/**
-	 * フィードを取得して表示する
-	 */
-	function loadFeed(news, kind) {
-		var style = require("util/style").style;
-		Ti.API.debug(new Date() + '  loadFeed.................................listView=' + listView);
-		//alert('loadFeed : ' + news + ", kind=" + kind);
+    /**
+     * フィードを取得して表示する
+     */
+    function loadFeed(news, kind) {
+        var style = require("util/style").style;
+        Ti.API.debug(new Date() + '  loadFeed.................................listView=' + listView);
+        //alert('loadFeed : ' + news + ", kind=" + kind);
         //alert(news.loadNewsFeed);
-		news.loadNewsFeed(
-		    kind, news.newest_item_timestamp, news.oldest_item_timestamp,
-		    { //callback
-    			success: function(rowsData, newest_item_timestamp, oldest_item_timestamp) {
-    				try {
+        news.loadNewsFeed(
+            kind, news.newest_item_timestamp, news.oldest_item_timestamp,
+            { //callback
+                success: function(rowsData, newest_item_timestamp, oldest_item_timestamp) {
+                    try {
                         Ti.API.debug('■■■kind = ' + kind);
                         Ti.API.debug('■■■newest_item_timestamp = ' + newest_item_timestamp);
                         Ti.API.debug('■■■oldest_item_timestamp = ' + oldest_item_timestamp);
-    				    
-    					// 読み込み中Row削除
-    					Ti.API.info("rowsData■" + rowsData);
+                        
+                        // 読み込み中Row削除
+                        Ti.API.info("rowsData■" + rowsData);
                         // 初回ロード時
-    					if("firstTime" == kind) {
+                        if("firstTime" == kind) {
                             self.add(listView);
                             if(rowsData) {
                                 var section = Ti.UI.createListSection({items: rowsData});
@@ -345,19 +345,19 @@ Ti.API.info('-------------------loadingInd.show()');
                                 news.oldest_item_timestamp = oldest_item_timestamp;
                             }
                             indicator.hide();
-    					}
-    					// 2回目以降の追加ロード時
-    					else if("olderEntries" == kind) {
+                        }
+                        // 2回目以降の追加ロード時
+                        else if("olderEntries" == kind) {
                             lastRow = table.data[0].rows.length - 1;
-    						var scrollToIdx = table.data[0].rows.length;
-    						if(rowsData) {
+                            var scrollToIdx = table.data[0].rows.length;
+                            if(rowsData) {
                                 table.appendRow(rowsData);
                                 news.oldest_item_timestamp = oldest_item_timestamp;
-    						}
-    						Ti.API.info("読み込み中Row削除：" + lastRow);
-    						table.deleteRow(lastRow);
-    						endLoadingOlder();
-    					}
+                            }
+                            Ti.API.info("読み込み中Row削除：" + lastRow);
+                            table.deleteRow(lastRow);
+                            endLoadingOlder();
+                        }
                         // 最新データロード時
                         else if("newerEntries" == kind) {
                             if(rowsData) {
@@ -374,31 +374,31 @@ Ti.API.info('-------------------loadingInd.show()');
                                 //Ti.API.debug('■newest_item_timestamp = ' + news.newest_item_timestamp);
                             }
                             endLoadingNewer();
-    					}
-    					else {
-    					    Ti.API.error('NewsWindow#loadFeedに渡すkindが不正です。kind=' + kind);
-    					}
-    				} finally {
-    					// ind.hide();
-    					//indWin.close();
-    				}
-    			},
-    			fail: function(message) {
-    			    if("olderEntries" == kind) {
-    			        endLoadingOlder();
-    			    } else if("newerEntries" == kind) {
-    			        endLoadingNewer();
-    			    }
-    			    indicator.hide();
-    				var dialog = Ti.UI.createAlertDialog({
-    					message: message,
-    					buttonNames: ['OK']
-    				});
-    				dialog.show();
-    			}
-    		}
-		);
-		// if('firstTime' == kind || 'olderEntries' == kind) {
+                        }
+                        else {
+                            Ti.API.error('NewsWindow#loadFeedに渡すkindが不正です。kind=' + kind);
+                        }
+                    } finally {
+                        // ind.hide();
+                        //indWin.close();
+                    }
+                },
+                fail: function(message) {
+                    if("olderEntries" == kind) {
+                        endLoadingOlder();
+                    } else if("newerEntries" == kind) {
+                        endLoadingNewer();
+                    }
+                    indicator.hide();
+                    var dialog = Ti.UI.createAlertDialog({
+                        message: message,
+                        buttonNames: ['OK']
+                    });
+                    dialog.show();
+                }
+            }
+        );
+        // if('firstTime' == kind || 'olderEntries' == kind) {
             // // continuation取得
             // news.getContinuation(news.continuation, {
                 // success: function(continuation) {
@@ -413,9 +413,9 @@ Ti.API.info('-------------------loadingInd.show()');
                     // dialog.show();
                 // }
             // });
-		// }
-	}
-	loadFeed(news, 'firstTime');	
-	return self;
+        // }
+    }
+    loadFeed(news, 'firstTime');    
+    return self;
 };
 module.exports = NewsWindow;

@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2014 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -183,6 +183,10 @@
 		{
 			if (thisSegmentAccessibilityLabel != nil) {
 				thisSegmentImage.accessibilityLabel = thisSegmentAccessibilityLabel;
+			}
+			//CLEANUP CODE WHEN WE UPGRADE MINIMUM XCODE VERSION TO XCODE5
+			if ([thisSegmentImage respondsToSelector:@selector(imageWithRenderingMode:)]) {
+				thisSegmentImage = [(id<UIImageIOS7Support>)thisSegmentImage imageWithRenderingMode:1];//UIImageRenderingModeAlwaysOriginal;
 			}
 			[segmentedControl insertSegmentWithImage:thisSegmentImage atIndex:thisSegmentIndex animated:NO];
 		}

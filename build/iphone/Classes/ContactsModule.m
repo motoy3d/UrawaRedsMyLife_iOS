@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2009-2014 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  * 
@@ -95,6 +95,11 @@ void CMExternalChangeCallback (ABAddressBookRef notifyAddressBook,CFDictionaryRe
 		[self releaseAddressBook];
 	}
 	[super dealloc];
+}
+
+-(NSString*)apiName
+{
+    return @"Ti.Contacts";
 }
 
 -(void)removeRecord:(ABRecordRef)record
@@ -490,7 +495,7 @@ void CMExternalChangeCallback (ABAddressBookRef notifyAddressBook,CFDictionaryRe
 -(void)removeGroup:(id)arg
 {
 	ENSURE_SINGLE_ARG(arg,TiContactsGroup)
-	ENSURE_UI_THREAD(removePerson,arg)
+	ENSURE_UI_THREAD(removeGroup,arg)
 	
 	[self removeRecord:[arg record]];
 }

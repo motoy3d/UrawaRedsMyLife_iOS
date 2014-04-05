@@ -54,7 +54,7 @@ function ResultsWindow(tabGroup) {
 				try {
 				    var rowIdx = 0;
 				    for(i=2; i<rowsData.length; i++) {
-				        if(rowsData[i].detailUrl) {
+				        if(rowsData[i] && rowsData[i].detailUrl) {
 				            rowIdx = i;   //最初の１行目は除くため-1
 				        } else {
 				            break;
