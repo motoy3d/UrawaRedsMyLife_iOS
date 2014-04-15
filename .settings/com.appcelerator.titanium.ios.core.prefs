@@ -45,3 +45,6 @@ provisioning_profiles/distribution/7285DA48-2591-48A0-B03C-058B6F066CC5/uuid=728
 provisioning_profiles/distribution/93AC5DCF-B9EC-46F9-954C-18894528E97F/appid=urawareds.my.life
 provisioning_profiles/distribution/93AC5DCF-B9EC-46F9-954C-18894528E97F/name=UrawaReds My Life Distribution
 provisioning_profiles/distribution/93AC5DCF-B9EC-46F9-954C-18894528E97F/uuid=93AC5DCF-B9EC-46F9-954C-18894528E97F
+provisioning_profiles/distribution/BC0B7E7A-604E-4A81-AD40-526CCF3D3F2F/appid=*
+provisioning_profiles/distribution/BC0B7E7A-604E-4A81-AD40-526CCF3D3F2F/name=Motoi Wildcard Distribution
+provisioning_profiles/distribution/BC0B7E7A-604E-4A81-AD40-526CCF3D3F2F/uuid=BC0B7E7A-604E-4A81-AD40-526CCF3D3F2F
