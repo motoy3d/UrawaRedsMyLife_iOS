@@ -43,7 +43,7 @@ function Results(resultsWindow) {
 				var rowsData = e.data.tr.map(
 					function(item) {
 						var row = createRow(item, currentSeason);
-						if(row != null) {
+						if(row) {
 						  return row;
 						}
 					}
@@ -129,7 +129,7 @@ function Results(resultsWindow) {
                 resultImage = "/images/lose.png";
             }
 		}
-		Ti.API.info('★' + isHome + " : " + team + " : " + score);
+		Ti.API.info('★' + isHome + " : " + team + " : " + score + " : " + detailUrl);
 		var hasDetailResult = detailUrl != "";
 		Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
 		// Ti.API.debug("hasDetailResult=" + hasDetailResult);
@@ -197,12 +197,17 @@ function Results(resultsWindow) {
 			// 動画検索キーワード作成
             var dateYYMMDD = String(currentSeason).substring(2) + month + day;
             var dateYYYYMMDD1 = currentSeason + "." + month + "." + day;
-            var dateYYYYMMDD2 = currentSeason + "/" + monthDate[0] + "/" + day;
+            var dateYYYYMMDD2 = currentSeason + "." + monthDate[0] + "." + day;
+            var dateYYYYMMDD3 = currentSeason + "/" + monthDate[0] + "/" + day;
+            var dateYYYYMMDD4 = currentSeason + "/" + month + "/" + day;
 //            var dateYYYYMMDD = encodeURIComponent(currentSeason + "年" + month + "月" + day + "日");
             var teamEncoded = encodeURIComponent(team);
             var keyword1 = dateYYMMDD + '+' + teamEncoded + "+" + highlightEncoded;
             var keyword2 = dateYYYYMMDD1 + '+' + urawaEncoded + '+' + teamEncoded /*+ encodeURIComponent("戦")*/;
             var keyword3 = dateYYYYMMDD2 + '+' + urawaEncoded + '+' + teamEncoded;
+            var keyword4 = dateYYYYMMDD3 + '+' + urawaEncoded + '+' + teamEncoded;
+            var keyword5 = dateYYYYMMDD4 + '+' + urawaEncoded + '+' + teamEncoded;
+            
             Ti.API.info("キーワード：" + keyword1 + "  :  " + keyword2 + " : " + keyword3);
             // ResultsWindow側の処理を呼び出す
             resultsWindow.searchMovie({
@@ -210,6 +215,8 @@ function Results(resultsWindow) {
                 ,key1: keyword1
                 ,key2: keyword2
                 ,key3: keyword3
+                ,key4: keyword4
+                ,key5: keyword5
                 ,team: team
                 ,date: dateYYYYMMDD1
             });

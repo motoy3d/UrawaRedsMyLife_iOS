@@ -48,15 +48,15 @@ exports.style = {
 			right : 4
 		},
         imgView : {
-            width: Ti.UI.SIZE,
-            // height: 96,
-            // top : 10,
-            // left : 4,
+            width: 120,
+            //height: 150,
+            //top : 10,
+            //left : 4,
             hires: true
         },
         imgViewContainer : {
-            width: 96,
-            height: 96,
+            width: 120,
+            height: 120,
             top : 10,
             left : 4,
             hires: true
@@ -261,6 +261,7 @@ exports.style = {
 	    compeButtonBar : {
 	        style: Ti.UI.iPhone.SystemButtonStyle.BAR
 	        ,backgroundColor: 'red'
+            ,tintColor: 'red'
             ,width: 200
 	    }
 	},

@@ -54,7 +54,10 @@ function ResultsWindow(tabGroup) {
 				try {
 				    var rowIdx = 0;
 				    for(i=2; i<rowsData.length; i++) {
-				        if(rowsData[i] && rowsData[i].detailUrl) {
+				        if(!rowsData[i]) {
+				            continue; // 無観客試合があるため
+				        }
+				        else if(rowsData[i].detailUrl) {
 				            rowIdx = i;   //最初の１行目は除くため-1
 				        } else {
 				            break;
@@ -64,7 +67,9 @@ function ResultsWindow(tabGroup) {
 					self.add(tableView);
 					tableView.setData(rowsData.slice(1));                    Ti.API.info('---- setData OK');
                     Ti.API.info('rowIdx=' + rowIdx);
-                    tableView.scrollToIndex(rowIdx);
+                    if(3 < rowIdx) {
+                        tableView.scrollToIndex(rowIdx - 1);    //最新試合が真ん中に来るように
+                    }
 				} catch(e) {
 				    Ti.API.debug("エラー");
 					Ti.API.error(e);

@@ -4,6 +4,7 @@
 function StandingsWindow(tabGroup) {
 	var Standings = require("/model/Standings");
     var ACLStandings = require("/model/ACLStandings");
+    var NabiscoStandings = require("/model/NabiscoStandings");
 	var util = require("util/util").util;
 	var style = require("/util/style").style;
     var initLoaded = false;
@@ -41,14 +42,15 @@ function StandingsWindow(tabGroup) {
         });
     }
     //大会
-    var currentCompeIdx = 0;    //0:J1、1:ACL、2:ナビスコ
+    var currentCompeIdx = 0;    //0:J1、1:ACL or ナビスコ
     var flexSpace = Ti.UI.createButton({
        systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
     });
     //ツールバー
-/*
-    var compeButtonBar = Ti.UI.createButtonBar(style.standings.compeButtonBar);
-    compeButtonBar.labels = [{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}];
+    var compeButtonBar = Ti.UI.iOS.createTabbedBar(style.standings.compeButtonBar);
+//    compeButtonBar.labels = [{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}];
+    compeButtonBar.labels = [{title: 'J1', enabled: true}, {title: 'ナビスコ', enabled: true}];
+    compeButtonBar.setIndex(0);
     compeButtonBar.addEventListener("click", function(e){
         if(isLoading) {
             return;
@@ -61,21 +63,19 @@ function StandingsWindow(tabGroup) {
             }
             else if(e.index == 1) {
                 compeButtonBar.setIndex(1);
-                loadACLStandings();
+                // loadACLStandings();
+                loadNabiscoStandings();
             }
         }
     });
 //    self.setRightNavButton(compeButtonBar);
     self.setToolbar([flexSpace, compeButtonBar, flexSpace]);
-*/    
     //親ビュー
     var containerView = Ti.UI.createView(style.standings.standingsView);
     self.add(containerView);
-    //ACLビュー
-    var aclView;
     // ヘッダー
     var j1HeaderView;
-    var aclHeaderView;
+    var aclNabiscoHeaderView;
 
     // テーブル    
     var table;
@@ -92,7 +92,8 @@ function StandingsWindow(tabGroup) {
         if(currentCompeIdx == 0) {
             loadJ1Standings();
         } else if(currentCompeIdx == 1){
-            loadACLStandings();
+            //loadACLStandings();
+            loadNabiscoStandings();
         }
     });
     // ソートボタン
@@ -172,8 +173,8 @@ function StandingsWindow(tabGroup) {
         self.title = "J1順位表";
 //        compeButtonBar.setLabels([{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}]);
 		//ヘッダー
-		if(aclHeaderView) {
-		    containerView.remove(aclHeaderView);
+		if(aclNabiscoHeaderView) {
+		    containerView.remove(aclNabiscoHeaderView);
 		}
         j1HeaderView = createHeaderView(false);
         containerView.add(j1HeaderView);
@@ -230,8 +231,8 @@ function StandingsWindow(tabGroup) {
         if(j1HeaderView) {
             containerView.remove(j1HeaderView);
         }
-        var aclHeaderView = createHeaderView(true);
-        containerView.add(aclHeaderView);
+        aclNabiscoHeaderView = createHeaderView(true);
+        containerView.add(aclNabiscoHeaderView);
         // ボーダー
         var border = Ti.UI.createLabel(style.standings.border);
         containerView.add(border);
@@ -250,6 +251,67 @@ function StandingsWindow(tabGroup) {
                     }
                     table = Ti.UI.createTableView(style.standings.table);
                     table.height = 120;
+                    table.setData(rows);
+                    containerView.add(table);
+                } catch(e) {
+                    Ti.API.error(e);
+                } finally {
+                    indicator.hide();
+                    isLoading = false;
+                }
+            },
+            fail: function(message) {
+                indicator.hide();
+                isLoading = false;
+                var dialog = Ti.UI.createAlertDialog({
+                    message: message,
+                    buttonNames: ['OK']
+                });
+                dialog.show();
+            }
+        });
+    }
+
+    /**
+     * Jリーグ公式サイトサイトのナビスコのhtmlを読み込んで表示する
+     */
+    function loadNabiscoStandings() {
+        if(isLoading) {
+            return;
+        }
+        sortButton.enabled = false;
+        isLoading = true;
+        indicator.show();
+        self.title = "ナビスコ予選リーグ順位表";
+//        compeButtonBar.setLabels([{title: 'J1', enabled: true}, {title: 'ACL', enabled: false}]);
+        // ヘッダー
+        if(j1HeaderView) {
+            containerView.remove(j1HeaderView);
+        }
+        aclNabiscoHeaderView = createHeaderView(true);
+        containerView.add(aclNabiscoHeaderView);
+        // ボーダー
+        var border = Ti.UI.createLabel(style.standings.border);
+        containerView.add(border);
+
+        var standings = new NabiscoStandings();
+        standings.load({
+            success: function(standingsDataList) {
+                try {
+                    var rows = new Array();
+                    for(i=0; i<standingsDataList.length; i++) {
+                        var data = standingsDataList[i];
+                        if(!data) {
+                            continue;
+                        }
+Ti.API.info('rows.push '  + i);
+                        rows.push(createRow(
+                            data.rank, data.team, data.point, data.win, data.draw, data.lose
+                            , data.gotGoal, data.lostGoal, data.diff, true)
+                        );
+                    }
+                    table = Ti.UI.createTableView(style.standings.table);
+                    table.height = 210;
                     table.setData(rows);
                     containerView.add(table);
                 } catch(e) {

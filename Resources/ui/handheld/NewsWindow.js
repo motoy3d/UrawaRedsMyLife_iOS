@@ -197,7 +197,7 @@ Ti.API.info('-------------------loadingInd.show()');
         // the values will be negative so we do the opposite
         if (distance < lastDistance) {
             // adjust the % of rows scrolled before we decide to start fetching
-            var nearEnd = theEnd * .97;
+            var nearEnd = theEnd * .999;
             if (!updating && (total >= nearEnd)) {
                 beginLoadingOlder();
             }
@@ -242,7 +242,8 @@ Ti.API.info('-------------------loadingInd.show()');
      */
     function loadFeed(news, kind) {
         var style = require("util/style").style;
-        Ti.API.debug(new Date() + '  loadFeed.................................tableView=' + table);
+        var util = require("util/util").util;
+        Ti.API.info(util.formatDatetime2(new Date()) + '  loadFeed started.................................');
         //alert('loadFeed : ' + news + ", kind=" + kind);
         //alert(news.loadNewsFeed);
         news.loadNewsFeed(
@@ -252,7 +253,7 @@ Ti.API.info('-------------------loadingInd.show()');
                     try {
                         Ti.API.debug('■■■kind = ' + kind);
                         Ti.API.debug('■■■newest_item_timestamp = ' + newest_item_timestamp);
-                        Ti.API.debug('■■■oldest_item_timestamp = ' + oldest_item_timestamp);
+                        Ti.API.debug('■■■oldest_item_timestamp   = ' + oldest_item_timestamp);
                         
                         // 読み込み中Row削除
                         Ti.API.info("rowsData■" + rowsData);
@@ -271,7 +272,9 @@ Ti.API.info('-------------------loadingInd.show()');
                             lastRow = table.data[0].rows.length - 1;
                             var scrollToIdx = table.data[0].rows.length;
                             if(rowsData) {
+                                Ti.API.info(new Date() + ' appendRow start');
                                 table.appendRow(rowsData);
+                                Ti.API.info(new Date() + ' appendRow end');
                                 news.oldest_item_timestamp = oldest_item_timestamp;
                             }
                             Ti.API.info("読み込み中Row削除：" + lastRow);
@@ -301,6 +304,7 @@ Ti.API.info('-------------------loadingInd.show()');
                     } finally {
                         // ind.hide();
                         //indWin.close();
+                        Ti.API.info(util.formatDatetime2(new Date()) + '  loadFeed finished.................................');
                     }
                 },
                 fail: function(message) {

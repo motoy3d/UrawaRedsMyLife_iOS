@@ -18,7 +18,7 @@ function YoutubeWindow(searchCond) {
     var vsTeam;
     // create table view data object
     var data = [];
-    var maxResults = 30;
+    var maxResults = 40;
     var startIndex = 1;
     // インジケータ
     var ind = Ti.UI.createActivityIndicator();
@@ -55,6 +55,8 @@ function YoutubeWindow(searchCond) {
             var searchTerm1 = searchCond.key1;
             var searchTerm2 = searchCond.key2;
             var searchTerm3 = searchCond.key3;
+            var searchTerm4 = searchCond.key4;
+            var searchTerm5 = searchCond.key5;
             Ti.App.Analytics.trackPageview('/movieList');
             var replaceKey = '#キーワード#';
             var searchUrlBase = 'http://gdata.youtube.com/feeds/api/videos?alt=rss&q='
@@ -72,6 +74,14 @@ function YoutubeWindow(searchCond) {
             if(searchTerm3) {
                 searchUrl3 = searchUrlBase.replace(replaceKey, searchTerm3);
             }
+            var searchUrl4 = null;
+            if(searchTerm4) {
+                searchUrl4 = searchUrlBase.replace(replaceKey, searchTerm4);
+            }
+            var searchUrl5 = null;
+            if(searchTerm5) {
+                searchUrl5 = searchUrlBase.replace(replaceKey, searchTerm5);
+            }
     
             var youtubeFeedQuery = "SELECT title,pubDate,link,statistics.viewCount FROM feed WHERE " 
                 + "url='" + searchUrl + "'";
@@ -80,6 +90,12 @@ function YoutubeWindow(searchCond) {
             }
             if(searchUrl3) {
                 youtubeFeedQuery += " or " + "url='" + searchUrl3 + "'";
+            }
+            if(searchUrl4) {
+                youtubeFeedQuery += " or " + "url='" + searchUrl4 + "'";
+            }
+            if(searchUrl5) {
+                youtubeFeedQuery += " or " + "url='" + searchUrl5 + "'";
             }
             Ti.API.info("■YQL Query........" + youtubeFeedQuery);
 //alert(youtubeFeedQuery);
@@ -141,10 +157,11 @@ Ti.API.info('ind.hide() 1');
         // try {
             Ti.API.info('###### createYoutubeRow() title=' + item.title);
             var title = item.title;
-            if(title.indexOf(util.getTeamName()) == -1 && title.indexOf(vsTeam) == -1
-               && title.indexOf(searchCond.date) == -1) { 
+            if(title.indexOf(util.getTeamName()) == -1 || title.indexOf(vsTeam) == -1
+                || title.indexOf(util.getSimpleTeamName(vsTeam)) == -1
+               /*&& title.indexOf(searchCond.date) == -1*/) { 
                 //タイトルに「浦和」、対戦相手チーム名がないのは削除
-                Ti.API.info('タイトルに「' + util.getTeamName() + '」、対戦相手チーム名(' + vsTeam + ')、日付がないのは削除 [' + title + ']');
+                Ti.API.info('タイトルに「' + util.getTeamName() + '」、対戦相手チーム名(' + vsTeam + ')がないのは削除 [' + title + ']');
                 return null;
             }
             var summary = "";

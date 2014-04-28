@@ -4,7 +4,7 @@ var newsSource = require("model/newsSource");
 
 var LOAD_FEED_SIZE = 40;
 var feedUrlBase = "http://sub0000499082.hmk-temp.com/redsmylife/news.json"
-    + "?teamId=" + util.getTeamId() + "&count=" + LOAD_FEED_SIZE;
+    + "?teamId=" + util.getTeamId() + "&count=";
 var visitedUrlList = new Array();
 
 /**
@@ -53,7 +53,10 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
     } else if('newerEntries' == kind) {
         condition = "&min=" + minItemDatetime;
     }
-    var feedUrl = feedUrlBase + condition;
+    if("firstTime" != kind) {
+        LOAD_FEED_SIZE = 10;    //初回ロード以外の場合に件数を少なくすることで高速化
+    }
+    var feedUrl = feedUrlBase + LOAD_FEED_SIZE + condition;
     // フィードを取得
     var selectFeedQuery = "SELECT "
         //+ "id.original-id, link.href, title.content, source.title.content,"
@@ -98,8 +101,8 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
                     // oldest_item_timestamp = min;
                 // }
             }
-            Ti.API.info('---------------newest_item_timestamp=' + newest_item_timestamp);
-            Ti.API.info('---------------oldest_item_timestamp==' + oldest_item_timestamp);
+//            Ti.API.info('---------------newest_item_timestamp=' + newest_item_timestamp);
+//            Ti.API.info('---------------oldest_item_timestamp==' + oldest_item_timestamp);
             Ti.API.info("読み込み終了");
             callback.success(rowsData, newest_item_timestamp, oldest_item_timestamp);
         } catch(ex) {
@@ -143,8 +146,8 @@ function createNewsRow(item) {
 //            Ti.API.debug('画像＝＝＝＝＝' + imgUrl + "  >  " + item.entry_title);
             // アイコン等はgifが多いのでスキップ
             if(!util.isUnnecessaryImage(imgUrl)) {
-                var imgLabel = Ti.UI.createImageView(style.news.imgView);
-                var imgContainer = Ti.UI.createImageView(style.news.imgViewContainer);
+                var imgLabel = Ti.UI.createImageView(style.news.imgView);               
+                var imgContainer = Ti.UI.createView(style.news.imgViewContainer);
                 imgLabel.image = imgUrl;
                 imgContainer.add(imgLabel);
                 rowView.add(imgContainer);
@@ -191,7 +194,7 @@ function createNewsRow(item) {
     }
     var siteName = newsSource.optimizeSiteName(item.site_name);
     Ti.API.debug("siteName1====" + siteName + ", link=" + link);
-    if('UrawaReds' == siteName) {
+    if('' == siteName) {
         siteName = newsSource.getSiteName(link);
         fullSiteName = siteName;
         Ti.API.info("   UrawaReds. siteName====" + siteName + ", link=" + link);
