@@ -1,5 +1,6 @@
 var util = require("util/util").util;
 var style = require("util/style").style;
+var XHR = require("/util/xhr");
 var newsSource = require("model/newsSource");
 
 var LOAD_FEED_SIZE = 40;
@@ -57,34 +58,31 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
         LOAD_FEED_SIZE = 10;    //初回ロード以外の場合に件数を少なくすることで高速化
     }
     var feedUrl = feedUrlBase + LOAD_FEED_SIZE + condition;
-    // フィードを取得
-    var selectFeedQuery = "SELECT "
-        //+ "id.original-id, link.href, title.content, source.title.content,"
-        //+ "published, content.content, summary.content"
-        //+ ", crawl-timestamp-msec"//最新データ取得時に使用
-        + "json.entry_title, json.entry_url"
-        + ", json.published_date, json.published_date_num"
-        + ", json.content, json.site_name"
-        + " FROM json WHERE url='" + feedUrl + "'" 
-        ;
-    Ti.API.info("★★★YQL " + selectFeedQuery);
-    Ti.Yahoo.yql(selectFeedQuery, function(e) {
+    var xhr = new XHR();
+    Ti.API.info(new Date() + ': feedUrl=' + feedUrl);
+    xhr.get(feedUrl, onSuccessCallback, onErrorCallback, { ttl: 5 });
+    function onSuccessCallback(e) {
         if(e.data == null) {
             Ti.API.info('e.data = null');
             callback.success(null, null, null);
             return;
         }
         try {
+            var resultArray = JSON.parse(e.data);
+            if(resultArray[0].json && "no data" == resultArray[0].json) {
+                callback.success(new Array());
+                return;
+            }
             Ti.API.info("e.data.json■" + e.data.json);
             var rowsData = null;
             var newest_item_timestamp = 0;
             var oldest_item_timestamp = 0;
-            if(e.data.json.map) {
-                rowsData = e.data.json.map(
+            if(resultArray.map) {
+                rowsData = resultArray.map(
                     function(item) {
-                        var row = createNewsRow(item.json);
+                        var row = createNewsRow(item);
     //                  Ti.API.info("row=====" + row);
-                        var pubDateNum = item.json.published_date_num;
+                        var pubDateNum = item.published_date_num;
                         if(newest_item_timestamp < pubDateNum) {
                             newest_item_timestamp = pubDateNum;
                         }
@@ -110,17 +108,20 @@ function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
             callback.fail('読み込みに失敗しました');
             //indWin.close();
         }
-    });
+    };
+    function onErrorCallback(e) {
+        Ti.API.error(e);
+    }
 }
 
 /**
  * rowを生成する
  */
 function createNewsRow(item) {
-    // Ti.API.info("アイテム=" + item);
-    // for(var v in item) {
-        // Ti.API.info("\t" + v + ":" + item[v]);
-    // }
+//     Ti.API.info("アイテム=" + item);
+//     for(var v in item) {
+//         Ti.API.info("\t" + v + ":" + item[v]);
+//     }
     
     var row = Ti.UI.createTableViewRow(style.news.tableViewRow);
     var rowView = Ti.UI.createView(style.news.rowView);
@@ -193,7 +194,7 @@ function createNewsRow(item) {
         fullSiteName = "";
     }
     var siteName = newsSource.optimizeSiteName(item.site_name);
-    Ti.API.debug("siteName1====" + siteName + ", link=" + link);
+    //Ti.API.debug("siteName1====" + siteName + ", link=" + link);
     if('' == siteName) {
         siteName = newsSource.getSiteName(link);
         fullSiteName = siteName;

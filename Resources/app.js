@@ -12,7 +12,7 @@
 
 // This is a single context application with mutliple windows in a stack
 (function() {
-	Ti.include('util/analytics.js');
+//	Ti.include('/util/analytics.js');
 	startAnalytics();
 	initDB();
 	
@@ -33,6 +33,11 @@
 	Ti.API.info('★★density=' + density);
 	Ti.API.info('★★dpi=' + dpi);
     Ti.App.Analytics.trackPageview("/startApp?m=" + model + "&v=" + version/* + "&wh=" + width + "x" + height*/);
+    
+    var config = require("/config").config;
+    var util = require("util/util").util;
+    var style = require("util/style").style;
+    var XHR = require("util/xhr");
 	
 	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
 	Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.OPAQUE_BLACK;
@@ -62,7 +67,24 @@
 		if ( ( new Date() ).getTime() >= startTime + waitMilliSeconds ) break;
 	}
     tabGroup.open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
-//    tabGroup.open();
+
+    //メッセージ
+    var xhr = new XHR();
+    var messageUrl = config.messageUrl + "&os=" + osname + "&version=" + version;
+    Ti.API.info('メッセージURL：' + messageUrl);
+    xhr.get(messageUrl, onSuccessCallback, onErrorCallback, { ttl: 1 });
+    function onSuccessCallback(e) {
+        Ti.API.info('メッセージデータ:' + e.data);
+        if(e.data) {
+            var json = JSON.parse(e.data);
+            if(json && json[0] && json[0].message){
+                var dialog = Ti.UI.createAlertDialog({title: 'お知らせ', message: json[0].message});
+                dialog.show();
+            }
+        }
+    };
+    function onErrorCallback(e) {
+    };
 
 })();
 
@@ -88,6 +110,7 @@ function initDB() {
  * Google Analyticsの処理を初期化する
  */
 function startAnalytics() {
+    var Analytics = require('/util/Ti.Google.Analytics');
 	var analytics = new Analytics('UA-30928840-1');
     var util = require("util/util").util;
 	Titanium.App.addEventListener('analytics_trackPageview', function(e){
@@ -105,5 +128,5 @@ function startAnalytics() {
 	        Ti.App.fireEvent('analytics_trackEvent', {category:category, action:action, label:label, value:value});
 	    }
 	};
-	analytics.start(10);	//10秒に1回データ送信
+	analytics.start(7);	//7秒に1回データ送信
 }

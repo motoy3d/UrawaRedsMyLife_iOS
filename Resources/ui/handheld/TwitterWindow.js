@@ -8,17 +8,9 @@ function TwitterWindow(tabGroup, target) {
     var WebWindow = require("/ui/handheld/WebWindow");    
     var util = require("/util/util").util;
     var style = require("/util/style").style;
+    var twitter = new Twitter(target);
     var initLoaded = false;
-    var updating = false;
-    // var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
-    // var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
-    // loadingInd.message = style.common.loadingMsg;
-    // loadingRow.add(loadingInd);
 
-    // 更新ボタン
-    var refreshButton = Ti.UI.createButton({
-        systemButton: Ti.UI.iPhone.SystemButton.REFRESH
-    });
     // ウィンドウ
     var self = Ti.UI.createWindow({
         title: L('twitter')
@@ -26,256 +18,281 @@ function TwitterWindow(tabGroup, target) {
         ,backgroundColor: 'black'
         ,barColor: style.common.barColor
         ,navTintColor: style.common.navTintColor
-        ,rightNavButton: refreshButton
+//        ,rightNavButton: refreshButton
     });
+    if (Ti.Platform.osname === 'iphone') {
+        self.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;  
+    } else {
+        self.navBarHidden = true;
+    }
     
     // インジケータ
     var indicator = Ti.UI.createActivityIndicator();
     self.add(indicator);
-
-/*
-    // ボーダー
-    var border = Ti.UI.createView(style.twitter.tableBorder);
-    // テーブルヘッダ
-    var tableHeader = Ti.UI.createView(style.twitter.tableHeader);
-    // fake it til ya make it..  create a 2 pixel
-    // bottom border
-    tableHeader.add(border);
-    // 矢印
-    var arrow = Ti.UI.createView(style.twitter.arrow);
-    // ステータスラベル
-    var statusLabel = Ti.UI.createLabel(style.twitter.statusLabel);
-    // 最終更新日時ラベル
-    var lastUpdatedLabel = Ti.UI.createLabel(style.twitter.lastUpdatedLabel);
-    lastUpdatedLabel.text = "最終更新: "+util.formatDatetime();
-
-    // インジケータ
-    var refreshActInd = Titanium.UI.createActivityIndicator(style.twitter.refreshActIndicator);
-    // テーブルヘッダに矢印、ステータス、最終更新日時、インジケータを追加し、
-    // テーブルにヘッダをセット
-    tableHeader.add(arrow);
-    tableHeader.add(statusLabel);
-    tableHeader.add(lastUpdatedLabel);
-    tableHeader.add(refreshActInd);
-    table.headerPullView = tableHeader;
-    // フラグ
-    var pulling = false;
-    var reloading = false;
-*/
-    if(Ti.Platform.version >= "7.0") {
+    
+    if(util.isiOS7Plus()) {
         // iOS7で、全てのタブのwindow openイベントがアプリ起動時に発火してしまうのでfocusイベントに変更。
         self.addEventListener('focus', function(){
             if(!initLoaded) {
                 Ti.API.info('-----------------------TwitterWindow focus event');
-                loadTweets("firstTime");
+                load("firstTime");
                 initLoaded = true;
             }
         });
     } else {
         self.addEventListener('open', function(){
             Ti.API.info('-----------------------TwitterWindow open event');
-            loadTweets("firstTime");
+            load("firstTime");
         });        
     }
     
-    // テーブル
-    var table = Ti.UI.createTableView(style.twitter.table);
-    table.allowsSelectionDuringEditing = false;
-    var twitter = new Twitter(target);
+    // ListViewのテンプレート
+    var rowTemplate = {
+        childTemplates : style.twitter.listViewTemplate,
+        properties : {
+            height : Ti.UI.SIZE
+            ,backgroundColor: '#000'
+        }
+    };
+    // Android用
+    var refreshTemplate = {
+        childTemplates : style.twitter.listViewRefreshTemplate,
+        properties : {
+            height : Ti.UI.SIZE
+            ,backgroundColor: '#000'
+        }
+    };
 
-    //refreshイベント
-    refreshButton.addEventListener('click', function(e){
-        if(table.data[0]) {
-            loadTweets("newerTweets");
+    var listView = Ti.UI.createListView({
+        templates : {
+            'template' : rowTemplate
+            ,'refreshTemplate': refreshTemplate
+        }
+        ,defaultItemTemplate : 'template'
+        ,backgroundColor: '#000'
+    });
+    Ti.API.debug("★style.twitter.listView.backgroundColor=" + style.twitter.listView.backgroundColor);
+    listView.applyProperties(style.twitter.listView);
+    var sections = [];
+    var dataSection = Ti.UI.createListSection();
+    sections.push(dataSection);
+    
+    // アイテムクリックイベント
+    listView.addEventListener('itemclick', function(e){
+        Ti.API.info('アイテムクリックイベント：' + util.toString(e));
+        if (e.itemIndex == undefined) {
+            Ti.API.error('NO itemId in event. Check data. If data is right, file bug in JIRA.');
+            return;
+        }
+        //Androidの場合、１行目はリロードボタン
+        if(util.isAndroid() && e.itemIndex == 0) {
+            if(e.bindId && e.bindId == 'refreshImage') {
+                load("newer");  //最新をロード
+            }
+            return;
         } else {
-            table.setData(null);
-            loadTweets("firstTime");
+            //URLを開く
+            openEntryWin(e.itemIndex);
         }
     });
 
     /**
-     * tweetを読み込んで表示する
-     * @param kind (firstTime or olderTweets)
+     * ツイートのWebウィンドウを開く
      */
-    function loadTweets(kind) {
-        indicator.show();
-        updating = true;
-        var loadingRowIdx = -1;
-        if(table.data[0]){
-            loadingRowIdx = table.data[0].rows.length - 1;
+    function openEntryWin(itemIndex) {
+        var item = listView.sections[0].items[itemIndex];
+
+        if(util.isAndroid()) {
+            var item = listView.sections[0].items[itemIndex];
+            item.content.color = "#38e";
+            listView.sections[0].updateItemAt(itemIndex, item);
         }
-        twitter.loadTweets(kind, {
-            success: function(tweetList) {
-                try {
-                    var rows = new Array();
-                    var rowsData = new Array();
-                    for(i=0; i<tweetList.length; i++) {
-                        var tweet = tweetList[i];
-                        // rows.push(createRow(tweet));
-                        if("newerTweets" == kind) {
-                            //TableViewAnimationProperties ap = {animated: false};
-                            table.insertRowBefore(i, createRow(tweet), {animated: false});
-                        } else {
-//                            table.appendRow(createRow(tweet));
-                            rowsData.push(createRow(tweet));
-                        }
-                    }
-                    if("firstTime" == kind) {
-                        table.appendRow(rowsData);
-                        self.add(table);
-                    } else if("newerTweets" == kind) {
-//                        table.scrollToIndex(tweetList.length);
-                    } else if("olderTweets" == kind) {
-                        table.appendRow(rowsData);
-                        if(loadingRowIdx > 0) {
-                            // “読み込み中”のローを削除する。
-                            Ti.API.info("読み込み中ロー削除：" + loadingRowIdx);
-                            table.deleteRow(loadingRowIdx);
-                        }
-                    }
-                } catch(e) {
-                    Ti.API.error(e);
-                } finally {
-                    indicator.hide();
-                    updating = false;
-                }
-            },
-            fail: function(message) {
-                updating = false;
-                indicator.hide();
-                var dialog = Ti.UI.createAlertDialog({
-                    message: message,
-                    buttonNames: ['OK']
-                });
-                dialog.show();
+        var win = Ti.UI.createWindow(style.twitter.webWindow);
+        //win.orientationModes = [Ti.UI.PORTRAIT];
+        if (Ti.Platform.osname === 'iphone') {
+            win.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;  
+        } else {
+            win.tabBarHidden = true;
+        }
+        var entryData = listView.sections[0].items[itemIndex];
+        var web = Ti.UI.createWebView({
+            url: entryData.url
+        });
+        if (util.isAndroid()) {
+            web.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+        }
+        Ti.API.info('web=' + web);
+        win.add(web);
+        var webIndicator = Ti.UI.createActivityIndicator({
+            style: util.isiPhone()? Ti.UI.iPhone.ActivityIndicatorStyle.DARK : Ti.UI.ActivityIndicatorStyle.BIG
+        });
+        win.add(webIndicator);
+        webIndicator.show();
+        web.addEventListener('load', function(e){
+            Ti.API.info('loadイベント');
+            if(util.isAndroid()) {
+                web.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+            }
+            setTimeout(function(){webIndicator.hide();}, 700);   //インジケータが消えるのが早過ぎるので0.5秒待ってから消す
+            if(util.isAndroid()) {
+                Ti.API.info('###色を戻す');
+                var item = listView.sections[0].items[itemIndex];
+                item.content.color = "black";
+                listView.sections[0].updateItemAt(itemIndex, item);
             }
         });
+        tabGroup.activeTab.open(win, {animated: true});
     }
-    
+// ##########################################
+// PullView
+// ##########################################
     /**
-     * TableViewRowを生成して返す
-     * @param {Object} tweet (id, userName, text, profileImgUrl, etc...)
+     * PullHeaderをリセットする
      */
-    function createRow(tweet) {
-        var row = Ti.UI.createTableViewRow(style.twitter.tableViewRow);
-        // プロフィール画像
-        var profileImg = Ti.UI.createImageView(style.twitter.profileImg);
-        profileImg.image = tweet.profileImageUrl;
-        // ユーザ名ラベル
-        var userNameLabel = Ti.UI.createLabel(style.twitter.userNameLabel);
-        userNameLabel.text = tweet.userName;
-        // 本文ラベル
-        var textLabel = Ti.UI.createLabel(style.twitter.textLabel);
-        textLabel.text = tweet.text;
-        // 時間ラベル
-        var timeLabel = Ti.UI.createLabel(style.twitter.timeLabel);
-        var timeText = tweet.timeText;
-
-        timeLabel.text = timeText;
-        row.add(userNameLabel);
-        row.add(profileImg);
-        row.add(textLabel);
-        row.add(timeLabel);
-        row.tweet = tweet;
-        return row;
-    }
-
-    var lastDistance = 0; // calculate location to determine direction
-    // テーブルのスクロールイベント
-    table.addEventListener('scroll', function(e) {
-        var offset = e.contentOffset.y;
-        var height = e.size.height;
-        var total = offset + height;
-        var theEnd = e.contentSize.height;
-        var distance = theEnd - total;
-    
-        // going down is the only time we dynamically load,
-        // going up we can safely ignore -- note here that
-        // the values will be negative so we do the opposite
-        if (distance < lastDistance) {
-            // adjust the % of rows scrolled before we decide to start fetching
-            var nearEnd = theEnd * .90;
-            if (!updating && (total >= nearEnd)) {
-                beginUpdate();
-            }
+    function resetPullHeader(){
+        actInd.hide();
+        imageArrow.transform=Ti.UI.create2DMatrix();
+        imageArrow.show();
+        //TODO Android
+        if (Ti.Platform.osname === 'iphone') {
+            listView.setContentInsets({top:0}, {animated:true});
         }
-        lastDistance = distance;
+    }
+    function pullListener(e){
+        if (e.active == false) {
+            var unrotate = Ti.UI.create2DMatrix();
+            imageArrow.animate({transform:unrotate, duration:180});
+        } else {
+            var rotate = Ti.UI.create2DMatrix().rotate(180);
+            imageArrow.animate({transform:rotate, duration:180});
+        }
+    }
+ 
+    function pullendListener(e){
+        imageArrow.hide();
+        actInd.show();
+        //TODO Android
+        if (Ti.Platform.osname === 'iphone') {
+            listView.setContentInsets({top:80}, {animated:true});
+        }
+        setTimeout(function(){
+            load('newer');
+        }, 2000);
+    }
+    // ヘッダ(pull to refreshの行)
+    var tableHeader = Ti.UI.createView({
+        backgroundColor:'#000',
+        width: Ti.UI.SIZE, height: 80
     });
-    
-    // テーブルのクリックイベント
-    table.addEventListener('click', function(e) {
-        var t = e.row.tweet;
-
-        // HTMLテンプレート
-        var templateFile = Ti.Filesystem.getFile(
-            Ti.Filesystem.resourcesDirectory, 'tweetTemplate.txt');
-        var template = templateFile.read().toString();
-        var html = util.replaceAll(template, "{profileImageUrl}", t.profileImageUrl);
-        html = util.replaceAll(html, "{userName}", t.userName);
-        html = util.replaceAll(html, "{userScreenName}", t.userScreenName);
-        var text = util.tweetTrimer(t.text);
-        html = util.replaceAll(html, "{text}", text);
-        html = util.replaceAll(html, "{timeText}", t.timeText);
-
-        // var webView = Ti.UI.createWebView({
-            // html: html
-        // });
-// 
-        // // ロード前のイベント
-        // var ind;
-        // webView.addEventListener('beforeload',function(e){
-            // if(e.navigationType != 5) {//リンク先URLのhtml中の画像やiframeの場合、5
-                // Ti.API.info('beforeload #################### ');
-                // for(i in e) {
-                    // Ti.API.info('   ' + i + ' = ' + e[i]);
-                // }
-                // webView.opacity = 0.8;
-                // Ti.API.info('インジケータshow');
-                // ind = Ti.UI.createActivityIndicator({color: 'red'});
-                // webView.add(ind);
-                // ind.show();
-                // indicator.show();//TODO
-                // webView.url = e.url;
-            // }
-        // }); 
-        // // ロード完了時にインジケータを隠す
-        // webView.addEventListener("load", function(e) {
-            // if(ind) {
-                // for(i in e) {
-                    // Ti.API.info('   ' + i + ' = ' + e[i]);
-                // }
-                // Ti.API.info('load ####################');
-                // Ti.API.info('インジケータhide');
-                // webView.opacity = 1.0;
-                // ind.hide();
-                // indicator.hide();//TODO
-                // ind = null;
-            // }
-        // });
-                var webData = {
-            title: "tweet"
-            ,html: html
-            ,toolbarVisible: false
-        };
-        var tweetWin = new WebWindow(webData);
-        tweetWin.tabBarHidden = true;
-        tabGroup.activeTab.open(tweetWin, {animated: true});
+    var border = Ti.UI.createView({
+        backgroundColor:'#576c89',
+        bottom:0,
+        height:2
     });
+    tableHeader.add(border);
+  
+    var imageArrow = Ti.UI.createImageView({
+        image: '/images/whiteArrow.png',
+        /*left: 20,*/ bottom: 10,
+        width: 23, height: 60
+    });
+    tableHeader.add(imageArrow);
+      
+    var actInd = Ti.UI.createActivityIndicator({
+        /*left:20,*/ bottom:13
+    });
+    tableHeader.add(actInd);
+    listView.pullView = tableHeader; 
+    listView.addEventListener('pull', pullListener);
+    listView.addEventListener('pullend',pullendListener);
 
+    // ##########################################
+    // Dynamic Loading
+    // ##########################################
+    listView.addEventListener('marker', function(e) {
+        load('older');
+    });
     /**
-     * 表示更新を開始する
+     * エントリを取得して表示する
      */
-    function beginUpdate() {
-        Ti.API.info("===== beginUpdate =====");
-        updating = true;
-        // 読み込み中Row
-        var loadingRow = Ti.UI.createTableViewRow(style.twitter.loadingRow);
-        var loadingInd = Ti.UI.createActivityIndicator(style.twitter.loadingIndicator);
-        loadingInd.message = style.common.loadingMsg;
-        loadingRow.add(loadingInd);
-        table.appendRow(loadingRow);
-        loadingInd.show();      
-        loadTweets("olderTweets");
+    function load(kind) {
+        indicator.show();
+        var util = require("/util/util").util;
+        Ti.API.info(util.formatDatetime2(new Date()) + '  loadFeed started.................................');
+
+        twitter.loadTweets(
+            kind, 
+            { //callback
+                success: function(rowsData) {
+                    try {
+                        Ti.API.debug('■■■kind = ' + kind);
+                        Ti.API.debug('■■■newestId = ' + twitter.newestId);
+                        Ti.API.debug('■■■oldestId   = ' + twitter.oldestId);
+                        
+                        // 読み込み中Row削除
+                        //Ti.API.info("rowsData■" + rowsData);
+                        // 初回ロード時
+                        if("firstTime" == kind) {
+                            if(rowsData) {
+                                Ti.API.info("rowsData = " + util.toString(rowsData[0]));
+                                Ti.API.info("content = " + rowsData[0].postImage);
+                                if(util.isAndroid()) {   // リロードボタンの行を１番目に挿入
+                                     rowsData.unshift(
+                                        {
+                                            refreshImage: {image: '/images/refresh.png'} 
+                                            ,properties: {
+                                                accessoryType: Ti.UI.LIST_ACCESSORY_TYPE_NONE
+                                            }
+                                            ,template: 'refreshTemplate'
+                                        }  
+                                     );
+                                }
+                                dataSection.setItems(rowsData);
+                                listView.sections = sections;
+                                listView.setMarker({sectionIndex: 0, itemIndex: (rowsData.length - 1) });
+                                self.add(listView);
+                            }
+                        }
+                        // 2回目以降の追加ロード時
+                        else if("older" == kind) {
+                            if(rowsData) {
+                                Ti.API.info(new Date() + ' appendItems start');
+                                dataSection.appendItems(rowsData);
+                                Ti.API.info(new Date() + ' appendItems end');
+                            }
+                            listView.setMarker({sectionIndex: 0, itemIndex: (dataSection.items.length - 1) });
+                        }
+                        // 最新データロード時
+                        else if("newer" == kind) {
+                            if(rowsData) {
+                                if(!listView.sections || listView.sections.length == 0) {    //初回起動時にネットワークエラーが出た場合など
+                                    listView.sections = sections;
+                                }
+                                Ti.API.debug('最新データ読み込み  件数＝' + rowsData.length);
+                                var appendIdx = util.isiPhone()? 0 : 1;
+                                dataSection.insertItemsAt(appendIdx, rowsData);
+                            }
+                        }
+                        else {
+                            Ti.API.error('NewsWindow#loadFeedに渡すkindが不正です。kind=' + kind);
+                        }
+                    } finally {
+                        if(indicator){indicator.hide();}
+                        resetPullHeader();
+                        Ti.API.info('>>>>>>>>>>>>>>>>>>>>>>>>> loadメソッドfinally. indicator.hide()');
+                    }
+                },
+                fail: function(message) {
+                    if(indicator){indicator.hide();}
+                    var dialog = Ti.UI.createAlertDialog({
+                        message: message,
+                        buttonNames: ['OK']
+                    });
+                    dialog.show();
+                    resetPullHeader();
+                }
+            }
+        );
     }
     return self;
 }

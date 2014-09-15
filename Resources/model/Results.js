@@ -2,6 +2,7 @@
  * 試合日程・結果データ取得サービス 
  */
 function Results(resultsWindow) {
+    var XHR = require("/util/xhr");
 	var util = require("util/util").util;
 	var style = require("util/style").style;
 	var self = {};

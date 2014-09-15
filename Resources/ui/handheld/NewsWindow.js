@@ -17,11 +17,8 @@ function NewsWindow(tabGroup) {
  
      // 設定ボタン
     var configButton = Ti.UI.createButton({
-        image: "/images/gear.png"
-    });   
-    // 設定ボタン
-    var configButton = Ti.UI.createButton({
-        image: "/images/gear.png"
+        //image: "/images/justify.png"
+        image: "/images/th.png"
     });
     var configButtonClicked = false;
     configButton.addEventListener('click', function() {
@@ -39,6 +36,7 @@ function NewsWindow(tabGroup) {
     var self = Ti.UI.createWindow({
         title: L('news')
         ,barColor: style.common.barColor
+        ,tintColor: "yellow"
         ,navTintColor: style.common.navTintColor
         ,rightNavButton: configButton
     });
@@ -103,8 +101,7 @@ function NewsWindow(tabGroup) {
             isOpeningNews = true;
             Ti.API.debug("  サイト名＝＝＝＝＝＝＝＝＝" + e.rowData.siteName);
             visitedUrls.push(e.rowData.link);
-            //SDK3.1.2から効かなくなったのでコメントアウト
-//            e.row.setBackgroundColor(style.news.visitedBgColor);
+            e.row.setBackgroundColor(style.news.visitedBgColor);
             lastSelectedRow = e.row;
 //alert(e.row.backgroundColor);
             news.saveVisitedUrl(e.rowData.link);
@@ -128,13 +125,6 @@ function NewsWindow(tabGroup) {
         }
     });
     
-    // 記事詳細画面から戻った時に既読の背景色をセットする(Ti3.1.2以降、記事タップ時にセットしても効かないため)
-    self.addEventListener('focus', function(e){
-        if(lastSelectedRow && lastSelectedRow.backgroundColor != style.news.visitedBgColor) {
-            lastSelectedRow.setBackgroundColor(style.news.visitedBgColor);          
-        }
-    });
-
     /**
      * 追加ロードを開始する(古いデータを読み込む)
      */

@@ -43,7 +43,8 @@ function WebWindow(webData) {
 	    webData.content && 
 		(webData.content != "" && 
 		 webData.content.indexOf('<img src="http://feeds.feedburner.com') == -1 
-		 )
+		 ) &&
+		 webData.link.indexOf('http://yamadanobuhisa.jp') == -1
 	) {
 		Ti.API.debug("-----------webWindow 1 link = " + webData.link);
 		var content = createWebContent(webData);

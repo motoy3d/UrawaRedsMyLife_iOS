@@ -56,11 +56,10 @@ function ResultsWindow(tabGroup) {
 				    for(i=2; i<rowsData.length; i++) {
 				        if(!rowsData[i]) {
 				            continue; // 無観客試合があるため
-				        }
-				        else if(rowsData[i].detailUrl) {
-				            rowIdx = i;   //最初の１行目は除くため-1
+				        } else if(rowsData[i].detailUrl) {
+				            rowIdx = i;
 				        } else {
-				            break;
+//				            break;
 				        }
 				    }
 				    Ti.API.info('---- add tableView');

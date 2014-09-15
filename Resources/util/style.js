@@ -137,10 +137,55 @@ exports.style = {
 	},
     config : {
         window : {
-            title: "浦和レッズ My Life 設定"
+            title: "設定・シェア"
             ,navBarHidden: false
             ,backgroundColor: "black"
             ,navTintColor: "white"
+        },
+        tableView : {
+            backgroundColor: "black"
+            ,separatorColor: '#888'
+            //,separatorColor: 'black'
+            ,allowsSelection: true
+            ,scrollable: false
+            ,top: 0
+            ,width: Ti.UI.FILL
+            ,height: Ti.UI.SIZE
+        },
+        lineRow : {
+            title: "友達にLINEですすめる"
+            ,color: "white"
+            ,width: Ti.UI.FILL
+            ,hasChild: true
+            ,height: 50
+        },
+        mailRow : {
+            title: "友達にメールですすめる📩"
+            ,color: "white"
+            ,width: Ti.UI.FILL
+            ,hasChild: true
+            ,height: 50
+        },
+        twitterRow : {
+            title: "twitterでつぶやく"
+            ,color: "white"
+            ,width: Ti.UI.FILL
+            ,hasChild: true
+            ,height: 50
+        },
+        fbRow : {
+            title: "facebookでシェア"
+            ,color: "white"
+            ,width: Ti.UI.FILL
+            ,hasChild: true
+            ,height: 50
+        },
+        appReviewRow : {
+            title: "レビューを書く(お願い🌟)"
+            ,color: "white"
+            ,width: Ti.UI.FILL
+            ,hasChild: true
+            ,height: 50
         }
     },
 	results : {
@@ -266,11 +311,128 @@ exports.style = {
 	    }
 	},
 	twitter : {
-	    table : {
+	    webWindow : {
+            backgroundColor: 'black'
+            ,barColor: 'red'
+            ,navTintColor: 'white'
+//            navBarHidden: true  
+	    },
+        webWindowToolbar : {
+            bottom: 0
+            ,borderTop: true
+            ,borderBottom: true
+            ,backgroundColor: '#29b'        
+        },
+	    listView : {
 	        separatorColor: '#666'
 	        ,allowsSelection: true
 	        ,backgroundColor: "black"
 	    },
+        listViewTemplate : [
+            {
+                type: 'Ti.UI.Label',
+                bindId: 'userName',    //名前ラベル
+                properties: {
+                    color: '#fff'
+                    ,backgroundColor: '#000'
+                    ,font: {fontSize: 16, fontWeight: 'bold'}
+                    ,top: 4
+                    ,left: 60
+                }
+            },
+            {
+                type: 'Ti.UI.ImageView',
+                bindId: 'userProfileImage',    //プロフィール画像
+                properties: {
+                    top: 6
+                    ,left: 6
+                    ,width: 48
+                    ,height: 48
+                    ,borderRadius: 5
+                    ,backgroundColor: '#000'
+                }
+            },
+            {
+                type: 'Ti.UI.View',
+                bindId: 'contentView',
+                properties: {
+                    top: 42
+                    ,left: 60
+                    ,right: 6
+                    ,height: Ti.UI.SIZE
+                    ,backgroundColor: '#000'
+                },
+                childTemplates: [
+                    {
+                        // iOSではLabelにリンクがつけられない
+                        type: 'Ti.UI.Label',
+                        bindId: 'content',
+                        properties: {
+                            color: '#fff'
+                            ,backgroundColor: '#000'
+                            ,font: {fontSize: 16}
+                            ,top: 0
+                            ,left: 0
+                            ,bottom: 260
+                            ,height: Ti.UI.SIZE
+                        }
+                    },
+                    {
+                        type: 'Ti.UI.ImageView',
+                        bindId: 'postImage',    //投稿内画像
+                        properties: {
+                            top: 0,
+                            width: Ti.UI.SIZE
+                            ,left: 0
+                            ,bottom: 6
+                            ,height: 250
+                            ,backgroundColor: '#000'
+                        },
+                        events: {
+                            load: function(e){var util = require("/common/util").util; Ti.API.info('■■■image loaded. ' + util.toString(e.source));},
+                            error: function(e){
+                                var util = require("/common/util").util;
+                                Ti.API.error('■■■画像読み込みエラー　 ' + util.toString(e.source));
+                            }
+                        }
+                    }
+                ],
+            },
+            {
+                type: 'Ti.UI.Label',
+                bindId: 'time',    //日時ラベル
+                properties: {
+                    color: '#ddd'
+                    ,backgroundColor: '#000'
+                    ,font: {fontSize: 12}
+                    ,top: 24
+                    //,bottom: 8
+                    ,right: 6
+                }
+            },
+        ],
+        /* Android用ツールバー */
+        listViewRefreshTemplate : [
+            {
+                type: 'Ti.UI.ImageView',
+                bindId: 'refreshImage',
+                properties: {
+                    right: 10
+                    ,width: 40
+                    ,height: 40
+                }
+            },
+            {
+                type: 'Ti.UI.Label',
+                bindId: 'translate',
+                properties: {
+                    text: L('TranslateBtn')
+                    ,left: 10
+                    ,color: '#6cf'
+                }
+            }
+        ],
+	    
 		tableViewRow : {
 			height : Ti.UI.SIZE
 			,backgroundColor : "black"

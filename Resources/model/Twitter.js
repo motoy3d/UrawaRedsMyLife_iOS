@@ -5,24 +5,18 @@
 function Twitter(target) {
     var util = require("/util/util").util;
     var style = require("/util/style").style;
-    var XHR = require("util/xhr");
+    var XHR = require("/util/xhr");
     
     var self = {};
     self.loadTweets = loadTweets;
     var tweetsPerPage = 50;
-    // var queryBase = 
-        // "select * from json"
-        // + " where url='http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
-        // + "?teamId=" + util.getTeamId() + "&count=" + tweetsPerPage;
     var urlBase = 
         "http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
         + "?teamId=" + util.getTeamId() + "&count=" + tweetsPerPage;
-    var oldestId;      //最も古いツイートID。古いデータ読み込み時に使用
-    var newestId;    //最も新しいツイートID。新しいデータ読み込み時に使用
     
     /**
      * チームハッシュタグのツイート一覧を取得
-     * @param kind ("firstTime" or "olderTweets" or "newerTweets")
+     * @param kind ("firstTime" or "older" or "newer")
      * @param callback (TwitterWindow.js)
      */
     function loadTweets(kind, callback) {
@@ -37,22 +31,15 @@ function Twitter(target) {
         // Analytics
         trackAnalytics(kind);
         
-        // YQL実行
         var before = new Date();
-        // var query = queryBase;
         var url = urlBase;
-        if("newerTweets" == kind) {
-            //query += "&since_id=" + newestId;
-            Ti.API.info('#####newestId = ' + newestId);
-            url += "&since_id=" + (Number(newestId)+100);   //なぜか最後の１件が再表示されてしまうので、100ずらす
-        } else if("olderTweets" == kind){
-            // query += "&max_id=" + oldestId;
-            url += "&max_id=" + oldestId;
+        if("newer" == kind) {
+            Ti.API.info('#####newestId = ' + self.newestId);
+            url += "&since_id=" + (Number(self.newestId)+100);   //なぜか最後の１件が再表示されてしまうので、100ずらす
+        } else if("older" == kind){
+            url += "&max_id=" + (self.oldestId - 1);
         }
-        // query += "'";
         var xhr = new XHR();
-//        Ti.API.info('★★query=' + query);
-//        Ti.Yahoo.yql(query, function(e) {
         Ti.API.info(new Date() + ': URL=' + url);
         xhr.get(url, onSuccessCallback, onErrorCallback, { ttl: 5 });
         function onSuccessCallback(e) {
@@ -62,27 +49,23 @@ function Twitter(target) {
                     callback.fail(style.common.loadingFailMsg);
                     return;
                 }
-                // if(e.data.json.json == "no data") {
-                    // callback.success(new Array());
-                    // return;
-                // }
                 var resultArray = JSON.parse(e.data);
                 if(resultArray[0].json && "no data" == resultArray[0].json) {
                     callback.success(new Array());
                     return;
                 }
-//                Ti.API.info('■■resultArray = ' + resultArray);
                 
                 // 取得したJSONをリスト化する
                 var idx = 0;
                 var tweetList = resultArray.map(
                     function(item) {
+                        //Ti.API.info('ツイートID=' + item.tweet_id);
                         if(idx++ == 0 && 
-                            ("firstTime" == kind || "newerTweets" == kind)) {
-                            newestId = item.tweet_id;
+                            ("firstTime" == kind || "newer" == kind)) {
+                            self.newestId = item.tweet_id;  //最も新しいツイートID。新しいデータ読み込み時に使用
                         }
-                        if("firstTime" == kind || "olderTweets" == kind) {
-                            oldestId = item.tweet_id;
+                        if("firstTime" == kind || "older" == kind) {
+                            self.oldestId = item.tweet_id;  //最も古いツイートID。古いデータ読み込み時に使用
                         }
                         //「10秒前」のような形式
                         //var timeText = util.parseDate2(item.results.created_at);
@@ -94,14 +77,26 @@ function Twitter(target) {
                         var timeText = (creDate.getMonth() + 1) + "/" + creDate.getDate() 
                             + " " + creDate.getHours() + ":" + minutes;
  //                       Ti.API.info('★timeText=' + timeText);
+
                         var data = {
-                            id: item.tweet_id
-                            ,text: util.deleteUnnecessaryText(item.tweet)
-                            ,profileImageUrl: item.user_profile_image_url
-                            ,userName: item.user_name
+                            url: 'https://twitter.com/' + item.user_screen_name + '/status/' + item.tweet_id
+                            ,contentView: {}
+                            ,content: {
+                                text: util.deleteUnnecessaryText(item.tweet)
+                                , bottom: item.image_url? 250 : 6
+                            }
+//                            ,postImage: {image: profileImage, height: item.image_url? 240 : 0}
+                            ,postImage: {image: item.image_url, height: item.image_url? 240 : 0}
+                            ,userProfileImage: {image: item.user_profile_image_url}
+                            ,userName: {text: item.user_name}
                             ,userScreenName: item.user_screen_name
-                            ,createDatetime: item.created_at 
-                            ,timeText: timeText
+                            ,publishedDatetime: item.created_at 
+                            ,time: {text: timeText}
+                            ,backgroundColor: '#000'
+
+// 選択時背景色がAndroidで効かない
+//                            ,selectedBackgroundColor: '#444'
+//,properties: {selectedBackgroundColor: '#444'}
                         };
                         return data;
                     }
@@ -124,7 +119,7 @@ function Twitter(target) {
     
     /**
      * Google Analyticsの記録
-     * @param {Object} kind
+     * @param {Object} kind     firstTime/newer/older
      */
     function trackAnalytics(kind) {
         if("firstTime" == kind) {
@@ -133,7 +128,7 @@ function Twitter(target) {
             } else {
                 Ti.App.Analytics.trackPageview('/twitter');
             }
-        } else if("newerTweets" == kind) {
+        } else if("newer" == kind) {
             if(target == "playerTweets") {
                 Ti.App.Analytics.trackPageview('/newerPlayerTweets');
             } else {

@@ -22,6 +22,8 @@ sites[idx++] = new Array("浦和御殿","http://redsnowman.cocolog-nifty.com/ura
 sites[idx++] = new Array("しみマガブログ","http://kaizokuo.blog5.fc2.com/");
 sites[idx++] = new Array("徒然フットボール","http://blogs.yahoo.co.jp/dukaeeq2004");
 sites[idx++] = new Array("湯浅健二のサッカー・ホームページ","http://www.yuasakenji-soccer.com/");
+sites[idx++] = new Array("ゲキサカ","http://web.gekisaka.jp");
+
 //sites[idx++] = new Array("Sportiva", "http://sportiva.shueisha.co.jp/");
 
 /**

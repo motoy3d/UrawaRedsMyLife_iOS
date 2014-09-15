@@ -320,5 +320,55 @@ exports.util = {
         }
     
         return text;
+    },
+    /**
+     * Android 
+     */    
+    isAndroid : function() {
+        return (Ti.Platform.osname === 'android');
+    },
+    /**
+     * iPhone
+     */    
+    isiPhone : function(){
+        return (Ti.Platform.osname === 'iphone');
+    },    
+    /**
+     * iOS6以上 
+     */    
+    isiOS6Plus : function()
+    {
+        // add iphone specific tests
+        if (Titanium.Platform.name == 'iPhone OS')
+        {
+            var version = Titanium.Platform.version.split(".");
+            var major = parseInt(version[0],10);
+            
+            // can only test this support on a 3.2+ device
+            if (major >= 6)
+            {
+                return true;
+            }
+        }
+        return false;
+    },
+    /**
+     * iOS7以上 
+     */    
+    isiOS7Plus: function()
+    {
+        // add iphone specific tests
+        if (Titanium.Platform.name == 'iPhone OS')
+        {
+            var version = Titanium.Platform.version.split(".");
+            var major = parseInt(version[0],10);
+            
+            // can only test this support on a 3.2+ device
+            if (major >= 7)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 };

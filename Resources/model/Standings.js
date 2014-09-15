@@ -8,8 +8,8 @@ function Standings() {
     var XHR = require("util/xhr");
 	var self = {};
 	self.load = load;
-
-    var standingsUrl = "http://sub0000499082.hmk-temp.com/redsmylife/standings.json?season=" + util.getCurrentSeason();
+    var standingsUrl = "http://sub0000499082.hmk-temp.com/redsmylife/standings.json?season=" 
+        + util.getCurrentSeason();
 	/**
 	 * 自前サーバからJSONを読み込んで表示する
 	 */
@@ -37,12 +37,7 @@ function Standings() {
         }
         xhr.get(standingsUrl, onSuccessCallback, onErrorCallback, { ttl: 5 });
         function onSuccessCallback(e) {
-            // Handle your request in here
-            // the module will return an object with two properties
-            // data (the actual data retuned
-            // status ('ok' for normal requests and 'cache' for requests cached
             Ti.API.info("e.status==" + e.status);
-            // 
             if(!e.data) {
                 var month = new Date().getMonth() + 1;
                 if(month == 2) {
