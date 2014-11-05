@@ -4,8 +4,8 @@ exports.customIndicator = {
         // window
         var indWin = Ti.UI.createWindow({
             height:180,
-            width:180,
-            borderRadius:10
+            width:180
+            //,borderRadius:10
         });
      
         // view
@@ -13,7 +13,7 @@ exports.customIndicator = {
             height:176,
             width:176,
             backgroundColor:'#000',
-            borderRadius:20,
+            //borderRadius:20,
             opacity:0.9,
             layout:'vertical'
         });

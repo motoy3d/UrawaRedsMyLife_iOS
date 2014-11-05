@@ -64,10 +64,10 @@ function ResultsWindow(tabGroup) {
 				    }
 				    Ti.API.info('---- add tableView');
 					self.add(tableView);
-					tableView.setData(rowsData.slice(1));                    Ti.API.info('---- setData OK');
+					tableView.setData(rowsData);                    Ti.API.info('---- setData OK');
                     Ti.API.info('rowIdx=' + rowIdx);
                     if(3 < rowIdx) {
-                        tableView.scrollToIndex(rowIdx - 1);    //最新試合が真ん中に来るように
+                        tableView.scrollToIndex(rowIdx+1);    //最新試合が真ん中に来るように
                     }
 				} catch(e) {
 				    Ti.API.debug("エラー");
