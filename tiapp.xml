@@ -8,14 +8,14 @@
         <target device="android">false</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.4.1.GA</sdk-version>
+    <sdk-version>3.5.1.GA</sdk-version>
     <id>urawareds.my.life</id>
     <name>UrawaRedsMyLife</name>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
     <publisher>motoy3d</publisher>
     <url>http://motoy3d.blogspot.com</url>
     <description>Infomation hub for Urawa Reds Supporter</description>
-    <copyright>2014 by motoy3d</copyright>
+    <copyright>2015 by motoy3d</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>

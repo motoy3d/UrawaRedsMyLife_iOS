@@ -12,6 +12,9 @@ function YoutubeWindow(searchCond) {
         ,barColor: style.common.barColor
         ,navTintColor: style.common.navTintColor
 //        navBarHidden: true
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
     });
     // function
     self.searchYoutube = searchYoutube;
@@ -248,6 +251,9 @@ Ti.API.info('ind.hide() 1');
         });
         var videoWin = Ti.UI.createWindow({
             barColor: style.common.barColor
+            ,titleAttributes: {
+                color: style.common.navTintColor
+            }
         });
         videoWin.add(videoView);
         Ti.App.tabGroup.activeTab.open(videoWin, {

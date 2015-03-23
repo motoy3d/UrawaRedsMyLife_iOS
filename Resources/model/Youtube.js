@@ -220,6 +220,9 @@ function createYoutubeRow(item/*, index, array*/) {
 function createWebView() {
 	webModal = Ti.UI.createWindow({
 	    barColor: style.common.barColor
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
 	});
 
 	webModal.orientationModes = [Ti.UI.PORTRAIT, Ti.UI.LANDSCAPE_LEFT, Ti.UI.LANDSCAPE_RIGHT];

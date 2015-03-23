@@ -3,8 +3,6 @@
  */
 function StandingsWindow(tabGroup) {
 	var Standings = require("/model/Standings");
-    var ACLStandings = require("/model/ACLStandings");
-    var NabiscoStandings = require("/model/NabiscoStandings");
 	var util = require("util/util").util;
 	var style = require("/util/style").style;
     var initLoaded = false;
@@ -24,6 +22,9 @@ function StandingsWindow(tabGroup) {
         ,navTintColor: style.common.navTintColor
         ,rightNavButton: refreshButton
         ,leftNavButton: sortButton
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
 	});
 		
     if(Ti.Platform.version >= "7.0") {
@@ -48,8 +49,9 @@ function StandingsWindow(tabGroup) {
     });
     //ツールバー
     var compeButtonBar = Ti.UI.iOS.createTabbedBar(style.standings.compeButtonBar);
-//    compeButtonBar.labels = [{title: 'J1', enabled: false}, {title: 'ACL', enabled: true}];
-    compeButtonBar.labels = [{title: 'J1', enabled: true}, {title: 'ナビスコ', enabled: true}];
+    var secondCompe = Ti.App.aclFlg ? "ACL" : "ナビスコ";
+Ti.API.info('aclFlg ========= ' + Ti.App.aclFlg);
+    compeButtonBar.labels = [{title: 'J1', enabled: true}, {title: secondCompe, enabled: true}];
     compeButtonBar.setIndex(0);
     compeButtonBar.addEventListener("click", function(e){
         if(isLoading) {
@@ -63,8 +65,11 @@ function StandingsWindow(tabGroup) {
             }
             else if(e.index == 1) {
                 compeButtonBar.setIndex(1);
-                // loadACLStandings();
-                loadNabiscoStandings();
+                if (Ti.App.aclFlg) {
+                    loadACLStandings();
+                } else {
+                    loadNabiscoStandings();
+                }
             }
         }
     });
@@ -92,8 +97,11 @@ function StandingsWindow(tabGroup) {
         if(currentCompeIdx == 0) {
             loadJ1Standings();
         } else if(currentCompeIdx == 1){
-            //loadACLStandings();
-            loadNabiscoStandings();
+            if (Ti.App.aclFlg) {
+                loadACLStandings();
+            } else {
+                loadNabiscoStandings();
+            }
         }
     });
     // ソートボタン
@@ -216,7 +224,7 @@ function StandingsWindow(tabGroup) {
 		});
 	}
     /**
-     * YahooスポーツサイトのACLのhtmlを読み込んで表示する
+     * ACLの順位表を読み込んで表示する
      */
     function loadACLStandings() {
         if(isLoading) {
@@ -226,7 +234,6 @@ function StandingsWindow(tabGroup) {
         isLoading = true;
         indicator.show();
         self.title = "ACL順位表";
-//        compeButtonBar.setLabels([{title: 'J1', enabled: true}, {title: 'ACL', enabled: false}]);
         // ヘッダー
         if(j1HeaderView) {
             containerView.remove(j1HeaderView);
@@ -237,8 +244,8 @@ function StandingsWindow(tabGroup) {
         var border = Ti.UI.createLabel(style.standings.border);
         containerView.add(border);
 
-        var standings = new ACLStandings();
-        standings.load({
+        var standings = new Standings("ACL");
+        standings.load("seq", {
             success: function(standingsDataList) {
                 try {
                     var rows = new Array();
@@ -273,7 +280,7 @@ function StandingsWindow(tabGroup) {
     }
 
     /**
-     * Jリーグ公式サイトサイトのナビスコのhtmlを読み込んで表示する
+     * ナビスコ順位表を読み込んで表示する
      */
     function loadNabiscoStandings() {
         if(isLoading) {
@@ -283,7 +290,6 @@ function StandingsWindow(tabGroup) {
         isLoading = true;
         indicator.show();
         self.title = "ナビスコ予選リーグ順位表";
-//        compeButtonBar.setLabels([{title: 'J1', enabled: true}, {title: 'ACL', enabled: false}]);
         // ヘッダー
         if(j1HeaderView) {
             containerView.remove(j1HeaderView);
@@ -294,8 +300,8 @@ function StandingsWindow(tabGroup) {
         var border = Ti.UI.createLabel(style.standings.border);
         containerView.add(border);
 
-        var standings = new NabiscoStandings();
-        standings.load({
+        var standings = new Standings("Nabisco");
+        standings.load("seq", {
             success: function(standingsDataList) {
                 try {
                     var rows = new Array();
@@ -362,11 +368,13 @@ Ti.API.info('rows.push '  + i);
         var rankLabel = createRowLabel(rank, 5, 20, 'center');
         row.add(rankLabel);
         // チーム
-        var teamWidth = 60;
-        if(aclFlg) teamWidth = 100;
+        var teamWidth = 70;
+        if(aclFlg) teamWidth = 120;
         if(team.length > 4) {
             var idx = team.indexOf("・");
-            team = team.substring(0, idx);
+            if (idx != -1) {
+                team = team.substring(0, idx);
+            }
         }
         var teamLabel = createRowLabel(team, 30, teamWidth, 'left');
 

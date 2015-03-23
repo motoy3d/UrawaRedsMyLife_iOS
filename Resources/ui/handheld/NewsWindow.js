@@ -39,6 +39,9 @@ function NewsWindow(tabGroup) {
         ,tintColor: "yellow"
         ,navTintColor: style.common.navTintColor
         ,rightNavButton: configButton
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
     });
     // テーブル
     var table = Ti.UI.createTableView(style.news.table);

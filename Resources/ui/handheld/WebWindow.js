@@ -13,6 +13,9 @@ function WebWindow(webData) {
 		,backgroundColor: 'black'
 		,barColor: style.common.barColor
         ,navTintColor: style.common.navTintColor
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
 	});
 	
     var webView = Ti.UI.createWebView();

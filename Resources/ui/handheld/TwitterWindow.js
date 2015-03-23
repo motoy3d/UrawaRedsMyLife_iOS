@@ -19,6 +19,9 @@ function TwitterWindow(tabGroup, target) {
         ,barColor: style.common.barColor
         ,navTintColor: style.common.navTintColor
 //        ,rightNavButton: refreshButton
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
     });
     if (Ti.Platform.osname === 'iphone') {
         self.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;  

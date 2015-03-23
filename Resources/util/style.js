@@ -141,6 +141,9 @@ exports.style = {
             ,navBarHidden: false
             ,backgroundColor: "black"
             ,navTintColor: "white"
+            ,titleAttributes: {
+                color: "white"
+            }
         },
         tableView : {
             backgroundColor: "black"
@@ -186,6 +189,13 @@ exports.style = {
             ,width: Ti.UI.FILL
             ,hasChild: true
             ,height: 50
+        },
+        mailToDeveloperRow : {
+            title: "開発元にメールする📩"
+            ,color: "white"
+            ,width: Ti.UI.FILL
+            ,hasChild: true
+            ,height: 55
         }
     },
 	results : {

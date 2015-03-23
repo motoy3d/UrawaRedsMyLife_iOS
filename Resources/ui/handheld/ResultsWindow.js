@@ -19,6 +19,9 @@ function ResultsWindow(tabGroup) {
 		,barColor: style.common.barColor
         ,navTintColor: style.common.navTintColor
         ,rightNavButton: refreshButton
+        ,titleAttributes: {
+            color: style.common.navTintColor
+        }
 	});
 	self.loadDetailHtml = loadDetailHtml;	//function
 	self.searchMovie = searchMovie;	//function

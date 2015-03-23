@@ -1,15 +1,19 @@
 /**
  * 順位表取得サービス
- * Yahoo スポーツから読み込み
  */
-function Standings() {
-	var util = require("util/util").util;
-    var style = require("util/style").style;
-    var XHR = require("util/xhr");
+function Standings(compe) {
+    var config = require("/config").config;
+	var util = require("/util/util").util;
+    var style = require("/util/style").style;
+    var XHR = require("/util/xhr");
 	var self = {};
 	self.load = load;
-    var standingsUrl = "http://sub0000499082.hmk-temp.com/redsmylife/standings.json?season=" 
-        + util.getCurrentSeason();
+    var standingsUrl = config.standingsUrl + "?season=" + util.getCurrentSeason() + "&teamId=" + config.teamId;
+    if (!compe) {
+        compe = "J";
+    }
+    standingsUrl += "&compe=" + compe;
+    
 	/**
 	 * 自前サーバからJSONを読み込んで表示する
 	 */
@@ -29,13 +33,13 @@ function Standings() {
         } else {
             Ti.App.Analytics.trackPageview('/standings');
         }
-
         var xhr = new XHR();
         // Normal plain old request with a 5mins caching
         if(sort){
             standingsUrl += "&sort=" + sort;
         }
-        xhr.get(standingsUrl, onSuccessCallback, onErrorCallback, { ttl: 5 });
+        Ti.API.info('URL=' + standingsUrl);
+        xhr.get(standingsUrl, onSuccessCallback, onErrorCallback, { ttl: 1 });
         function onSuccessCallback(e) {
             Ti.API.info("e.status==" + e.status);
             if(!e.data) {
@@ -55,6 +59,9 @@ function Standings() {
                     var ranking = dataList[i];
                     var rank = ranking.rank;
                     var team = util.getSimpleTeamName(ranking.team_name);
+                    if (!team){
+                        team = ranking.team_name;
+                    }
                     var point = ranking.point;
                     var win = ranking.win;
                     var draw = ranking.draw;

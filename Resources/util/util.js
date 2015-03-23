@@ -1,4 +1,4 @@
-var style = require("util/style").style;
+var style = require("/util/style").style;
 //var customIndicator = require("CustomIndicator").customIndicator;
 exports.util = {
     /**

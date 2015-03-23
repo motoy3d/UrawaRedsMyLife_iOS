@@ -60,11 +60,14 @@ function ConfigWindow(webData) {
     // アプリレビュー    
     var appReviewRow = Ti.UI.createTableViewRow(style.config.appReviewRow);
     table.appendRow(appReviewRow);
-    
+    // 開発元にメールする    
+    var mailToDeveloperRow = Ti.UI.createTableViewRow(style.config.mailToDeveloperRow);
+    table.appendRow(mailToDeveloperRow);
+       
     table.addEventListener("click", function(e){
         if(e.index == 1) { //友達にLINEですすめる
             Ti.App.Analytics.trackPageview('/lineDialogForAppShare');
-            var msg = encodeURIComponent(config.appName + "  ") + config.iPhoneAppUrl;
+            var msg = encodeURIComponent(config.appName + "  ") + util.getAppUrl();
             Ti.API.info("LINEへのパラメータ=" + msg);
             Ti.Platform.openURL("line://msg/text/" + msg);
         }
@@ -72,7 +75,7 @@ function ConfigWindow(webData) {
             Ti.App.Analytics.trackPageview('/mailDialogForAppShare');
             var dialog = Ti.UI.createEmailDialog({
                 subject: config.appName
-                ,messageBody: config.appName + "  " + config.iPhoneAppUrl
+                ,messageBody: config.appName + "  " + util.getAppUrl()
             });
             dialog.open();
         }
@@ -81,7 +84,7 @@ function ConfigWindow(webData) {
             if(util.isiPhone()) {
                 social.showSheet({
                     service:  'twitter',
-                    message:  config.appName + "  " + config.iPhoneAppUrl + " " + config.hashtag,
+                    message:  config.appName + "  " + util.getAppUrl() + " " + config.hashtag,
                     urls:       [],
                     success:  function(){
                         Ti.API.info('ツイート成功');
@@ -94,7 +97,7 @@ function ConfigWindow(webData) {
             } else {
                 var twitterClass = util.getTwitterClass();  //モジュールでTwitter公式アプリからクラス名を取得
                 util.sendToApp("com.twitter.android", twitterClass
-                    ,config.appName + "  " + config.androidAppUrl + " " + config.hashtag);
+                    ,config.appName + "  " + util.getAppUrl() + " " + config.hashtag);
             }
         }
         else if(e.index == 4) { //FBでシェア
@@ -103,7 +106,7 @@ function ConfigWindow(webData) {
                 social.showSheet({
                     service:  'facebook',
                     message:  config.appName + "  " + config.hashtag,
-                    urls:       [config.iPhoneAppUrl],
+                    urls:       [util.getAppUrl()],
                     success:  function(){
                         Ti.API.info('FB投稿成功');
                         Ti.App.Analytics.trackPageview('/fbShareForAppShare');
@@ -113,13 +116,22 @@ function ConfigWindow(webData) {
                     }
                 });
             } else {
-                util.sendToApp("com.facebook.katana", null, config.appName + "  " + config.androidAppUrl + " " + config.hashtag);
+                util.sendToApp("com.facebook.katana", null, config.appName + "  " + util.getAppUrl() + " " + config.hashtag);
             }
         }
         else if(e.index == 5) { //アプリレビュー
-            Ti.API.info('アプリレビュー ' + config.iPhoneAppUrl);
+            Ti.API.info('アプリレビュー ' + util.getAppUrl());
             Ti.App.Analytics.trackPageview('/appReview');
-            Ti.Platform.openURL(config.iPhoneAppUrl);
+            Ti.Platform.openURL(util.getAppUrl());
+        }
+        else if(e.index == 6) { //開発元にメールする
+            Ti.App.Analytics.trackPageview('/mailToDeveloper');
+            var dialog = Ti.UI.createEmailDialog({
+                toRecipients: [config.developerMail]
+                ,subject: config.appName + " ご意見・お問い合わせ"
+                ,messageBody: ""
+            });
+            dialog.open();
         }
     });
     return self;
