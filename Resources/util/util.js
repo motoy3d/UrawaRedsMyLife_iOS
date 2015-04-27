@@ -1,18 +1,12 @@
-var style = require("/util/style").style;
-//var customIndicator = require("CustomIndicator").customIndicator;
+var config = require("/config").config;
+var style = require("util/style").style;
+var checkapp = null;
+var androidDisplay = null;
+if(Ti.Platform.osname == "android"){
+    checkapp = require('com.motoy3d.check.app.android');
+    androidDisplay = require("com.motoy3d.android.displayinfo");
+}
 exports.util = {
-    /**
-     * チームIDを返す 
-     */
-    getTeamId : function() {
-        return "reds";
-    },
-    /**
-     * チーム名を返す 
-     */
-    getTeamName : function() {
-        return "浦和";
-    },
 	/**
 	 * 現時点の表示対象シーズン(年)を返す。
 	 */
@@ -91,24 +85,24 @@ exports.util = {
 	 * チーム名を正式名から簡略形式で返す。
 	 */
 	getSimpleTeamName : function(teamName) {
-        if(teamName == 'ベガルタ仙台') return '仙台';   
-        else if(teamName == 'サンフレッチェ広島') return '広島';   
-        else if(teamName == 'ジュビロ磐田') return '磐田';  
-        else if(teamName == '清水エスパルス') return '清水'; 
-        else if(teamName == '浦和レッズ') return '浦和';   
-        else if(teamName == 'FC東京') return 'FC東京';  
-        else if(teamName == '川崎フロンターレ') return '川崎';    
-        else if(teamName == 'サガン鳥栖') return '鳥栖';   
-        else if(teamName == '横浜F・マリノス') return '横浜FM';  
-        else if(teamName == '鹿島アントラーズ') return '鹿島';    
-        else if(teamName == 'セレッソ大阪') return 'C大阪'; 
-        else if(teamName == '柏レイソル') return '柏';    
-        else if(teamName == '名古屋グランパス') return '名古屋';   
-        else if(teamName == 'ヴィッセル神戸') return '神戸'; 
-        else if(teamName == '大宮アルディージャ') return '大宮';   
-        else if(teamName == 'ガンバ大阪') return 'G大阪';  
-        else if(teamName == 'アルビレックス新潟') return '新潟';   
-        else if(teamName == 'コンサドーレ札幌') return '札幌';
+		if(teamName == 'ベガルタ仙台') return '仙台';	
+		else if(teamName == 'サンフレッチェ広島') return '広島';	
+		else if(teamName == 'ジュビロ磐田') return '磐田';	
+		else if(teamName == '清水エスパルス') return '清水';	
+		else if(teamName == '浦和レッズ') return '浦和';	
+		else if(teamName == 'FC東京') return 'FC東京';	
+		else if(teamName == '川崎フロンターレ') return '川崎';	
+		else if(teamName == 'サガン鳥栖') return '鳥栖';	
+		else if(teamName == '横浜F・マリノス') return '横浜FM';	
+		else if(teamName == '鹿島アントラーズ') return '鹿島';	
+		else if(teamName == 'セレッソ大阪') return 'C大阪';	
+		else if(teamName == '柏レイソル') return '柏';	
+		else if(teamName == '名古屋グランパス') return '名古屋';	
+		else if(teamName == 'ヴィッセル神戸') return '神戸';	
+		else if(teamName == '大宮アルディージャ') return '大宮';	
+		else if(teamName == 'ガンバ大阪') return 'G大阪';	
+		else if(teamName == 'アルビレックス新潟') return '新潟';	
+		else if(teamName == 'コンサドーレ札幌') return '札幌';
         else if(teamName == 'ヴァンフォーレ甲府') return '甲府';
         else if(teamName == '湘南ベルマーレ') return '湘南';
         else if(teamName == '大分トリニータ') return '大分';
@@ -143,9 +137,68 @@ exports.util = {
         else if(teamName == 'Y.S.C.C.横浜') return 'YS横浜';
         else if(teamName == ' V・ファーレン長崎') return '長崎';
         else if(teamName == 'カマタマーレ讃岐') return '讃岐';
-	},
+    },
+    /**
+     * チーム名リストを返す。
+     */
+    getTeamNameList : function() {
+        return [
+            'ベガルタ仙台'
+            ,'サンフレッチェ広島'
+            ,'ジュビロ磐田'
+            ,'清水エスパルス'
+            ,'浦和レッズ'
+            ,'FC東京'
+            ,'川崎フロンターレ'
+            ,'サガン鳥栖'
+            ,'横浜F・マリノス'
+            ,'鹿島アントラーズ'
+            ,'セレッソ大阪'
+            ,'柏レイソル'
+            ,'名古屋グランパス'
+            ,'ヴィッセル神戸'
+            ,'大宮アルディージャ'
+            ,'ガンバ大阪'
+            ,'アルビレックス新潟'
+            ,'コンサドーレ札幌'
+            ,'ヴァンフォーレ甲府'
+            ,'湘南ベルマーレ'
+            ,'大分トリニータ'
+            ,'京都サンガF.C'
+            ,'ジェフユナイテッド千葉'
+            ,'東京ヴェルディ'
+            ,'モンテディオ山形'
+            ,'横浜FC'
+            ,'栃木FC'
+            ,'ギラヴァンツ北九州'
+            ,'ファジアーノ岡山'
+            ,'水戸ホーリーホック'
+            ,'松本山雅FC'
+            ,'徳島ヴォルティス'
+            ,'ザスパクサツ群馬'
+            ,'ロアッソ熊本'
+            ,'アビスパ福岡'
+            ,'愛媛FC'
+            ,'FC岐阜'
+            ,'カターレ富山'
+            ,'ガイナーレ鳥取'
+            ,'FC町田ゼルビア'
+            ,'ツエーゲン金沢'
+            ,'AC長野パルセイロ'
+            ,'グルージャ盛岡'
+            ,'SC相模原'
+            ,'FC琉球'
+            ,'福島ユナイテッドFC'
+            ,'ブラウブリッツ秋田'
+            ,'Jリーグ・アンダー22選抜'
+            ,'藤枝MYFC'
+            ,'Y.S.C.C.横浜'
+            ,' V・ファーレン長崎'
+            ,'カマタマーレ讃岐'
+        ];
+    },
 	/**
-	 *  ゼロパディング
+	 * ゼロパディング 
 	 */
 	zeroPad : function(str, length) {
 	    return new Array(length - ('' + str).length + 1).join('0') + str;
@@ -254,6 +307,9 @@ exports.util = {
         if(endsWith(imgUrl, ".gif") ||
             imgUrl.indexOf("http://hbb.afl.rakuten.co.jp") == 0 ||
             imgUrl.indexOf("http://counter2.blog.livedoor.com") == 0 ||
+            imgUrl.indexOf("fbcdn") != -1 || //facebook(直接表示できない)
+            imgUrl.indexOf("http://measure.kuchikomi.ameba.jp") == 0 || //ameba
+            imgUrl.indexOf("rssad") != -1 || //rssad(直接表示できない)
             endsWith(imgUrl, "money_yen.png") ||  //浦和フットボール通信
             endsWith(imgUrl, "/btn_share_now.png") || //なう
             endsWith(imgUrl, "/btn_share_mixi.png")  //mixi
@@ -291,6 +347,10 @@ exports.util = {
      * 改行を削除して返す 
      */
     removeLineBreak : function(text) {
+        Ti.API.info('>>>>>>>>> text=' + text);
+        if(!text) {
+            return text;
+        }
         text = text.replace((new RegExp("\r\n","g")),"");
         text = text.replace((new RegExp("\n","g")),"");
         text = text.replace((new RegExp("<br>","g")),"");
@@ -382,5 +442,82 @@ exports.util = {
             }
         }
         return false;
+    },
+    /**
+     * アプリストアのURLを返す。
+     */
+    getAppUrl : function() {
+        if (Titanium.Platform.name == 'android') {
+            return config.androidAppUrl;
+        } else {
+            return config.iPhoneAppUrl;
+        }
+    },
+    /**
+     * Twitter/Facebook/LINEの公式アプリにテキストを引き渡す。
+     * @packageName
+     * @activityClassName
+     */
+    sendToApp : function(packageName, activityClassName, text) {
+        var intent = Ti.Android.createIntent({
+             action: Ti.Android.ACTION_SEND,
+             packageName: packageName,
+             className: activityClassName,
+             flags: Ti.Android.FLAG_ACTIVITY_NEW_TASK,
+             type: "text/plain"
+         });
+         var text;
+         intent.putExtra(Ti.Android.EXTRA_TEXT, text); //twitter supports any kind of string content (link, text, etc)
+         Ti.API.info("package=" + packageName + ", class=" + activityClassName + ', text=' + text);
+         Ti.Android.currentActivity.startActivityForResult(intent, function(e) {
+             try {
+                 Ti.API.info(packageName + ' >>>>>>>>>>>>>>>>result =   ' + e.resultCode);
+             } catch(e) {
+                 Ti.API.error("sendToAppエラー1： " + e);
+             }
+         });
+    },
+    /**
+     * [Android] アプリがインストールされている場合にtrueを返す。
+     * @param {Object} packageName
+     */
+    isAppInstalled : function(packageName) {
+        try {
+            return checkapp.exists(packageName);
+        } catch(e) {
+            Ti.API.info('isAppInstalledエラー： ' + e);
+            return false;
+        }
+    },
+    /**
+     * [Android] ディスプレイ情報を返す
+     * @param {Object} packageName
+     */
+    getDpi : function() {
+        if(Ti.Platform.osname === 'android') {
+            try {
+                return androidDisplay.densityDpi;
+            } catch(e) {
+                Ti.API.info('getDpiエラー： ' + e);
+                return false;
+            }
+        } else {
+            return "";
+        }
+    },
+    /**
+     * [Android] twitterインテントのクラス名を返す
+     */
+    getTwitterClass : function() {
+        if(Ti.Platform.osname === 'android') {
+            try {
+                return androidDisplay.twitterClass;
+            } catch(e) {
+                Ti.API.info('getTwitterClassエラー： ' + e);
+                return false;
+            }
+        } else {
+            return "";
+        }
     }
 };

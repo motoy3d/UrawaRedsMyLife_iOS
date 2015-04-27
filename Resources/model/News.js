@@ -1,12 +1,12 @@
+var config = require("/config").config;
 var util = require("util/util").util;
 var style = require("util/style").style;
-var XHR = require("/util/xhr");
 var newsSource = require("model/newsSource");
-
-var LOAD_FEED_SIZE = 40;
-var feedUrlBase = "http://sub0000499082.hmk-temp.com/redsmylife/news.json"
-    + "?teamId=" + util.getTeamId() + "&count=";
+var XHR = require("util/xhr");
+var LOAD_FEED_SIZE = config.newsEntriesPerPage;
+var feedUrlBase = config.feedUrlBase + "?teamId=" + config.teamId + "&count=";
 var visitedUrlList = new Array();
+var rowIdx = 0;
 
 /**
  * ニュース情報
@@ -26,239 +26,250 @@ function News() {
 //  Ti.API.info('visitedUrlList読み込み：' + visitedUrlList);
 //    Ti.API.info('visitedUrlList数：' + visitedUrlList.length);
     self.visitedUrlList = visitedUrlList;
-    return self;
-};
 
-/**
- * フィードを読み込んで表示する
- * @kind ("firstTime" or "olderEntries" or "newerEntries")
- * @continuation kind=olderEntriesの場合のみ使用。Google Reader用「次へ」用パラメータ 
- * ＠newest_item_timestamp kind=newerEntriesの場合のみ使用。最新データ取得時のstart_time
- * @callback
- */
-function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
-    Ti.API.info('---------------------------------------------------------------------');
-    Ti.API.info(util.formatDatetime() + '  ニュース読み込み kind=' + kind);
-    Ti.API.info('---------------------------------------------------------------------');
-    // オンラインチェック
-    if(!Ti.Network.online) {
-        callback.fail(style.common.offlineMsg);
-        return;
-    }
-    Ti.App.Analytics.trackPageview('/newsList');
-
-    // 古いデータ・最新データの読み込み条件
-    var condition = "";
-    if('olderEntries' == kind) {
-        condition = "&max=" + maxItemDatetime;
-    } else if('newerEntries' == kind) {
-        condition = "&min=" + minItemDatetime;
-    }
-    if("firstTime" != kind) {
-        LOAD_FEED_SIZE = 10;    //初回ロード以外の場合に件数を少なくすることで高速化
-    }
-    var feedUrl = feedUrlBase + LOAD_FEED_SIZE + condition;
-    var xhr = new XHR();
-    Ti.API.info(new Date() + ': feedUrl=' + feedUrl);
-    xhr.get(feedUrl, onSuccessCallback, onErrorCallback, { ttl: 5 });
-    function onSuccessCallback(e) {
-        if(e.data == null) {
-            Ti.API.info('e.data = null');
-            callback.success(null, null, null);
+//    Ti.API.info('styleから画像width取得=' + style.news.listViewTemplate[0].childTemplates[0].properties.width);
+    //画像のwidth既定値
+    var dispImgWidth = style.news.listViewTemplate[0].childTemplates[0].properties.width;
+    
+    /**
+     * フィードを読み込んで表示する
+     * @kind ("firstTime" or "olderEntries" or "newerEntries")
+     * @continuation kind=olderEntriesの場合のみ使用。Google Reader用「次へ」用パラメータ 
+     * ＠newest_item_timestamp kind=newerEntriesの場合のみ使用。最新データ取得時のstart_time
+     * @callback
+     */
+    function loadNewsFeed(kind, minItemDatetime, maxItemDatetime, callback) {
+        Ti.API.info('---------------------------------------------------------------------');
+        Ti.API.info(util.formatDatetime() + '  ニュース読み込み kind=' + kind);
+        Ti.API.info('---------------------------------------------------------------------');
+        // オンラインチェック
+        if(!Ti.Network.online) {
+            callback.fail(style.common.offlineMsg);
             return;
         }
-        try {
-            var resultArray = JSON.parse(e.data);
-            if(resultArray[0].json && "no data" == resultArray[0].json) {
-                callback.success(new Array());
+        Ti.App.Analytics.trackPageview('/newsList');
+    
+        // 古いデータ・最新データの読み込み条件
+        var condition = "";
+        if('olderEntries' == kind) {
+            condition = "&max=" + maxItemDatetime;
+        } else if('newerEntries' == kind) {
+            condition = "&min=" + minItemDatetime;
+        }
+        if("firstTime" != kind) {
+    //        LOAD_FEED_SIZE = 10;    //初回ロード以外の場合に件数を少なくすることで高速化
+        }
+        var feedUrl = feedUrlBase + LOAD_FEED_SIZE + condition;
+        // フィードを取得
+        Ti.API.info("★★★News読み込み " + feedUrl);
+        var xhr = new XHR();
+        xhr.get(feedUrl, onSuccessCallback, onErrorCallback);
+        function onSuccessCallback(e) {
+            if(e.data == null) {
+                Ti.API.info('e.data = null');
+                callback.success(null, null, null);
                 return;
             }
-            Ti.API.info("e.data.json■" + e.data.json);
-            var rowsData = null;
-            var newest_item_timestamp = 0;
-            var oldest_item_timestamp = 0;
-            if(resultArray.map) {
-                rowsData = resultArray.map(
-                    function(item) {
-                        var row = createNewsRow(item);
-    //                  Ti.API.info("row=====" + row);
-                        var pubDateNum = item.published_date_num;
-                        if(newest_item_timestamp < pubDateNum) {
-                            newest_item_timestamp = pubDateNum;
+            try {
+                var dataList = JSON.parse(e.data);
+                if(dataList[0] && "no data" == dataList[0].json) {
+                    Ti.API.info('データなし');
+                    callback.success(null, null, null);
+                    return;
+                }
+                //Ti.API.info("dataList■" + dataList);
+                var rowsData = null;
+                var newest_item_timestamp = 0;
+                var oldest_item_timestamp = 0;
+                if(dataList.map) {
+                    rowsData = dataList.map(
+                        function(item) {
+                            var row = createNewsRow(item);
+                            var pubDateNum = item.published_date_num;
+                            if(newest_item_timestamp < pubDateNum) {
+                                newest_item_timestamp = pubDateNum;
+                            }
+                            if(oldest_item_timestamp == 0 || pubDateNum < oldest_item_timestamp) {
+                                oldest_item_timestamp = pubDateNum;
+                            }
+                            return (row);
                         }
-                        if(oldest_item_timestamp == 0 || pubDateNum < oldest_item_timestamp) {
-                            oldest_item_timestamp = pubDateNum;
-                        }
-                        return (row);
+                    );
+                    if(self.newest_item_timestamp < newest_item_timestamp) {
+                        self.newest_item_timestamp = newest_item_timestamp;
                     }
-                );
-                // if("firstTime" == kind || "newerEntries" == kind) {
-                    // newest_item_timestamp = max;
-                // }
-                // if("firstTime" == kind || "olderEntries" == kind) {
-                    // oldest_item_timestamp = min;
-                // }
+                    if(oldest_item_timestamp < self.oldest_item_timestamp) {
+                        self.oldest_item_timestamp = oldest_item_timestamp;
+                    }
+                }
+                Ti.API.info("読み込み終了");
+                callback.success(rowsData, newest_item_timestamp, oldest_item_timestamp);
+            } catch(ex) {
+                Ti.API.error("loadNewsFeedエラー：" + ex);
+                callback.fail('読み込みに失敗しました');
             }
-//            Ti.API.info('---------------newest_item_timestamp=' + newest_item_timestamp);
-//            Ti.API.info('---------------oldest_item_timestamp==' + oldest_item_timestamp);
-            Ti.API.info("読み込み終了");
-            callback.success(rowsData, newest_item_timestamp, oldest_item_timestamp);
-        } catch(ex) {
-            Ti.API.error("loadNewsFeedエラー：" + ex);
-            callback.fail('読み込みに失敗しました');
-            //indWin.close();
+        };
+        function onErrorCallback(e) {
+            Ti.API.error(e);
         }
+    }
+    
+    /**
+     * rowを生成する
+     */
+    function createNewsRow(item) {
+        //Ti.API.info("アイテム=" + item);
+        //for(var v in item) {
+            //Ti.API.info("\t" + v + ":" + item[v]);
+        //}
+        rowIdx++;
+        
+        // 本文
+        var content = "";
+        if(item.content) {
+            content = item.content;
+        }
+        else if(item.summary) {
+            content = item.summary;
+        }
+        // 画像
+        var hasImage = false;
+        var imgUrl = "";
+        var imgWidth = "";
+        var imgHeight = "";
+        //Androidはレイアウトが崩れるため一旦除外
+        if(util.isiPhone()) {
+            var imgUrl = item.image_url;
+        }
+        // タイトルラベル
+        var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
+        var itemTitleFull = util.deleteUnnecessaryText(item.entry_title);
+        //Ti.API.info('itemTitleFull=' + itemTitleFull + "   entry_tiel=" + item.entry_title);
+        var itemTitle = itemTitleFull;
+        if(itemTitleFull.length > 50) {
+            itemTitle = itemTitleFull.substring(0, 50) + "...";
+        }
+        //Ti.API.info(rowIdx + ' ' + itemTitle);
+        titleLabel.text = itemTitle;
+    //  Ti.API.info("最適化後：itemTitle====" + itemTitle);
+        // 更新日時
+        var pubDate = parseDate(item.published_date);
+        //Ti.API.info("pubDate=====" + pubDate);
+        var minutes = pubDate.getMinutes();
+        if(minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        var pubDateText = (pubDate.getMonth() + 1) + "/" + pubDate.getDate() 
+            + " " + pubDate.getHours() + ":" + minutes;
+        
+        // サイト名+更新日時ラベル
+        var link = "";
+        //Ti.API.info("★" + idobj[oid].toString());
+        link = item.entry_url;
+        
+        // 既読確認
+        var isVisited = util.contains(visitedUrlList, link);
+        // サイト名
+        var fullSiteName = item.site_name;
+        if(fullSiteName.toString().indexOf("Google") == 0) {
+            fullSiteName = "";
+        }
+        var siteName = newsSource.optimizeSiteName(item.site_name);
+    //    Ti.API.info("siteName1====" + siteName + ",pubDate=" + pubDateText + ", link=" + link);
+        if('' == siteName) {
+            siteName = newsSource.getSiteName(link);
+            fullSiteName = siteName;
+        }
+        //Ti.API.info(rowIdx + ". siteName2====" + siteName);
+        var siteNameLabel = Ti.UI.createLabel(style.news.siteNameLabel);
+        siteNameLabel.text = siteName + "   " + pubDateText;
+        //Ti.API.info('★siteNameLabel.text==' + siteNameLabel.text);
+        if (imgUrl) {
+            var orgImgWidth = item.image_width;
+            var orgImgHeight = item.image_height;
+            var magnification =  dispImgWidth / orgImgWidth; //幅の倍率
+            var dispImgHeight = Math.round(orgImgHeight * magnification);
+            Ti.API.info('画像：' + imgUrl + " (org_w=" + orgImgWidth + ", org_h=" + orgImgHeight + ") "
+                + " (w=" + dispImgWidth + ", h=" + dispImgHeight + ") / " + siteName);
+        }
+        var data = {
+            url: link
+            ,contentView: {
+                backgroundColor: isVisited? style.news.visitedBgColor : 'black'
+            }
+            ,image: {
+                image: imgUrl
+                ,width: imgUrl? dispImgWidth : 0
+                ,height: imgUrl? dispImgHeight : 0
+            }
+            ,title: {
+                text: itemTitle
+                , left: imgUrl? dispImgWidth + 10 : 6
+                , height: imgUrl? dispImgHeight : Ti.UI.SIZE
+            }
+            ,siteNameAndDatetime: {text: siteName + "   " + pubDateText}
+            ,properties: {backgroundColor: isVisited? style.news.visitedBgColor : 'black'}
+            
+            ,fullSiteName: fullSiteName
+            ,siteName: siteName
+            ,pageTitle: itemTitle
+            ,pageTitleFull: itemTitleFull
+            ,link: link
+            ,content: content
+            ,pubDate: pubDateText
+    
+    // 選択時背景色がAndroidで効かない
+    //                            ,selectedBackgroundColor: '#444'
+    //,properties: {selectedBackgroundColor: '#444'}
+        };
+        return data;
+    }
+    
+    /**
+     *  日付をパースして返す
+     */
+    function parseDate(str){// str==yyyy-mm-ddThh:mm:ssZ
+        //strdate==YYYY/mm/dd hh:mm:ss
+        //var strDate = str.split('\+')[0].replace('T',' ').replace('-','\/').replace('-','\/').replace('Z','');
+        var date = new Date(str);
+        var time = date.getTime()/* + 32400000*/;
+        date.setTime(time);
+        return date;
     };
-    function onErrorCallback(e) {
-        Ti.API.error(e);
-    }
-}
-
-/**
- * rowを生成する
- */
-function createNewsRow(item) {
-//     Ti.API.info("アイテム=" + item);
-//     for(var v in item) {
-//         Ti.API.info("\t" + v + ":" + item[v]);
-//     }
     
-    var row = Ti.UI.createTableViewRow(style.news.tableViewRow);
-    var rowView = Ti.UI.createView(style.news.rowView);
-    // 本文
-    var content = "";
-    if(item.content) {
-        content = item.content;
+    /**
+     * DBに既読URLを保存する
+     */
+    function saveVisitedUrl(url) {
+        var date = util.formatDate();
+        var db = Ti.Database.open(config.dbName);
+        try {
+            db.execute('INSERT INTO visitedUrl(url, date) VALUES(?, ?)', url, date);
+        } finally{
+            db.close();
+        }
     }
-    else if(item.summary) {
-        content = item.summary;
-    }
-    // 画像
-    var hasImage = false;
-    var imgTagIdx = content.indexOf("<img");
-    var imgUrl = "";
-    if(imgTagIdx != -1) {
-        var srcIdx = content.indexOf("src=", imgTagIdx);
-        if(srcIdx != -1) {
-            var urlStartIdx = srcIdx + 5;
-            var urlEndIdx = content.indexOf('"', urlStartIdx);
-            imgUrl = content.substring(urlStartIdx, urlEndIdx);
-            imgUrl = util.replaceAll(imgUrl, "&amp;", "&");
-//            Ti.API.debug('画像＝＝＝＝＝' + imgUrl + "  >  " + item.entry_title);
-            // アイコン等はgifが多いのでスキップ
-            if(!util.isUnnecessaryImage(imgUrl)) {
-                var imgLabel = Ti.UI.createImageView(style.news.imgView);               
-                var imgContainer = Ti.UI.createView(style.news.imgViewContainer);
-                imgLabel.image = imgUrl;
-                imgContainer.add(imgLabel);
-                rowView.add(imgContainer);
-                hasImage = true;
-            } else {
-                imgUrl = "";
+    
+    /**
+     * DBから既読URLリストを返す
+     */
+    function getVisitedUrlList() {
+        Ti.API.info('■getVisitedUrlList');
+        var db = Ti.Database.open(config.dbName);
+        var urlList = new Array();
+        try {
+            var rows = db.execute('SELECT url, date FROM visitedUrl');
+            while (rows.isValidRow()) {
+                urlList.push(rows.field(0));
+                //Ti.API.info('既読　######## ' + rows.field(1) + " : " + rows.field(0));
+                rows.next();
             }
+        } finally{
+            db.close();
         }
+        return urlList;
     }
-    // タイトルラベル
-    var titleLabel = Ti.UI.createLabel(style.news.titleLabel);
-    var itemTitleFull = util.deleteUnnecessaryText(item.entry_title);
-//  Ti.API.info('itemTitle=' + itemTitle);
-    var itemTitle = itemTitleFull;
-    if(itemTitleFull.length > 50) {
-        itemTitle = itemTitleFull.substring(0, 50) + "...";
-    }
-    titleLabel.text = itemTitle;
-    rowView.add(titleLabel);
-//  Ti.API.info("最適化後：itemTitle====" + itemTitle);
-    // 更新日時
-    var pubDate = parseDate(item.published_date);
-    //Ti.API.info("pubDate=====" + pubDate);
-    var minutes = pubDate.getMinutes();
-    if(minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    var pubDateText = (pubDate.getMonth() + 1) + "/" + pubDate.getDate() 
-        + " " + pubDate.getHours() + ":" + minutes;
-    
-    // サイト名+更新日時ラベル
-    var link = "";
-    //Ti.API.info("★" + idobj[oid].toString());
-    link = item.entry_url;
-    
-    // 既読確認
-    if(util.contains(visitedUrlList, link)) {
-        row.backgroundColor = style.news.visitedBgColor;
-    }
-    // サイト名
-    var fullSiteName = item.site_name;
-    if(fullSiteName.toString().indexOf("Google") == 0) {
-        fullSiteName = "";
-    }
-    var siteName = newsSource.optimizeSiteName(item.site_name);
-    //Ti.API.debug("siteName1====" + siteName + ", link=" + link);
-    if('' == siteName) {
-        siteName = newsSource.getSiteName(link);
-        fullSiteName = siteName;
-        Ti.API.info("   UrawaReds. siteName====" + siteName + ", link=" + link);
-    }
-    var siteNameLabel = Ti.UI.createLabel(style.news.siteNameLabel);
-    siteNameLabel.text = siteName + "   " + pubDateText;
-    // row情報セット
-    rowView.add(siteNameLabel);
-    row.add(rowView);
-    row.fullSiteName = fullSiteName;
-    row.siteName = siteName;
-    row.pageTitle = itemTitle;
-    row.pageTitleFull = itemTitleFull;
-    row.link = link;
-    row.content = content;
-    row.image = imgUrl;
-    row.pubDate = pubDateText;
-    return row;
-}
-
-/**
- *  日付をパースして返す
- */
-function parseDate(str){// str==yyyy-mm-ddThh:mm:ssZ
-    //strdate==YYYY/mm/dd hh:mm:ss
-    //var strDate = str.split('\+')[0].replace('T',' ').replace('-','\/').replace('-','\/').replace('Z','');
-    var date = new Date(str);
-    var time = date.getTime()/* + 32400000*/;
-    date.setTime(time);
-    return date;
+    return self;
 };
-
-/**
- * DBに既読URLを保存する
- */
-function saveVisitedUrl(url) {
-    var date = util.formatDate();
-    var db = Ti.Database.open('urawareds.my.life');
-    try {
-        db.execute('INSERT INTO visitedUrl(url, date) VALUES(?, ?)', url, date);
-    } finally{
-        db.close();
-    }
-}
-
-/**
- * DBから既読URLリストを返す
- */
-function getVisitedUrlList() {
-    Ti.API.info('■getVisitedUrlList');
-    var db = Ti.Database.open('urawareds.my.life');
-    var urlList = new Array();
-    try {
-        var rows = db.execute('SELECT url, date FROM visitedUrl');
-        while (rows.isValidRow()) {
-            urlList.push(rows.field(0));
-            //Ti.API.info('既読　######## ' + rows.field(1) + " : " + rows.field(0));
-            rows.next();
-        }
-    } finally{
-        db.close();
-    }
-    return urlList;
-}
 
 module.exports = News;

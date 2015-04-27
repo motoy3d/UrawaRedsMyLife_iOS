@@ -1,44 +1,51 @@
 (function() {
-    Ti.API.info('アプリ起動-----------------');
     var config = require("/config").config;
     var util = require("/util/util").util;
     var style = require("/util/style").style;
     var XHR = require("/util/xhr");
-    var message = "";
 
 	startAnalytics();
 	initDB();
+	//起動回数保存
+	var launchAppCount = Ti.App.Properties.getInt("LaunchAppCount");
+	if (!launchAppCount) {
+	    launchAppCount = 0;
+	    Ti.App.Properties.setBool("shareAndReviewDoneFlg", false);
+	}
+	Ti.App.Properties.setInt("LaunchAppCount", ++launchAppCount);
+	Ti.API.info('アプリ起動 : ' + launchAppCount);
 	
-    //起動回数保存
-    var launchAppCount = Ti.App.Properties.getInt("LaunchAppCount");
-    if (!launchAppCount) {
-        launchAppCount = 0;
-        Ti.App.Properties.setBool("shareAndReviewDoneFlg", false);
-    }
-    Ti.App.Properties.setInt("LaunchAppCount", ++launchAppCount);
-    Ti.API.info('アプリ起動回数 : ' + launchAppCount);
-    
 	//determine platform and form factor and render approproate components
 	var osname = Ti.Platform.osname,
-		version = Ti.Platform.version,
+		osversion = Ti.Platform.version,
+        appversion = Ti.App.version,
 		model = Ti.Platform.model,
 		name = Ti.Platform.name,
 		height = Ti.Platform.displayCaps.platformHeight,
 		width = Ti.Platform.displayCaps.platformWidth,
 		density = Ti.Platform.displayCaps.density,
-		dpi = Ti.Platform.displayCaps.dpi;
+        logicalDensityFactor = Ti.Platform.displayCaps.logicalDensityFactor,
+		dpi = Ti.Platform.displayCaps.dpi,
+		xdpi = Ti.Platform.displayCaps.xdpi,
+		ydpi = Ti.Platform.displayCaps.ydpi;
 	Ti.API.info('★★osname=' + osname);
-	Ti.API.info('★★version=' + version);
+	Ti.API.info('★★osversion=' + osversion);
+    Ti.API.info('★★appversion=' + appversion);
     Ti.API.info('★★name=' + name);
     Ti.API.info('★★model=' + model);
 	Ti.API.info('★★width/height=' + width + "/" + height);
 	Ti.API.info('★★density=' + density);
+    Ti.API.info('★★logicalDensityFactor=' + logicalDensityFactor);
 	Ti.API.info('★★dpi=' + dpi);
-    Ti.App.Analytics.trackPageview("/startApp?m=" + model + "&v=" + version/* + "&wh=" + width + "x" + height*/);
-    
-	
+    Ti.API.info('★★xdpi=' + xdpi);
+    Ti.API.info('★★ydpi=' + ydpi);
+    Ti.API.info('☆☆dpi from module=' + util.getDpi());
+    Ti.App.Analytics.trackPageview("/startApp?m=" + model + "&v=" + osversion/* + "&wh=" + width + "x" + height*/);	
+
 	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
-	Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;
+	if(osname == "iphone") {
+        Ti.UI.iPhone.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;
+	}
 	
 	// 全置換：全ての文字列 org を dest に置き換える  
 	String.prototype.replaceAll = function (org, dest) {  
@@ -53,35 +60,23 @@
         }
         return count;
 	};
-	// var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	// var tabGroup = new ApplicationTabGroup();
-	// // TabGroupをglobalにセット
-	// Ti.App.tabGroup = tabGroup;
-	// // スプラッシュイメージを一定時間表示
-	// Ti.API.info(new Date() + "-------------- WAIT START ------------------");
-	// var startTime = (new Date()).getTime();
-	// var waitMilliSeconds = 2000;
-	// while (true) {
-		// if ( ( new Date() ).getTime() >= startTime + waitMilliSeconds ) break;
-	// }
-    // tabGroup.open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
-
+	Ti.App.adType = 2;    //広告タイプ(1:アイコン、2:バナー)
+	
     //メッセージ
+    var message = null;
     var xhr = new XHR();
-    var messageUrl = config.messageUrl + "&os=" + osname + "&version=" + version;
-    Ti.API.info('メッセージURL：' + messageUrl);
-    xhr.get(messageUrl, onSuccessCallback, onErrorCallback, { ttl: 1 });
+    var confUrl = config.messageUrl + "&os=" + osname + "&osversion=" + osversion + "&appversion=" + appversion;
+    Ti.API.info(new Date() + ' メッセージURL：' + confUrl);
+    xhr.get(confUrl, onSuccessCallback, onErrorCallback);
     function onSuccessCallback(e) {
         Ti.API.info('メッセージデータ:' + e.data);
         if(e.data) {
             var json = JSON.parse(e.data);
             if(json && json[0]) {
-                if (json[0].aclFlg) {
-                    Ti.App.aclFlg = json[0].aclFlg;    //ALC出場フラグ(true/false)
-                }
-                if (json[0].adType) {
-                    Ti.App.adType = json[0].adType;    //広告タイプ(1:アイコン、2:バナー)
-                }
+                Ti.App.jcategory = json[0].jcategory;    //Jリーグカテゴリ
+                Ti.App.currentStage = json[0].currentStage;    //J1現在ステージ
+                Ti.App.aclFlg = json[0].aclFlg;    //ALC出場フラグ(true/false)
+                Ti.App.adType = json[0].adType;    //広告タイプ(1:アイコン、2:バナー)
                 if(json[0].message){
                     message = json[0].message;
                 }
@@ -114,17 +109,16 @@
         }
     };
     function onErrorCallback(e) {
-    };
-
+    };	
 })();
 
 /**
  * DB初期化
  */
-//TODO 古いデータの削除
 function initDB() {
+    var config = require("/config").config;
     var util = require("util/util").util;
-    var db = Ti.Database.open('urawareds.my.life');
+    var db = Ti.Database.open(config.dbName);
     db.execute('CREATE TABLE IF NOT EXISTS visitedUrl (url TEXT, date INTEGER)');
     var date = new Date();
     var days = 10;
@@ -132,6 +126,7 @@ function initDB() {
     var condDate = "'" + util.formatDate(date) + "'";
     // 一定日数以前のデータを削除する
     var deleteSql = "DELETE FROM visitedUrl WHERE date < " + condDate;
+    Ti.API.info('削除SQL:' + deleteSql);
     db.execute(deleteSql);
     db.close();
 }
@@ -140,11 +135,12 @@ function initDB() {
  * Google Analyticsの処理を初期化する
  */
 function startAnalytics() {
+    var config = require("/config").config;
     var Analytics = require('/util/Ti.Google.Analytics');
-	var analytics = new Analytics('UA-30928840-1');
+	var analytics = new Analytics(config.googleAnalyticsTrackingId);
     var util = require("util/util").util;
 	Titanium.App.addEventListener('analytics_trackPageview', function(e){
-	    var path = "/app/" + util.getTeamId() + "/" + Ti.Platform.name;
+	    var path = "/app/" + config.teamId + "/" + Ti.Platform.name;
 	    analytics.trackPageview(path + e.pageUrl);
 	});
 	Ti.App.addEventListener('analytics_trackEvent', function(e){
@@ -161,7 +157,6 @@ function startAnalytics() {
 	analytics.start(7);	//7秒に1回データ送信
 }
 
-
 /**
  * シェア・レビュー依頼を行う。
  */
@@ -176,20 +171,18 @@ function openShareAndReviewWindow() {
             if (e.index === 0) {
                 //いいえの場合
             } else if (e.index == 1) {
+                var ConfigWindow = require("/ui/handheld/ConfigWindow");
+                var configWindow = new ConfigWindow();
+                configWindow.tabBarHidden = true;
+                Ti.App.tabGroup.activeTab.open(configWindow, {animated: true});
+                Ti.App.Properties.setBool("shareAndReviewDoneFlg", true);
                 //はいの場合
                 var dialog = Ti.UI.createAlertDialog({
                     message: 'よろしければ、レビューまたはシェアをお願いします m(_ _)m',
                     ok: 'OK',
                     title: ''
                 });
-                dialog.show();
-
-                var ConfigWindow = require("/ui/handheld/ConfigWindow");
-                var configWindow = new ConfigWindow();
-                configWindow.tabBarHidden = true;
-                Ti.App.tabGroup.activeTab.open(configWindow, {animated: true});
-                Ti.App.Properties.setBool("shareAndReviewDoneFlg", true);
-                
+                dialog.show();                
             }
         });    
         dialog.show();

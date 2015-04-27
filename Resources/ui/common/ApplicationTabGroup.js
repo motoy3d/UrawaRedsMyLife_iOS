@@ -3,9 +3,14 @@ function ApplicationTabGroup() {
 	var ResultsWindow = require('ui/handheld/ResultsWindow');
 	var StandingsWindow = require('ui/handheld/StandingsWindow');
 	var TwitterWindow = require('ui/handheld/TwitterWindow');
-
-	//create module instance
-	var self = Ti.UI.createTabGroup();
+    var style = require("util/style").style;
+    var util = require("util/util").util;
+	var self = Ti.UI.createTabGroup({
+	    navTintColor: style.common.navTintColor
+	});
+	if(util.isAndroid()) {
+	    self.applyProperties(style.tabsAndroid);
+	}
 	
 	//create app tabs
 	var win1 = new NewsWindow(self),
@@ -16,34 +21,34 @@ function ApplicationTabGroup() {
 		;
 	// ニュース
 	var tab1 = Ti.UI.createTab({
-		title: L('news'),
+		title: util.isAndroid()? "" : "ニュース",
 		icon: '/images/news.png',
 		window: win1
 	});
 	// 日程・結果
 	var tab2 = Ti.UI.createTab({
-		title: L('results'),
+		title: util.isAndroid()? "" : "日程・結果",
 		icon: '/images/game.png',
 		window: win2
 	});
 	win2.containingTab = tab2;
 	// 順位表
 	var tab3 = Ti.UI.createTab({
-		title: L('standings'),
+		title: util.isAndroid()? "" : "順位表",
 		icon: '/images/standings.png',
 		window: win3
 	});
 	win3.containingTab = tab3;
 	// みんなのツイート
 	var tab4 = Ti.UI.createTab({
-		title: L('twitter'),
+		title: util.isAndroid()? "" : "twitter",
 		icon: '/images/twitter.png',
 		window: win4
 	});
 	win4.containingTab = tab4;
     // 選手のツイート
     var tab5 = Ti.UI.createTab({
-        title: L('playerTweets'),
+        title: util.isAndroid()? "" : "選手+α",
         icon: '/images/playerTweet.png',
         window: win5
     });

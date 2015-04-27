@@ -13,7 +13,7 @@ function TwitterWindow(tabGroup, target) {
 
     // ウィンドウ
     var self = Ti.UI.createWindow({
-        title: L('twitter')
+        title: "twitter"
         ,navBarHidden: false
         ,backgroundColor: 'black'
         ,barColor: style.common.barColor
@@ -23,14 +23,14 @@ function TwitterWindow(tabGroup, target) {
             color: style.common.navTintColor
         }
     });
-    if (Ti.Platform.osname === 'iphone') {
-        self.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;  
-    } else {
+    if (util.isAndroid()) {
         self.navBarHidden = true;
     }
     
     // インジケータ
-    var indicator = Ti.UI.createActivityIndicator();
+    var indicator = Ti.UI.createActivityIndicator({
+        style: util.isiPhone()? Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN : Ti.UI.ActivityIndicatorStyle.BIG
+    });
     self.add(indicator);
     
     if(util.isiOS7Plus()) {
@@ -89,7 +89,7 @@ function TwitterWindow(tabGroup, target) {
         }
         //Androidの場合、１行目はリロードボタン
         if(util.isAndroid() && e.itemIndex == 0) {
-            if(e.bindId && e.bindId == 'refreshImage') {
+            if(e.bindId && e.bindId == 'refreshBtn') {
                 load("newer");  //最新をロード
             }
             return;
@@ -112,9 +112,7 @@ function TwitterWindow(tabGroup, target) {
         }
         var win = Ti.UI.createWindow(style.twitter.webWindow);
         //win.orientationModes = [Ti.UI.PORTRAIT];
-        if (Ti.Platform.osname === 'iphone') {
-            win.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;  
-        } else {
+        if (util.isAndroid()) {
             win.tabBarHidden = true;
         }
         var entryData = listView.sections[0].items[itemIndex];
@@ -132,15 +130,15 @@ function TwitterWindow(tabGroup, target) {
         win.add(webIndicator);
         webIndicator.show();
         web.addEventListener('load', function(e){
-            Ti.API.info('loadイベント');
+//            Ti.API.info('loadイベント');
             if(util.isAndroid()) {
                 web.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
             }
             setTimeout(function(){webIndicator.hide();}, 700);   //インジケータが消えるのが早過ぎるので0.5秒待ってから消す
             if(util.isAndroid()) {
-                Ti.API.info('###色を戻す');
+//                Ti.API.info('###色を戻す');
                 var item = listView.sections[0].items[itemIndex];
-                item.content.color = "black";
+                item.content.color = "white";
                 listView.sections[0].updateItemAt(itemIndex, item);
             }
         });
@@ -157,7 +155,7 @@ function TwitterWindow(tabGroup, target) {
         imageArrow.transform=Ti.UI.create2DMatrix();
         imageArrow.show();
         //TODO Android
-        if (Ti.Platform.osname === 'iphone') {
+        if (util.isiPhone()) {
             listView.setContentInsets({top:0}, {animated:true});
         }
     }
@@ -175,7 +173,7 @@ function TwitterWindow(tabGroup, target) {
         imageArrow.hide();
         actInd.show();
         //TODO Android
-        if (Ti.Platform.osname === 'iphone') {
+        if (util.isiPhone()) {
             listView.setContentInsets({top:80}, {animated:true});
         }
         setTimeout(function(){
@@ -219,10 +217,14 @@ function TwitterWindow(tabGroup, target) {
      * エントリを取得して表示する
      */
     function load(kind) {
+        if(util.isAndroid() && ("older" == kind || "newer" == kind)) {
+            indicator = Ti.UI.createActivityIndicator({style: Titanium.UI.ActivityIndicatorStyle.BIG});
+            self.add(indicator);
+            Ti.API.info('indicator.show()');
+        }
         indicator.show();
-        var util = require("/util/util").util;
         Ti.API.info(util.formatDatetime2(new Date()) + '  loadFeed started.................................');
-
+        //alert('load : ' + twitter + ", kind=" + kind);
         twitter.loadTweets(
             kind, 
             { //callback
@@ -238,11 +240,11 @@ function TwitterWindow(tabGroup, target) {
                         if("firstTime" == kind) {
                             if(rowsData) {
                                 Ti.API.info("rowsData = " + util.toString(rowsData[0]));
-                                Ti.API.info("content = " + rowsData[0].postImage);
+                                Ti.API.info("postImage = " + rowsData[0].postImage);
                                 if(util.isAndroid()) {   // リロードボタンの行を１番目に挿入
                                      rowsData.unshift(
                                         {
-                                            refreshImage: {image: '/images/refresh.png'} 
+                                            refreshBtn: {} 
                                             ,properties: {
                                                 accessoryType: Ti.UI.LIST_ACCESSORY_TYPE_NONE
                                             }

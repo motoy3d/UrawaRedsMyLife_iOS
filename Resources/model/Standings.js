@@ -1,18 +1,22 @@
 /**
  * 順位表取得サービス
  */
-function Standings(compe) {
+function Standings(compe, stage) {
     var config = require("/config").config;
-	var util = require("/util/util").util;
-    var style = require("/util/style").style;
-    var XHR = require("/util/xhr");
+	var util = require("util/util").util;
+    var style = require("util/style").style;
+    var XHR = require("util/xhr");
 	var self = {};
 	self.load = load;
+
     var standingsUrl = config.standingsUrl + "?season=" + util.getCurrentSeason() + "&teamId=" + config.teamId;
     if (!compe) {
         compe = "J";
     }
     standingsUrl += "&compe=" + compe;
+    if (stage) {
+        standingsUrl += "&stage=" + stage;
+    }
     
 	/**
 	 * 自前サーバからJSONを読み込んで表示する
@@ -29,10 +33,11 @@ function Standings(compe) {
             //TODO return;
 		}
         if(sort) {
-            Ti.App.Analytics.trackPageview('/standings?sort=' + sort);
+            Ti.App.Analytics.trackPageview('/standings?compe=' + compe + '&sort=' + sort);
         } else {
-            Ti.App.Analytics.trackPageview('/standings');
+            Ti.App.Analytics.trackPageview('/standings?compe=' + compe);
         }
+
         var xhr = new XHR();
         // Normal plain old request with a 5mins caching
         if(sort){
@@ -41,12 +46,17 @@ function Standings(compe) {
         Ti.API.info('URL=' + standingsUrl);
         xhr.get(standingsUrl, onSuccessCallback, onErrorCallback, { ttl: 1 });
         function onSuccessCallback(e) {
+            // Handle your request in here
+            // the module will return an object with two properties
+            // data (the actual data retuned
+            // status ('ok' for normal requests and 'cache' for requests cached
             Ti.API.info("e.status==" + e.status);
+            // 
             if(!e.data) {
                 var month = new Date().getMonth() + 1;
                 if(month == 2) {
                     // 新シーズン開始前
-                    callback.fail(L('waitNewSeasonMsg'));
+                    callback.fail("新シーズンの開幕までお待ちください");
                 } else {
                     callback.fail(style.common.loadingFailMsg);
                 }
@@ -58,10 +68,12 @@ function Standings(compe) {
                 for(i=0; i<dataList.length; i++) {
                     var ranking = dataList[i];
                     var rank = ranking.rank;
+                    var teamId = ranking.team_id;
                     var team = util.getSimpleTeamName(ranking.team_name);
                     if (!team){
                         team = ranking.team_name;
                     }
+                    var teamFull = ranking.team_name;
                     var point = ranking.point;
                     var win = ranking.win;
                     var draw = ranking.draw;
@@ -73,7 +85,9 @@ function Standings(compe) {
                     
                     var standingsData = {
                         rank: rank
+                        ,teamId: teamId
                         ,team: team
+                        ,teamFull: teamFull
                         ,point: point
                         ,win: win
                         ,draw: draw

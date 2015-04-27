@@ -2,12 +2,16 @@
  * 設定画面を表示するウィンドウ
  */
 function ConfigWindow(webData) {
-    var util = require("/util/util").util;
+	var util = require("/util/util").util;
     var style = require("/util/style").style;
     var config = require("/config").config;
-    var social = require('de.marcelpociot.social');
-    var self = Ti.UI.createWindow(style.config.window);
-    self.barColor = style.common.barColor;
+    var social;
+    if(util.isiPhone()) {
+        social = require('de.marcelpociot.social');
+    }
+
+	var self = Ti.UI.createWindow(style.config.window);
+	self.barColor = style.common.barColor;
     var table = Ti.UI.createTableView(style.config.tableView);
     self.add(table);
     
@@ -54,7 +58,7 @@ function ConfigWindow(webData) {
     // twitterでつぶやく    
     var twitterRow = Ti.UI.createTableViewRow(style.config.twitterRow);
     table.appendRow(twitterRow);
-    // facebookでシェア    
+    // facebookでシェア
     var fbRow = Ti.UI.createTableViewRow(style.config.fbRow);
     table.appendRow(fbRow);
     // アプリレビュー    
@@ -63,7 +67,7 @@ function ConfigWindow(webData) {
     // 開発元にメールする    
     var mailToDeveloperRow = Ti.UI.createTableViewRow(style.config.mailToDeveloperRow);
     table.appendRow(mailToDeveloperRow);
-       
+    
     table.addEventListener("click", function(e){
         if(e.index == 1) { //友達にLINEですすめる
             Ti.App.Analytics.trackPageview('/lineDialogForAppShare');
@@ -84,7 +88,7 @@ function ConfigWindow(webData) {
             if(util.isiPhone()) {
                 social.showSheet({
                     service:  'twitter',
-                    message:  config.appName + "  " + util.getAppUrl() + " " + config.hashtag,
+                    message:  config.appName + "  " + util.getAppUrl() + " #" + config.hashtag,
                     urls:       [],
                     success:  function(){
                         Ti.API.info('ツイート成功');
@@ -97,7 +101,7 @@ function ConfigWindow(webData) {
             } else {
                 var twitterClass = util.getTwitterClass();  //モジュールでTwitter公式アプリからクラス名を取得
                 util.sendToApp("com.twitter.android", twitterClass
-                    ,config.appName + "  " + util.getAppUrl() + " " + config.hashtag);
+                    ,config.appName + "  " + util.getAppUrl() + " #" + config.hashtag);
             }
         }
         else if(e.index == 4) { //FBでシェア
@@ -105,7 +109,7 @@ function ConfigWindow(webData) {
             if(util.isiPhone()) {
                 social.showSheet({
                     service:  'facebook',
-                    message:  config.appName + "  " + config.hashtag,
+                    message:  config.appName + "  " + util.getAppUrl() + "  #" + config.hashtag,
                     urls:       [util.getAppUrl()],
                     success:  function(){
                         Ti.API.info('FB投稿成功');
@@ -116,11 +120,11 @@ function ConfigWindow(webData) {
                     }
                 });
             } else {
-                util.sendToApp("com.facebook.katana", null, config.appName + "  " + util.getAppUrl() + " " + config.hashtag);
+                util.sendToApp("com.facebook.katana", null, config.appName + "  " + util.getAppUrl() + " #" + config.hashtag);
             }
         }
         else if(e.index == 5) { //アプリレビュー
-            Ti.API.info('アプリレビュー ' + util.getAppUrl());
+            Ti.API.info('アプリレビュー');
             Ti.App.Analytics.trackPageview('/appReview');
             Ti.Platform.openURL(util.getAppUrl());
         }
@@ -134,6 +138,6 @@ function ConfigWindow(webData) {
             dialog.open();
         }
     });
-    return self;
+	return self;
 };
 module.exports = ConfigWindow;

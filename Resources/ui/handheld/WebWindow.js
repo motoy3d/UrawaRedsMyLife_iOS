@@ -3,24 +3,36 @@
  * @param {Object} webData
  */
 function WebWindow(webData) {
+    var config = require("/config").config;
 	var style = require("util/style").style;
     var util = require("util/util").util;
 	var newsSource = require("model/newsSource");
-    var social = require('de.marcelpociot.social');
+    var social;
+    if(util.isiPhone()) {
+        social = require('de.marcelpociot.social');
+    }
 	//TODO style.js
 	var self = Ti.UI.createWindow({
 		title: webData.title
-		,backgroundColor: 'black'
-		,barColor: style.common.barColor
+        ,navBarHidden: webData.navBarHidden
+        ,backgroundColor: 'black'
+        ,barColor: style.common.barColor
         ,navTintColor: style.common.navTintColor
         ,titleAttributes: {
             color: style.common.navTintColor
         }
+        ,top: 20
 	});
 	
     var webView = Ti.UI.createWebView();
     var flexSpace = Ti.UI.createButton({
         systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE
+    });
+    var closeBtn = Ti.UI.createButton({
+        systemButton:Ti.UI.iPhone.SystemButton.STOP
+    });
+    closeBtn.addEventListener("click", function(e){
+        self.close();
     });
     var back;
     var forward;
@@ -33,8 +45,9 @@ function WebWindow(webData) {
     addWebViewEventListener();
     var simpleDispModeProp = Ti.App.Properties.getBool("simpleDispMode");
     if(simpleDispModeProp == null || simpleDispModeProp == undefined) {
-        simpleDispModeProp = true;
+        simpleDispModeProp = false;
     }
+    
     //tweetから来た場合
     if(webData.html) {
         webView.html = webData.html;
@@ -46,8 +59,7 @@ function WebWindow(webData) {
 	    webData.content && 
 		(webData.content != "" && 
 		 webData.content.indexOf('<img src="http://feeds.feedburner.com') == -1 
-		 ) &&
-		 webData.link.indexOf('http://yamadanobuhisa.jp') == -1
+		 )
 	) {
 		Ti.API.debug("-----------webWindow 1 link = " + webData.link);
 		var content = createWebContent(webData);
@@ -69,12 +81,12 @@ function WebWindow(webData) {
 	function addWebViewEventListener() {
         var ind;
         webView.addEventListener('beforeload',function(e){
-            Ti.API.info('beforeloadEvent1 e.navigationType=' + e.navigationType + ", e.url=" + e.url);
+            //Ti.API.info('beforeloadEvent1 e.navigationType=' + e.navigationType + ", e.url=" + e.url);
             if(!ind && e.navigationType != 5) {//リンク先URLのhtml中の画像やiframeの場合、5
-                Ti.API.info('beforeload #################### ');
-                Ti.API.info(util.toString(e));
+                //Ti.API.info('beforeload #################### ');
+                //Ti.API.info(util.toString(e));
                 webView.opacity = 0.8;
-                Ti.API.info(util.formatDatetime2(new Date()) + '  インジケータshow');
+                //Ti.API.info(util.formatDatetime2(new Date()) + '  インジケータshow');
 //                webView.add(ind);
 //TODO style
                 ind = Ti.UI.createActivityIndicator({
@@ -83,7 +95,7 @@ function WebWindow(webData) {
                 webView.add(ind);
                 ind.show();
                 // webView.url = e.url;
-                Ti.API.info('beforeload end-------------------------------- ');
+                //Ti.API.info('beforeload end-------------------------------- ');
             }
         }); 
         // ロード完了時にインジケータを隠す
@@ -111,12 +123,7 @@ function WebWindow(webData) {
                 forward.setEnabled(webView.canGoForward());
                 line.setEnabled(true);
                 twitter.setEnabled(true);
-                if(webData.link.indexOf("facebook.com") == -1 && webView.url.indexOf("facebook.com") == -1) {
-                    //facebookのページに対しては外部からシェアできない
-                    facebook.setEnabled(true);
-                } else {
-                    facebook.setEnabled(false);
-                }
+                facebook.setEnabled(true);
             }
         });
 	}
@@ -125,6 +132,7 @@ function WebWindow(webData) {
 	 * ツールバーを生成する。
 	 */
 	function createToolbar() {
+	    Ti.API.info('🌟ツールバー作成');
     	//ツールバー
         back = Ti.UI.createButton({
             image: "/images/arrow_left.png"
@@ -162,40 +170,10 @@ function WebWindow(webData) {
         // twitterボタン
         twitter.addEventListener("click", tweet);
         // facebookボタン
-        facebook.addEventListener("click", function(e){
-            Ti.App.Analytics.trackPageview('/fbShareDialog');   //ダイアログを開く
-            if(Ti.Platform.version >= "6.0") {
-                facebookShareBySocialModule();
-            } else {
-                if(!Ti.Facebook.loggedIn) {
-                    // ログイン済みでない場合はログインする
-                    Ti.Facebook.appid = '130375583795842';
-                    Ti.Facebook.permissions = ['publish_stream', 'read_stream']; // facebook開発者ページで設定
-                    Ti.Facebook.addEventListener('login', function(e) {
-                        if (e.success) {
-                            facebookShareByWebView();    //ログイン成功後シェア
-                        } else if (e.error) {
-                            Ti.API.error('-----facebookログインエラー');
-                        } else if (e.cancelled) {
-                            Ti.API.info('-----facebookログインキャンセル');
-                        }
-                    });
-                    Ti.Facebook.authorize();    //認証実行
-                } else {
-                    facebookShareByWebView();
-                }
-            }
-        });
-        //TODO テスト
-//        self.includeOpaqueBars = true;
-        self.setToolbar([line, flexSpace, twitter, flexSpace, facebook, flexSpace, flexSpace, back, flexSpace, forward],
-            {
-                animated: false, // true by default
-                translucent: false, // true for iOS 7+, false otherwise
-                barColor: 'red',
-                tintColor: 'white' // iOS 7+ only
-            }            
-        );
+        facebook.addEventListener("click", facebookShareBySocialModule);
+        var barItems = [line, flexSpace, twitter, flexSpace, facebook, flexSpace/*, flexSpace*/
+            , back, flexSpace, forward, flexSpace, closeBtn];
+        self.setToolbar(barItems, style.news.webWindowToolbar);
     }
     
     /**
@@ -209,7 +187,7 @@ function WebWindow(webData) {
             + "<a href=\"" + webData.link + "\">サイトを開く</a><br/><br/>";      
     }
     /**
-     * LINEに投稿する。(iOS5)
+     * LINEに投稿する。
      */
     function lineSend(e) {
         Ti.App.Analytics.trackPageview('/lineDialog');   //ダイアログを開く
@@ -227,7 +205,7 @@ function WebWindow(webData) {
         Ti.Platform.openURL("line://msg/text/" + msg);
     }
     /**
-     * twitterに投稿する。(iOS5)
+     * twitterに投稿する。
      */
     function tweet(e) {
         Ti.App.Analytics.trackPageview('/tweetDialog');   //ダイアログを開く
@@ -240,43 +218,33 @@ function WebWindow(webData) {
             //レッズプレスはjquery mobileを使用しており、titleタグが上書きされてしまうため
             title = webData.titleFull;
         }
-        if(Ti.Platform.version < "6.0") {
-            var msg = encodeURIComponent(title + "  ") + link;
-            Ti.API.info("Twitterへのパラメータ=" + msg);
-            Ti.Platform.openURL("twitter://post?message=" + msg);
-        } else {
-            social.showSheet({
-                service:  'twitter',
-                message:  title,
-                urls:       [link],
-                success:  function(){
-                    Ti.API.info('ツイート成功');
-                    Ti.App.Analytics.trackPageview('/tweet');
-                },
-                error: function(){
-                    alert("iPhoneの設定でTwitterアカウントを登録してください。");
-                }
-            });
-        }
+        social.showSheet({
+            service:  'twitter',
+            message:  title + "#" + config.hashtag,
+            urls:       [link],
+            success:  function(){
+                Ti.API.info('ツイート成功');
+                Ti.App.Analytics.trackPageview('/tweet');
+            },
+            error: function(){
+                alert("iPhoneの設定でTwitterアカウントを登録してください。");
+            }
+        });
     }
     /**
      * facebookでシェアする(titanium-social-modul使用。iOS6から可)
      */ 
     function facebookShareBySocialModule() {
+        Ti.App.Analytics.trackPageview('/fbShareDialog');   //ダイアログを開く
         var link = webView.url; 
         if(webView.url.indexOf("http") != 0) {
             link = webData.link; //簡易表示の場合はwebData.link
         }
-        var title = webView.evalJS("document.title");
-        Ti.API.info('title 1 >>>>>>>>>>>>>>>>>>>>>>>>> ' + title);
-        if(!title || link.indexOf("redspress") != -1) {
-            //レッズプレスはjquery mobileを使用しており、titleタグが上書きされてしまうため
-            title = webData.titleFull;
-        Ti.API.info('title 2 >>>>>>>>>>>>>>>>>>>>>>>>> ' + title);
-        }
+        Ti.API.info('facebook share >>>>>>>> ' + link);
+
         social.showSheet({
             service:  'facebook',
-            message:  title,
+            message:  "",
             urls:       [link],
             success:  function(){
                 Ti.API.info('FBシェア成功');
@@ -291,8 +259,6 @@ function WebWindow(webData) {
      * facebookでシェアする
      */	
 	function facebookShareByWebView() {
-//        var image = webData.image;
-//        Ti.API.info('画像＝＝＝' + image);
         var link = webView.url; 
         if(webView.url.indexOf("http") != 0) {
             link = webData.link; //簡易表示の場合はwebData.link
@@ -300,12 +266,7 @@ function WebWindow(webData) {
         Ti.API.info('facebookシェア link=' + link);
         var data = {
             link : link
-//                ,name : webData.title
-//                ,message :  "message"
-//                ,caption : content
-//                ,picture : image
             ,locale : "ja_JP"
-//                description : "ユーザの投稿文"
         };
         Ti.App.Analytics.trackPageview('/fbShareDialog');   //ダイアログを開く
         //投稿ダイアログを表示

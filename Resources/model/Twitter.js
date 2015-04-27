@@ -5,6 +5,7 @@
 function Twitter(target) {
     var util = require("/util/util").util;
     var style = require("/util/style").style;
+    var config = require("/config").config;
     var XHR = require("/util/xhr");
     
     var self = {};
@@ -12,7 +13,7 @@ function Twitter(target) {
     var tweetsPerPage = 50;
     var urlBase = 
         "http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
-        + "?teamId=" + util.getTeamId() + "&count=" + tweetsPerPage;
+        + "?teamId=" + config.teamId + "&count=" + tweetsPerPage;
     
     /**
      * チームハッシュタグのツイート一覧を取得
@@ -41,7 +42,7 @@ function Twitter(target) {
         }
         var xhr = new XHR();
         Ti.API.info(new Date() + ': URL=' + url);
-        xhr.get(url, onSuccessCallback, onErrorCallback, { ttl: 5 });
+        xhr.get(url, onSuccessCallback, onErrorCallback);
         function onSuccessCallback(e) {
             Ti.API.info(new Date() + ': xhr success');
             try {
