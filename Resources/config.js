@@ -16,6 +16,8 @@ exports.config = {
     ,standingsUrl: 'http://sub0000499082.hmk-temp.com/redsmylife/standings.json'
     //設定、メッセージのソースURL
     ,messageUrl: "http://sub0000499082.hmk-temp.com/redsmylife/config.json?teamId=reds"
+    //動画のソースURL
+    ,videoUrl: "http://sub0000499082.hmk-temp.com/redsmylife/video.json?teamId=reds"
     //開発元メールアドレス
     ,developerMail: "motoy3d+redsmylife@gmail.com"
     ,newsEntriesPerPage: 50
