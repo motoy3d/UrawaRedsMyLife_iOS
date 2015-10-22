@@ -106,7 +106,7 @@ exports.util = {
         else if(teamName == 'ヴァンフォーレ甲府') return '甲府';
         else if(teamName == '湘南ベルマーレ') return '湘南';
         else if(teamName == '大分トリニータ') return '大分';
-        else if(teamName == '京都サンガF.C') return '京都';
+        else if(teamName == '京都サンガF.C.') return '京都';
         else if(teamName == 'ジェフユナイテッド千葉') return '千葉';
         else if(teamName == '東京ヴェルディ') return '東京V';
         else if(teamName == 'モンテディオ山形') return '山形';
@@ -347,10 +347,22 @@ exports.util = {
         return (Ti.Platform.osname === 'android');
     },
     /**
+     * iOS
+     */    
+    isiOS : function(){
+        return (Ti.Platform.osname === 'iphone' || Ti.Platform.osname === 'ipad');
+    },    
+    /**
      * iPhone
      */    
     isiPhone : function(){
         return (Ti.Platform.osname === 'iphone');
+    },    
+    /**
+     * iPad
+     */    
+    isiPad : function(){
+        return (Ti.Platform.osname === 'ipad');
     },    
     /**
      * iOS6以上 

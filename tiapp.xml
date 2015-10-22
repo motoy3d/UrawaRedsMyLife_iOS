@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <deployment-targets>
-        <target device="tizen">false</target>
         <target device="mobileweb">false</target>
         <target device="iphone">true</target>
         <target device="ipad">false</target>
         <target device="android">false</target>
-        <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.5.1.GA</sdk-version>
+    <sdk-version>5.0.1.GA</sdk-version>
     <id>urawareds.my.life</id>
     <name>UrawaRedsMyLife</name>
-    <version>1.3.8</version>
+    <version>1.3.9</version>
     <publisher>motoy3d</publisher>
     <url>http://motoy3d.blogspot.com</url>
     <description>Infomation hub for Urawa Reds Supporter</description>
@@ -24,7 +22,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>false</analytics>
-    <guid>e1d254b0-6409-4ca9-8a7f-31ffff8acd33</guid>
+    <guid>5ffad698-a7f1-4cce-9fff-9d0c2a93dad9</guid>
     <property name="ti.ui.defaultunit">system</property>
     <ios>
         <min-ios-ver>6.0</min-ios-ver>
@@ -51,9 +49,6 @@
         </orientations>
         <orientations device="ipad">
             <orientation>Ti.UI.PORTRAIT</orientation>
-            <orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>
-            <orientation>Ti.UI.LANDSCAPE_LEFT</orientation>
-            <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
         </orientations>
     </iphone>
     <statusbar-style>translucent_black</statusbar-style>
@@ -69,4 +64,5 @@
     <modules>
         <module platform="iphone">de.marcelpociot.social</module>
     </modules>
+    <property name="appc-app-id" type="string">56272de1b00d2c940b6bb783</property>
 </ti:app>

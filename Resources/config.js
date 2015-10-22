@@ -7,6 +7,7 @@ exports.config = {
     ,iPhoneAppUrl: 'https://itunes.apple.com/jp/app/id570541514?l=ja&ls=1&mt=8'
     ,color: 'red'
     ,tintColor: 'white'
+    ,standingsBgcolor: 'red'
     ,dbName: 'urawareds.my.life'
     // ニュースのソースURL
     ,feedUrlBase: 'http://sub0000499082.hmk-temp.com/redsmylife/news.json'

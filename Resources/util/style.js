@@ -323,7 +323,7 @@ exports.style = {
         }
     },
     standings : {
-        backgroundColor : config.color,
+        backgroundColor : config.standingsBgcolor,
         standingsViewiPhone : {
             top : 0
             ,backgroundColor: "black"
@@ -381,6 +381,7 @@ exports.style = {
         },
         jButtonAndroid : {
             color: "lightgray"
+            ,font: {fontSize: 15, fontWeight: "bold"}
             ,borderWidth: 1
             ,backgroundColor: config.color
             ,borderRadius: 8
