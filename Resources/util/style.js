@@ -48,7 +48,7 @@ exports.style = {
                         properties: {
                             top: 3
                             ,left: 3
-                            ,width: 140
+                            ,width: 200
                             //,height: 100
                             ,borderRadius: 1
                         }

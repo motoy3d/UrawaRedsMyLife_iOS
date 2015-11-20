@@ -66,7 +66,7 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
                     if(videoDataList == null) {
                         //indicator.hide();
                         ind.hide();
-                        alert(style.common.noMovieMsg + " 1");
+                        alert(style.common.noMovieMsg);
                         return;
                     }
                     var rowsData = new Array();
@@ -77,7 +77,7 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
                     if (0 < rowsData.length) {
                         tableView.setData(rowsData);
                     } else {
-                        alert(style.common.noMovieMsg + " 2");
+                        alert(style.common.noMovieMsg);
                     }
                     ind.hide();
                 } catch(e1) {

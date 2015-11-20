@@ -203,7 +203,7 @@ function NewsWindow(tabGroup) {
                 ,toolbarVisible : true
             };
             var webWindow = new WebWindow(webData);
-            //TODO 黒いスペースができてしまうTiのバグ
+            //TODO 黒いスペースができてしまうTiのバグ https://jira.appcelerator.org/browse/TIMOB-16069
             //webWindow.tabBarHidden = true;
             tabGroup.activeTab.open(webWindow, {animated: true});
             Ti.App.Analytics.trackPageview('/newsDetail');
