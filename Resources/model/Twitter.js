@@ -10,7 +10,7 @@ function Twitter(target) {
     
     var self = {};
     self.loadTweets = loadTweets;
-    var tweetsPerPage = 50;
+    var tweetsPerPage = 25;
     var urlBase = 
         "http://sub0000499082.hmk-temp.com/redsmylife/" + target + ".json"
         + "?teamId=" + config.teamId + "&count=" + tweetsPerPage;
