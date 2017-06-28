@@ -38,7 +38,7 @@ function Results(resultsWindow, otherTeamId, otherTeamName) {
         if (otherTeamId && otherTeamId != null && otherTeamId != "") {
             resultsUrl += "&otherTeamId=" + otherTeamId;
         }
-		Ti.API.info("★★★日程読み込み " + resultsUrl);
+		Ti.API.info("★★★　日程読み込み " + resultsUrl);
 		//Ti.Yahoo.yql(config.resultsQuery, function(e) {
         var xhr = new XHR();
         xhr.get(resultsUrl, onSuccessCallback, onErrorCallback, { ttl: 1 });
@@ -67,7 +67,7 @@ function Results(resultsWindow, otherTeamId, otherTeamName) {
 				callback.fail(style.common.loadingFailMsg);
 			} finally {
 				var after = new Date();
-				Ti.API.info("Results.js#load() 処理時間★" 
+				Ti.API.info("Results.js#load() 処理時間★　" 
 					+ (after.getTime()-before.getTime())/1000.0 + "秒");
 			}
 		};
@@ -117,7 +117,7 @@ function Results(resultsWindow, otherTeamId, otherTeamName) {
 		//Ti.API.info('★' + isHome + " : " + team + " : " + score + " : " + detailUrl);
 		var hasDetailResult = detailUrl != "" && detailUrl != null;
 		//Ti.API.debug(compe + " " + date + " " + time + " " + team + " " + stadium + " " + score);
-		Ti.API.debug("🔴hasDetailResult=" + hasDetailResult);
+		// Ti.API.debug("hasDetailResult=" + hasDetailResult);
 		var row = Ti.UI.createTableViewRow(style.results.tableViewRow);
 		row.detailUrl = detailUrl;
 		// 日付ラベル
@@ -158,16 +158,27 @@ function Results(resultsWindow, otherTeamId, otherTeamName) {
         }
 	
 		// 詳細リンクボタン
+		//TODO 色
 		var detailButton = Ti.UI.createButton(style.results.detailButton);
-		detailButton.setEnabled(hasDetailResult);
+		if (!score) {
+			detailButton.setEnabled(false);
+			detailButton.backgroundColor = config.resultsDetailBtnBgColorInactive;
+			detailButton.color = config.resultsDetailBtnColorInactive;
+		}
 		// 試合詳細ウィンドウを開くイベント
 		detailButton.addEventListener('click', function() {
+			Ti.App.Analytics.trackPageview('/gameDetail');
 			resultsWindow.loadDetailHtml(detailUrl);
 		});
 		row.add(detailButton);
+		
 		// 動画リンクボタン
 		var movieButton = Ti.UI.createButton(style.results.movieButton);
-        movieButton.setEnabled(hasDetailResult);
+		if (!score) {
+			movieButton.setEnabled(false);
+			movieButton.backgroundColor = config.resultsDetailBtnBgColorInactive;
+			movieButton.color = config.resultsDetailBtnColorInactive;
+		}
 		// 試合動画ウィンドウを開くイベント
 		movieButton.addEventListener('click', function() {
 		    Ti.API.debug('>>>>>>>>>>> date=' + item.game_date1);
@@ -177,6 +188,17 @@ function Results(resultsWindow, otherTeamId, otherTeamName) {
             resultsWindow.searchMovie(title, util.replaceAll(util.formatDate(gameDate), "/", ""));
 		});
 		row.add(movieButton);
+
+		// チケットボタン
+		if (item.ticket_url) {
+			var ticketButton = Ti.UI.createButton(style.results.ticketButton);
+			ticketButton.addEventListener('click', function() {
+				Ti.App.Analytics.trackPageview('/ticket');
+				resultsWindow.loadDetailHtml(item.ticket_url);
+			});
+			row.add(ticketButton);
+		}
+
 		//Ti.API.debug('row====' + row);
 		return row;
 	}

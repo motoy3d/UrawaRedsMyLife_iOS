@@ -3,8 +3,8 @@ var style = require("util/style").style;
 var checkapp = null;
 var androidDisplay = null;
 if(Ti.Platform.osname == "android"){
-    checkapp = require('com.motoy3d.check.app.android');
-    androidDisplay = require("com.motoy3d.android.displayinfo");
+    //checkapp = require('com.motoy3d.check.app.android');
+    //androidDisplay = require("com.motoy3d.android.displayinfo");
 }
 exports.util = {
 	/**
@@ -53,6 +53,12 @@ exports.util = {
             }
         }
         return text;
+	},
+	/**
+	 * メッセージダイアログを表示する 
+	 */
+	showMsg : function(msg) {
+		Ti.UI.createAlertDialog({title: "", message: msg}).show();
 	},
 	/**
 	 * オフラインメッセージダイアログを表示する
@@ -274,6 +280,19 @@ exports.util = {
                 return true;
             }
         }
+        return false;
+    },
+    /**
+     * itemが配列内の値で始まるものが含まれるかどうかを返す
+     */
+    containsStartsWith : function(array, item) {
+    	if (array) {
+	        for(var i in array) {
+	            if(item.indexOf(array[i]) == 0) {
+	                return true;
+	            }
+	        }
+		}
         return false;
     },
     /**

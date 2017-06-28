@@ -28,10 +28,11 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
 
     var tableView = Ti.UI.createTableView({
         data : data
-        ,backgroundColor : "#000000"    //TODO style
-        ,separatorColor : "#000000"
+        //,backgroundColor : style.common.backgroundColor	//Youtubeのサムネイルの黒帯があるため黒固定
+        ,backgroundColor : style.common.backgroundColor    //TODO style
+        ,separatorColor : "black"
     });
-    if (util.isiPhone()) {
+    if (util.isiOS()) {
         tableView.scrollIndicatorStyle = Ti.UI.iPhone.ScrollIndicatorStyle.WHITE;        
     }
 
@@ -43,7 +44,7 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
     
     // インジケータ
     var ind = Ti.UI.createActivityIndicator({
-        style: util.isiPhone()? Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN : Ti.UI.ActivityIndicatorStyle.BIG
+        style: util.isiOS()? Ti.UI.ActivityIndicatorStyle.PLAIN : Ti.UI.ActivityIndicatorStyle.BIG
     });
     self.add(ind);
     ind.show();
@@ -66,7 +67,7 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
                     if(videoDataList == null) {
                         //indicator.hide();
                         ind.hide();
-                        alert(style.common.noMovieMsg);
+                        util.showMsg(style.common.noMovieMsg);
                         return;
                     }
                     var rowsData = new Array();
@@ -77,7 +78,7 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
                     if (0 < rowsData.length) {
                         tableView.setData(rowsData);
                     } else {
-                        alert(style.common.noMovieMsg);
+                        util.showMsg(style.common.noMovieMsg);
                     }
                     ind.hide();
                 } catch(e1) {
@@ -106,7 +107,8 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
             var link = item.videoUrl;
             
             var thumbnail = item.thumbnailUrl;
-        
+            Ti.API.info('動画サムネイル：' + thumbnail);
+            
             var row = Ti.UI.createTableViewRow({
                 height : Ti.UI.SIZE,
         //      backgroundSelectedColor : "#f33",
@@ -116,9 +118,13 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
             row.url = link;
             row.videoUrl = item.videoUrl;
             row.videoTitle = title;
-            row.backgroundColor = "#000000";
-            row.color = "#ffffff";
-           //TODO
+            //row.backgroundColor = style.common.backgroundColor;
+            //Youtubeのサムネイルの黒帯があるため背景黒固定
+            row.backgroundColor = "black";
+            //row.color = style.common.mainTextColor;
+            row.color = "white";
+           //TODO style
+           //thumbnail = thumbnail.replaceAll("hqdefault", "maxresdefault");	//上下の黒帯をなくす →maxresがない場合があるのでNG
             var img = Ti.UI.createImageView({
                 image : thumbnail
                 ,top: 0
@@ -141,7 +147,8 @@ function YoutubeWindow(title, gameDate, otherTeamId) {
                     fontSize : 14
                 }
                 ,wordWrap: true
-                ,color : "#ffffff"
+                //,color : style.common.mainTextColor
+                ,color : "white"
             });
             row.add(labelTitle);
         
